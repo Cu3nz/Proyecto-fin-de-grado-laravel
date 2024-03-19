@@ -32,30 +32,36 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request -> validate([
-            'nombre' => ['required' , 'string' , 'min:3' , 'unique:categories,nombre'],
-            'tipo' => ['required' , 'in:padre,hijo'],
-            'category_padre_id' => ['nullable' , 'exists:categories,id'],
-        ]);
-
+        // todo Validaciones para los dos primeros campos del formulario
+        $reglas = [
+            'nombre' => ['required', 'string', 'min:3', 'unique:categories,nombre'],
+            'tipo' => ['required', 'in:padre,hijo'], //? Solo se puede seleccionar estos dos tipos, si se cambia el nombre dara un error
+        ];
+    
+        //todo Si el tipo es hijo se añadira el select para seleccionar las categorias que son padres por lo tanto, añadimos la validacion para el campo category_padre_id
+        if ($request->input('tipo') === 'hijo') {
+            $reglas['category_padre_id'] = ['required', 'exists:categories,id'];
+        }
+    
+        //* Validamos con las reglas seleccionadas Validar la solicitud con las reglas definidas
+        $request->validate($reglas);
+    
+        // ? Si el tipo es padre, creamos la categoria con el campo category_padre_id a null y es_padre a true
         if ($request->input('tipo') === 'padre') {
-           
-            //? Crear una categoria padre
             Category::create([
-                'nombre' => $request->input('nombre'),
+                'nombre' => $request->nombre,
                 'category_padre_id' => null,
-                'es_padre' => true, //! Importante añadir esto para que sepa que es una categoria padre
+                'es_padre' => true,
             ]);
-        } else {
-            // Crear una subcategoria
+        } else { // ? Si el tipo es hijo, creamos la categoria con el campo category_padre_id que nos llegue del formulario
             Category::create([
-                'nombre' => $request->input('nombre'),
+                'nombre' => $request->nombre,
                 'category_padre_id' => $request->input('category_padre_id'),
             ]);
         }
-
-        return redirect() -> route('Category.principal') -> with('mensaje' , 'Categoria creada correctamente');
+    
+        // Redirigir con mensaje de éxito
+        return redirect()->route('Category.principal')->with('mensaje', 'Categoría creada correctamente');
     }
 
     /**
@@ -84,37 +90,48 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         //
-        $request -> validate([
-            'nombre' => ['required' , 'string' , 'min:3' , 'unique:categories,nombre,' . $category->id],
-            'tipo' => ['required' , 'in:padre,hijo'],
-            'category_padre_id' => ['nullable' , 'exists:categories,id'],
-        ]);
-
+        // todo Validaciones para los dos primeros campos del formulario
+        $reglas = [
+            'nombre' => ['required', 'string', 'min:3', 'unique:categories,nombre,'.$category -> id],
+            'tipo' => ['required', 'in:padre,hijo'], //? Solo se puede seleccionar estos dos tipos, si se cambia el nombre dara un error
+        ];
+    
+        //todo Si el tipo es hijo se añadira el select para seleccionar las categorias que son padres por lo tanto, añadimos la validacion para el campo category_padre_id
+        if ($request->input('tipo') === 'hijo') {
+            $reglas['category_padre_id'] = ['required', 'exists:categories,id'];
+        }
+    
+        //* Validamos con las reglas seleccionadas Validar la solicitud con las reglas definidas
+        $request->validate($reglas);
+    
+        // ? Si el tipo es padre, actualizamos la categoria con el campo category_padre_id a null y es_padre a true
         if ($request->input('tipo') === 'padre') {
-           
-            
             $category -> update([
-                'nombre' => $request->input('nombre'),
+                'nombre' => $request->nombre,
                 'category_padre_id' => null,
-                'es_padre' => true, //! Importante añadir esto para que sepa que es una categoria padre
+                'es_padre' => true,
             ]);
-        } else {
-            
+        } else { // ? Si el tipo es hijo, actualizamos la categoria con el campo category_padre_id que nos llegue del formulario
             $category -> update([
-                'nombre' => $request->input('nombre'),
+                'nombre' => $request->nombre,
                 'category_padre_id' => $request->input('category_padre_id'),
+                'es_padre' => false, // ? Si es hijo (subcategoria), cambiamos el campo es_padre a false, esto lo tengo que poner para que cuando cuando edite una categoria padre y la cambie a hijo, se cambie el campo es_padre a false 0
             ]);
         }
 
         return redirect() -> route('Category.principal') -> with('mensaje' , 'Categoria actualizada correctamente');
     }
 
+
+   
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        return redirect()->route('Category.principal')->with('mensaje', 'Categoria eliminada correctamente');
+        //! BORRADO HECHO CON LIVEWIRE PARA "SEGUIR" CON LA MISMA ESTRUCTURA
+       /*  $category->delete();
+        return redirect()->route('Category.principal')->with('mensaje', 'Categoria eliminada correctamente'); */
     }
 }

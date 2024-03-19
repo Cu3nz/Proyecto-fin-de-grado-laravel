@@ -53,15 +53,64 @@
     @livewireScripts
 
     @if (session('mensaje'))
+        <script>
+            Swal.fire({
+                icon: "success",
+                title: "{{ session('mensaje') }}",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        </script>
+    @endif
+
+
+    {{-- todo Pedir confirmacion delete --}}
     <script>
-        Swal.fire({
-            icon: "success",
-            title: "{{ session('mensaje') }}",
-            showConfirmButton: false,
-            timer: 1500
-        });
+        Livewire.on('mensaje', txt => {
+            Swal.fire({
+                icon: "success",
+                title: txt,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        })
+
+
+        Livewire.on('confirmarDeleteCategory', id => {
+            Swal.fire({
+                title: "¿Estás seguro de eliminar este registro?",
+                text: "Esta acción eliminará permanentemente el registro seleccionado. ¿Deseas continuar?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminalo!",
+                reverseButtons: true // Coloca el botón de cancelar a la izquierda
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatchTo('principal-category', 'deleteConfirmado', id);
+                }
+            });
+        })
+
+        Livewire.on('confirmarDeleteProduct', id => {
+            Swal.fire({
+                title: "¿Estás seguro de eliminar este registro?",
+                text: "Esta acción eliminará permanentemente el registro seleccionado. ¿Deseas continuar?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminalo!",
+                reverseButtons: true // Coloca el botón de cancelar a la izquierda
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatchTo('principal-products', 'deleteConfirmado', id);
+                }
+            });
+        })
     </script>
-@endif
+
 
 </body>
 

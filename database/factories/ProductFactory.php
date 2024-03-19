@@ -20,11 +20,13 @@ class ProductFactory extends Factory
         fake()->addProvider(new \Mmo\Faker\PicsumProvider(fake()));
         return [
             //
-            'nombre' => fake() -> unique() -> words(3,true),
+            'nombre' => fake() -> unique() -> words(1,true),
             'descripcion' => fake() -> text(200),
             'precio' => fake() -> randomFloat(2,1,500),
             'estado' => fake() -> randomElement(['DISPONIBLE' , 'NO DISPONIBLE']),
             'imagen' => "imagen/" . fake()->picsum("public/storage/imagen", 406, 486, false),
+            'codigo_articulo' => "#".fake() -> unique() -> ean8(),
+            'stock' => random_int(1,10),
             'category_id' => Category::all() -> random() -> id
         ];
     }

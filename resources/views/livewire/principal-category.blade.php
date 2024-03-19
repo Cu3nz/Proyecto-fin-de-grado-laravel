@@ -46,13 +46,12 @@
                                     {{ $item->categoria_padre_nombre }}
 
                                 </td>
-                                <td class="px-6 py-4">
-                                    <form action="{{ route('category.destroy', $item->id) }}" method="post">
-                                        @method('delete')
-                                        @csrf
-                                        <a href="{{route('category.edit' , $item -> id)}}"><i class="fas fa-edit text-yellow-600 mr-2"></i></a>
-                                        <button type="submit"><i class="fas fa-trash text-red-600"></i></button>
-                                    </form>
+                                <td class="px-6 py-4 flex">
+                                        <a href="{{route('category.edit' , $item -> id)}}"><i class="fas fa-edit text-yellow-600 mr-2"></i></a> {{-- todo Boton para actualizar --}}
+                                    
+                                    {{-- ! boton para borrar --}}
+                                    <button wire:click="pedirConfirmacion({{ $item->id }})" type="submit"><i
+                                        class="fas fa-trash text-red-600"></i></button>
                                 </td>
                             </tr>
                         @endforeach

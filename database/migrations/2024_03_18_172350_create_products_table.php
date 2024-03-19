@@ -18,6 +18,8 @@ return new class extends Migration
             $table -> enum('estado' , ['DISPONIBLE' , 'NO DISPONIBLE']);
             $table->decimal('precio', 8, 2);
             $table -> string('imagen');
+            $table -> string('codigo_articulo') -> unique();
+            $table -> integer('stock'); //! Este stock puede existir o no, basicamente los pedidos se hacen segun llegan, pero si hay productos que se han hecho y al final pues no se han enviado porque se han cancelado se pone el numero de stock
             $table -> foreignId('category_id') -> constrained() -> onDelete('cascade'); //! como siempre
             $table->timestamps();
         });

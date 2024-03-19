@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Livewire\PrincipalCategory;
+use App\Livewire\PrincipalProducts;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -32,11 +34,17 @@ Route::middleware([
     })->name('dashboard');
 
     Route::resource('category' , CategoryController::class);
+    Route::resource('products' , ProductController::class);
+
 });
 
 
 //todo Para el index de categorias con la tabla y el buscador: 
 Route::get('category' , PrincipalCategory::class) -> name('Category.principal');
+
+//todo Para el index de productos con la tabla y el buscador
+
+Route::get('products' , PrincipalProducts::class) -> name('products.principal');
 
 //! Borrar
 //todo Para el buscador de index de categorias: 
