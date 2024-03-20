@@ -9,7 +9,7 @@
 
             <div>
                 <a class=" mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    href="{{ route('category.create') }}"><i class="fas fa-add mr-2"></i>Crear producto</a>
+                    href="{{ route('products.create') }}"><i class="fas fa-add mr-2"></i>Crear producto</a>
             </div>
 
         </div>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -19,9 +21,19 @@ class ProductController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
+{
+    // Obtener todas las categorías que son padres
+    $categoriasPadres = Category::where('es_padre', true)->get(['id', 'nombre']);
+
+    // Para cada categoría padre, cargar sus subcategorías
+    foreach ($categoriasPadres as $categoriaPadre) {
+        $categoriaPadre->subcategorias = Category::where('category_padre_id', $categoriaPadre->id)->get();
     }
+
+    //dd($categoriasPadres); //? Revisar para ver si imprime correctamente las categorías padres y sus subcategorías
+
+    return view('products.create', compact('categoriasPadres'));
+}
 
     /**
      * Store a newly created resource in storage.
@@ -29,6 +41,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+
+        dd($request->all());
     }
 
     /**
