@@ -17,4 +17,11 @@ class Product extends Model
     public function category(){
         return $this -> belongsTo(Category::class);
     }
+
+
+    //todo Un producto cuantos usuarios lo puede crear? 1 por lo tnato el nombre de la funcion en singular y utilizamos belongsTo
+    public function user(){
+        return $this -> belongsTo(User::class);
+    }
+
 }

@@ -50,6 +50,8 @@
                 <label for="imagen" class="block mb-2 text-sm font-medium text-gray-700">Imágenes</label>
                 {{-- ! Creamos un array para alamacenar todas las imagenes que sube el usuario --}}
                 <input type="file" id="imagen" name="imagen[]" accept="image/*" multiple class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" onchange="handleFiles(this.files)">
+                <textarea name="descripcion_imagenes" placeholder="Escribe una descripcion para todas la/las foto/s" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+
                 
                 <div class="w-full mt-2 px-2 md:w-1/2" id="contenedorImagenDefecto">
                     <img src="{{Storage::url('noimage.png')}}" alt="Imagen por defecto" class="h-72 mx-auto rounded w-full object-cover border-4 border-gray-300">
@@ -75,70 +77,7 @@
         </form>
     </div>
 
-   {{--  <script>
-    let archivosSeleccionados = []; //? Almacena referencias a los archivos seleccionados
-
-    function handleFiles(imagenes) {
-        const previewContainer = document.getElementById('imagenPreview'); //? Contenedor de las vistas previas
-        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //? Contenedor de la imagen por defecto
-        previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
-        archivosSeleccionados = []; // Reiniciar la lista de archivos seleccionados al cargar nuevas imágenes
-
-        if (imagenes.length > 0) { //* Si el usuario ha subido imágenes
-            contenedorImagenDefecto.style.display = 'none'; //? Ocultamos el div con la imagen por defecto
-            archivosSeleccionados = Array.from(imagenes); //? Convertir FileList en Array y almacenar referencia
-        } else {
-            contenedorImagenDefecto.style.display = 'block'; //? Mostrar el div con la imagen por defecto si no hay imágenes
-        }
-
-        archivosSeleccionados.forEach((imagen, index) => {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const imgDiv = document.createElement('div'); //? Creamos un div para la vista previa de la imagen
-                imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Estilos para el div de la vista previa
-                
-                const img = document.createElement('img'); //? Creamos un elemento img
-                img.src = e.target.result; //? Establecemos el src de la imagen con el resultado de FileReader
-                img.className = 'object-cover h-48 w-full rounded-lg'; //? Estilos para la imagen
-                
-                const deleteButton = document.createElement('button'); //? Creamos el botón de borrar
-                deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Icono de papelera para el botón
-                deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer'; //? Estilos para el botón de borrar
-                deleteButton.addEventListener('click', () => borrarPreview(imgDiv, index)); //? Evento para borrar la vista previa
-                
-                //todo Añadir elementos al DOM
-                imgDiv.appendChild(img); //? Añadimos la imagen al div
-                imgDiv.appendChild(deleteButton); //? Añadimos el botón de borrar al div
-                previewContainer.appendChild(imgDiv); //? Añadimos el div de la vista previa al contenedor principal
-            };
-            reader.readAsDataURL(imagen);
-        });
-    }
-
-    function borrarPreview(imgDiv, index) {
-        //? Eliminar la imagen seleccionada de la lista y del input de archivos
-        archivosSeleccionados.splice(index, 1); //? Eliminar archivo de la lista
-        imgDiv.remove(); //? Eliminar div de la imagen del DOM
-
-        // Actualizar el input de archivos con los archivos restantes
-        const dataTransfer = new DataTransfer(); //? Crear un nuevo objeto DataTransfer
-        archivosSeleccionados.forEach(file => dataTransfer.items.add(file)); //? Añadir los archivos restantes
-        document.getElementById('imagen').files = dataTransfer.files; //? Establecer los archivos en el input
-
-        //? Si no quedan vistas previas, mostrar la imagen por defecto
-        if (archivosSeleccionados.length === 0) {
-            document.getElementById('contenedorImagenDefecto').style.display = 'block';
-        }
-    }
-</script> --}}
-
-    
-
-
-
-
-
-    {{-- Funcionando pero tiene el error de que cuando borras imagenes, no se borrar del input por lo tanto cuando le das a crear, crea las imagenes que hayas subido --}}
+    {{-- * Funcionando a la perfeccion --}}
     <script>
         let previews = [];
         let archivosSeleccionados = []; // Necesitamos esta variable para mantener un registro de los archivos actualmente seleccionados
@@ -211,5 +150,65 @@
     }
 
     </script>
+
+
+
+
+ {{--  <script>
+    let archivosSeleccionados = []; //? Almacena referencias a los archivos seleccionados
+
+    function handleFiles(imagenes) {
+        const previewContainer = document.getElementById('imagenPreview'); //? Contenedor de las vistas previas
+        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //? Contenedor de la imagen por defecto
+        previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
+        archivosSeleccionados = []; // Reiniciar la lista de archivos seleccionados al cargar nuevas imágenes
+
+        if (imagenes.length > 0) { //* Si el usuario ha subido imágenes
+            contenedorImagenDefecto.style.display = 'none'; //? Ocultamos el div con la imagen por defecto
+            archivosSeleccionados = Array.from(imagenes); //? Convertir FileList en Array y almacenar referencia
+        } else {
+            contenedorImagenDefecto.style.display = 'block'; //? Mostrar el div con la imagen por defecto si no hay imágenes
+        }
+
+        archivosSeleccionados.forEach((imagen, index) => {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imgDiv = document.createElement('div'); //? Creamos un div para la vista previa de la imagen
+                imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Estilos para el div de la vista previa
+                
+                const img = document.createElement('img'); //? Creamos un elemento img
+                img.src = e.target.result; //? Establecemos el src de la imagen con el resultado de FileReader
+                img.className = 'object-cover h-48 w-full rounded-lg'; //? Estilos para la imagen
+                
+                const deleteButton = document.createElement('button'); //? Creamos el botón de borrar
+                deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Icono de papelera para el botón
+                deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer'; //? Estilos para el botón de borrar
+                deleteButton.addEventListener('click', () => borrarPreview(imgDiv, index)); //? Evento para borrar la vista previa
+                
+                //todo Añadir elementos al DOM
+                imgDiv.appendChild(img); //? Añadimos la imagen al div
+                imgDiv.appendChild(deleteButton); //? Añadimos el botón de borrar al div
+                previewContainer.appendChild(imgDiv); //? Añadimos el div de la vista previa al contenedor principal
+            };
+            reader.readAsDataURL(imagen);
+        });
+    }
+
+    function borrarPreview(imgDiv, index) {
+        //? Eliminar la imagen seleccionada de la lista y del input de archivos
+        archivosSeleccionados.splice(index, 1); //? Eliminar archivo de la lista
+        imgDiv.remove(); //? Eliminar div de la imagen del DOM
+
+        // Actualizar el input de archivos con los archivos restantes
+        const dataTransfer = new DataTransfer(); //? Crear un nuevo objeto DataTransfer
+        archivosSeleccionados.forEach(file => dataTransfer.items.add(file)); //? Añadir los archivos restantes
+        document.getElementById('imagen').files = dataTransfer.files; //? Establecer los archivos en el input
+
+        //? Si no quedan vistas previas, mostrar la imagen por defecto
+        if (archivosSeleccionados.length === 0) {
+            document.getElementById('contenedorImagenDefecto').style.display = 'block';
+        }
+    }
+</script> --}}
     
 </x-app-layout>

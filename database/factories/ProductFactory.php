@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,7 +28,8 @@ class ProductFactory extends Factory
             'imagen' => "imagen/" . fake()->picsum("public/storage/imagen", 406, 486, false),
             'codigo_articulo' => "#".fake() -> unique() -> ean8(),
             'stock' => random_int(1,10),
-            'category_id' => Category::all() -> random() -> id
+            'category_id' => Category::all() -> random() -> id,
+            'user_id' => User::all() -> random() -> id
         ];
     }
 }
