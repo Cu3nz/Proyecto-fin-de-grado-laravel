@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Livewire\PrincipalCategory;
+use App\Livewire\PrincipalLogueado;
 use App\Livewire\PrincipalProducts;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -20,16 +22,17 @@ Route::middleware([
     Route::get('/dashboard', function () {
         $nuevos = Product::join('categories', 'products.category_id', '=', 'categories.id')
         ->select('products.*', 'categories.nombre as category_name')
-        ->where(function ($query) {
-            $query->where('categories.nombre', 'Nuevo');
-                  /* ->where('products.estado', 'NO DISPONIBLE'); */
-        })
+        ->where('categories.nombre', 'Nuevo')
+        // ->where('products.estado', 'NO DISPONIBLE')
+        ->with('primeraImagen') //? Obtiene la primera imagen de cada producto
+        ->get();
+    
+    $anime = Product::join('categories', 'products.category_id', '=', 'categories.id')
+        ->where('categories.nombre', 'Anime')
+        ->select('products.*', 'categories.nombre as category_name')
+        ->with('primeraImagen') // Obtiene la primera imagen de cada producto
         ->get();
 
-            $anime = Product::join('categories', 'products.category_id', '=', 'categories.id')
-            ->where('category_name', 'Anime')
-            ->select('products.*', 'categories.nombre as category_name')
-            ->get();
         return view('dashboard' , compact('nuevos' , 'anime'));
     })->name('dashboard');
 
@@ -55,3 +58,7 @@ Route::get('products' , PrincipalProducts::class) -> name('products.principal');
 //todo login con google
 Route::get('/google-auth/redirect' , [GoogleController::class , 'redirect']) -> name('google.redirect');
 Route::get('/google-auth/callback' , [GoogleController::class , 'callback']) -> name('google.callback');
+
+//todo login con facebook
+Route::get('/facebook-auth/redirect' , [FacebookController::class , 'redirect']) -> name('facebook.redirect');
+Route::get('/facebook-auth/callback' , [FacebookController::class , 'callback']) -> name('facebook.callback');

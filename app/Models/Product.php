@@ -24,4 +24,15 @@ class Product extends Model
         return $this -> belongsTo(User::class);
     }
 
+
+     //todo Un producto puede tener muchas imagenes, por lo tanto el nombre de la funcion en plural y utilizamos hasMany
+     public function images(){
+        return $this -> hasMany(ProductImage::class);
+    }
+
+    public function primeraImagen()
+    {
+        return $this->hasOne(ProductImage::class)->orderBy('id', 'asc');
+    }
+
 }

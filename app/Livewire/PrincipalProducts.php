@@ -94,10 +94,24 @@ class PrincipalProducts extends Component
     #[On('deleteConfirmado')]
     public function delete (Product $product){
 
-        $imagenActualProducto = $product -> imagen;
+        /* dd($product->images); */ //? Muestra todas las imagenes que tiene el producto
 
-        if (basename($imagenActualProducto) != 'noimage.png'){
-            Storage::delete($imagenActualProducto);
+        //todo Al llamar a $product->images, estás recuperando una colección de todos los objetos ProductImage relacionados con ese producto. Esto significa que cada objeto ProductImage en la colección $imagenesActualProducto tendrá todos los atributos correspondientes a un registro en la tabla product_images, que está relacionada con ese producto.
+
+        $imagenesActualProducto = $product -> images; //? Guardamos en $imagenesActualProducto, todos los atibutos de la tabla product_images del producto en cuestion (id , product_id , imagen, descripcion , created_at , updated_at)
+
+        /* dd($imagenesActualProducto); */ //? Esto imprime un array con todos los atributos de la tabla product_images del producto en cuestion su id , product_id , imagen, descripcion , created_at , updated_at
+
+        //dd($imagenesActualProducto -> pluck('imagen')); //? Esto imprime un array con todas las imagenes del producto en cuestion
+
+        //todo Tenemos que comprobar cada una de las imagenes del producto en cuestion y eliminarlas si es son distintas a default.jpg
+        foreach($imagenesActualProducto as $imagenProducto){
+
+            if(basename($imagenProducto -> imagen) != 'noimage.png'){ //? Tenemos que definir "-> imagen" porque estamos accediendo a un atributo de la tabla product_images
+                Storage::delete($imagenProducto->imagen);
+            }
+
+            $imagenProducto -> delete(); //? Eliminamos el registro de la tabla product_images
         }
 
         $product -> delete();
