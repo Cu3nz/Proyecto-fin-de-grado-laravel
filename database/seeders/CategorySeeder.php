@@ -13,13 +13,13 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categoriasSinSubcategorias = [
-            'Nuevo',
-            'En Oferta'
-        ];
+        //? Categorias para la tienda en plan tipo nuevo en oferta , etc
+        $tienda = Category::firstOrCreate(['nombre' => 'Tienda'], ['category_padre_id' => null, 'es_padre' => true, 'descripcion' => "Categorías principales de la tienda"]);
 
-        foreach ($categoriasSinSubcategorias as $nombreCategoria) {
-            Category::firstOrCreate(['nombre' => $nombreCategoria] , ['category_padre_id' => null , 'es_padre' => true , 'descripcion' => fake() -> sentence]);
+        $subcategoriasTienda = ['Oferta', 'Nuevo'];
+
+        foreach ($subcategoriasTienda as $nombreSubcategoria) {
+            Category::firstOrCreate(['nombre' => $nombreSubcategoria], ['category_padre_id' => $tienda->id, 'es_padre' => false, 'descripcion' => fake()->sentence]);
         }
 
         $categoriasPadres = [
