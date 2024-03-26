@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         Storage::makeDirectory('imagen');
 
         // Crea algunos productos
-        $products = Product::factory(10)->create();
+        $products = Product::factory(5)->create();
 
         // Para cada producto, genera una descripción única que se aplicará a todas sus imágenes
         $products->each(function ($product) {

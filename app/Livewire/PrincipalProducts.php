@@ -23,15 +23,12 @@ class PrincipalProducts extends Component
     
     public function render()
     {
-        $productos = Product::with('primeraImagen')
-    ->where(function($query) {
-        $query->where('nombre', 'like', "$this->buscar%")
-              ->orWhere('descripcion', 'like', "$this->buscar%")
-              ->orWhere('codigo_articulo', 'like', "$this->buscar%")
-              ->orWhere('estado', 'like', "$this->buscar%");
-    })
-    ->orderBy($this->campo, $this->orden)
-    ->paginate(5);
+        $productos = Product::orderBy($this -> campo , $this -> orden)
+        ->where('nombre' , 'like' , "$this->buscar%")
+        ->orWhere('descripcion' , 'like' , "$this->buscar%")
+        ->orWhere('codigo_articulo' , 'like' , "$this->buscar%")
+        ->orWhere('estado' , 'like' , "$this->buscar%")
+        ->paginate(5);
         return view('livewire.principal-products' , compact('productos'));
     }
 

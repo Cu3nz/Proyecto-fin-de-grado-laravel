@@ -41,42 +41,38 @@ class PrincipalCategory extends Component
 
 
     #[On('deleteConfirmado')]
-
-    public function delete(Category $categoria)
+    // En PrincipalCategory.php
+    public function delete(Category $category)
     {
-        // Primero, borra todas las categorías hijas y sus imágenes asociadas si es una categoría padre.
-        if ($categoria->es_padre) {
-            foreach ($categoria->children as $subcategoria) {
-                // Borra la imagen de la subcategoría si existe y no es la imagen por defecto.
-                if ($subcategoria->image && basename($subcategoria->image->url_imagen) != 'noimage.png') {
-                    Storage::delete($subcategoria->image->url_imagen);
-                }
-                // Elimina las imágenes asociadas de las subcategorías.
-                $subcategoria->image()->delete();
-                // Borra la subcategoría.
-                $subcategoria->delete();
+        //? Si es una categoria padre, elimina todas las subcategorias primero
+        if ($category->es_padre) {
+            foreach ($category->children as $child) {
+                $this->delete($child); //* Llamada recursiva para borrar las subcategorias
             }
         }
-    
-        // Borra la imagen de la categoría si existe y no es la imagen por defecto.
-        if ($categoria->image && basename($categoria->image->url_imagen) != 'noimage.png') {
-            Storage::delete($categoria->image->url_imagen);
-        }
-    
-        // Elimina la imagen asociada si existe.
-        if ($categoria->image) {
-            $categoria->image()->delete();
-        }
-    
-        // Finalmente, elimina la categoría.
-        $categoria->delete();
 
+        //? Elimina los productos asociados a la categoría
+        foreach ($category->products as $product) {
+            //* Elimina todas las imagenes asociadas a este producto de la carpeta imagen y de la base de datos
+            foreach ($product->images as $image) {
+                Storage::delete($image->url_imagen); //? Elimino las imagenes de la carpeta imagen
+                $image->delete(); //* Elimina el registro de la tabla images
+            }
+            $product->delete(); //* Elimina el producto de la tabla products
+        }
 
-        $this -> dispatch('mensaje' , 'Categoria borrada correctamente');
-    
-        
-        
+        //? Elimina la imagen asociada a la categoria si no es la imagen por defecto
+        if ($category->image) {
+            if (basename($category->image->url_imagen) != 'noimage.png') {
+                Storage::delete($category->image->url_imagen);
+            }
+            $category->image()->delete(); //* Elimina el registro de la categoria de la tabla images
+        }
+
+        //* Elimina la categoria de la tabla categories
+        $category->delete();
     }
+
     
 
 }

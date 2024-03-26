@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table -> foreignId('product_id') -> constrained() -> onDelete('cascade'); //! como siempre
             $table->string('imagen');
-            $table->text('descripcion')->nullable(); // Campo para la descripción de la imagen
+            /* $table->text('descripcion')->nullable(); // Campo para la descripción de la imagen */
             $table->timestamps();
         });
     }
