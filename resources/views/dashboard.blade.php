@@ -25,6 +25,9 @@
                             <p class="text-sm font-medium text-gray-900">{{$item -> precio}}€</p>
                         </div>
                     </a>
+                    <div class="my-2">
+                        <button class="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md border border-neutral-200 bg-transparent px-6 font-medium text-neutral-600 transition-all duration-100 [box-shadow:5px_5px_rgb(82_82_82)] hover:translate-x-[3px] hover:translate-y-[3px] hover:[box-shadow:0px_0px_rgb(82_82_82)] hover:text-red-600">Comprar</button>
+                    </div>
                 </div>
                 @endforeach
             </div>

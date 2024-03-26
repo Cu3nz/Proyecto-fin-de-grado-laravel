@@ -19,7 +19,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categoriasSinSubcategorias as $nombreCategoria) {
-            Category::firstOrCreate(['nombre' => $nombreCategoria] , ['category_padre_id' => null , 'es_padre' => false , 'descripcion' => fake() -> sentence]);
+            Category::firstOrCreate(['nombre' => $nombreCategoria] , ['category_padre_id' => null , 'es_padre' => true , 'descripcion' => fake() -> sentence]);
         }
 
         $categoriasPadres = [
