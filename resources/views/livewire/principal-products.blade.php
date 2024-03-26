@@ -55,8 +55,8 @@
                                 {{-- @php
                                  $PrimeraImagenProducto = $item->images->first(); // Obtiene la primera imagen del producto   
                                 @endphp --}}
-                                <img src="{{ Storage::url($item -> primeraImagen -> imagen) }}"
-                                    class="w-16 md:w-32 max-w-full max-h-full rounded-lg shadow-md" alt="{{$item -> primeraImagen -> descripcion}}">
+                                <img src="{{ Storage::url($item->primeraImagen->url_imagen) }}"
+                                class="w-16 md:w-32 max-w-full max-h-full rounded-lg shadow-md" alt="{{ $item->primeraImagen->desc_imagen }}">
                             </td>
                             <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                 {{ $item->nombre }}

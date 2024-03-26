@@ -13,14 +13,13 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        //
         $categoriasSinSubcategorias = [
             'Nuevo',
             'En Oferta'
         ];
 
         foreach ($categoriasSinSubcategorias as $nombreCategoria) {
-            Category::firstOrCreate(['nombre' => $nombreCategoria] , ['category_padre_id' => null , 'es_padre' => false]);
+            Category::firstOrCreate(['nombre' => $nombreCategoria] , ['category_padre_id' => null , 'es_padre' => false , 'descripcion' => fake() -> sentence]);
         }
 
         $categoriasPadres = [
@@ -29,10 +28,10 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categoriasPadres as $nombreCategoriaPadre) {
-            Category::firstOrCreate(['nombre' => $nombreCategoriaPadre] , ['category_padre_id' => null , 'es_padre' => true]);
+            Category::firstOrCreate(['nombre' => $nombreCategoriaPadre] , ['category_padre_id' => null , 'es_padre' => true , 'descripcion' => fake() -> sentence]);
              //todo Esto devuelve: 
-        //? Dibujos Animados , id => 1 , category_padre_id => null , es_padre => true
-        //? Anime , id => 2 , category_padre_id => null , es_padre => true
+            //? Dibujos Animados , id => 1 , category_padre_id => null , es_padre => true
+            //? Anime , id => 2 , category_padre_id => null , es_padre => true
         }
 
         // Ahora crearemos las subcategorías asociadas a cada categoría padre
@@ -44,7 +43,7 @@ class CategorySeeder extends Seeder
         $subcategoriaDibujosAnimados = ['Mickey Mouse', 'Los Simpsons', 'Agallas el perro cobarde', 'SpongeBob SquarePants'];
 
         foreach ($subcategoriaDibujosAnimados as $nombreSubcategoriaDibujosAnimados) {
-            Category::firstOrCreate(['nombre' => $nombreSubcategoriaDibujosAnimados] , ['category_padre_id' => $categoriaPadreDibujosAnimados -> id , 'es_padre' => false]);
+            Category::firstOrCreate(['nombre' => $nombreSubcategoriaDibujosAnimados] , ['category_padre_id' => $categoriaPadreDibujosAnimados -> id , 'es_padre' => false , 'descripcion' => fake() -> sentence]);
             //todo Esto lo que hace es lo siguiente:
             //? Mickey Mouse , id => 3 , category_padre_id => 1 , es_padre => false
             //? Los Simpsons , id => 4 , category_padre_id => 1 , es_padre => false
@@ -61,7 +60,7 @@ class CategorySeeder extends Seeder
 
         foreach ($subcategoriaAnime as $nombreSubcategoriaAnime) {
             
-            Category::firstOrCreate(['nombre' => $nombreSubcategoriaAnime] , ['category_padre_id' => $categoriaPadreAnime -> id , 'es_padre' => false]);
+            Category::firstOrCreate(['nombre' => $nombreSubcategoriaAnime] , ['category_padre_id' => $categoriaPadreAnime -> id , 'es_padre' => false , 'descripcion' => fake() -> sentence]);
             //todo Esto lo que hace es lo siguiente:
             //? Shingeki no Kyojin , id => 7 , category_padre_id => 2 , es_padre => false
             //? Kimetsu No Yaiba , id => 8 , category_padre_id => 2 , es_padre => false

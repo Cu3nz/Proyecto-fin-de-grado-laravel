@@ -26,13 +26,20 @@ class Product extends Model
 
 
      //todo Un producto puede tener muchas imagenes, por lo tanto el nombre de la funcion en plural y utilizamos hasMany
-     public function images(){
+    /*  public function images(){
         return $this -> hasMany(ProductImage::class);
+    } */
+
+    //! Para el polimorfismo de las imagenes (Category y Product)
+
+    //todo Un producto tiene mas de una imagen, por lo tanto el nombre de la funcion en plural y utilizamos  morphMany
+    public function images(){
+        return $this -> morphMany(Image::class, 'imageable');
     }
 
     public function primeraImagen()
     {
-        return $this->hasOne(ProductImage::class)->orderBy('id', 'asc');
+        return $this->morphOne(Image::class, 'imageable')->orderBy('id', 'asc');
     }
 
 }

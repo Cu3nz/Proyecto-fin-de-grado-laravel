@@ -19,6 +19,7 @@ return new class extends Migration
             //Añadida la columna 'es_padre' que sera un booleano.
             //? Por defecto, establecer en false para las subcategorias.
             $table->boolean('es_padre')->default(false);
+            $table->text('descripcion');
             $table->timestamps();
         });
     }

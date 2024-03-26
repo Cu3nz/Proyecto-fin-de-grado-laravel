@@ -10,7 +10,7 @@
 {{--                             @php
                                 $PrimeraImagen = $item -> images -> first();
                             @endphp --}}
-                            <img src="{{Storage::url($item -> primeraImagen -> imagen)}}" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                            <img src="{{Storage::url($item -> primeraImagen -> url_imagen)}}" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                         </div>
                         <div class="mt-4 flex justify-between">
                             <div>
@@ -37,7 +37,7 @@
                 @foreach ($nuevos as $item)
                 <div class="group relative">
                     <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                        <img src="{{Storage::url($item -> primeraImagen -> imagen)}}" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
+                        <img src="{{ Storage::url($item->PrimeraImagen->url_imagen) }}" class="h-full w-full object-cover object-center lg:h-full lg:w-full">
                     </div>
                     <div class="mt-4 flex justify-between">
                         <div>
