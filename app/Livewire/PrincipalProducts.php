@@ -23,12 +23,15 @@ class PrincipalProducts extends Component
     
     public function render()
     {
-        $productos = Product::orderBy($this -> campo , $this -> orden)
-        ->where('nombre' , 'like' , "$this->buscar%")
-        ->orWhere('descripcion' , 'like' , "$this->buscar%")
-        ->orWhere('codigo_articulo' , 'like' , "$this->buscar%")
-        ->orWhere('estado' , 'like' , "$this->buscar%")
-        ->paginate(5);
+        $productos = Product::with('primeraImagen')
+    ->where(function($query) {
+        $query->where('nombre', 'like', "$this->buscar%")
+              ->orWhere('descripcion', 'like', "$this->buscar%")
+              ->orWhere('codigo_articulo', 'like', "$this->buscar%")
+              ->orWhere('estado', 'like', "$this->buscar%");
+    })
+    ->orderBy($this->campo, $this->orden)
+    ->paginate(5);
         return view('livewire.principal-products' , compact('productos'));
     }
 
@@ -107,8 +110,8 @@ class PrincipalProducts extends Component
         //todo Tenemos que comprobar cada una de las imagenes del producto en cuestion y eliminarlas si es son distintas a default.jpg
         foreach($imagenesActualProducto as $imagenProducto){
 
-            if(basename($imagenProducto -> imagen) != 'noimage.png'){ //? Tenemos que definir "-> imagen" porque estamos accediendo a un atributo de la tabla product_images
-                Storage::delete($imagenProducto->imagen);
+            if(basename($imagenProducto -> url_imagen) != 'noimage.png'){ //? Tenemos que definir "-> imagen" porque estamos accediendo a un atributo de la tabla product_images
+                Storage::delete($imagenProducto -> url_imagen);
             }
 
             $imagenProducto -> delete(); //? Eliminamos el registro de la tabla product_images

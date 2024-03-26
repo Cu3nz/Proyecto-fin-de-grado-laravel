@@ -24,7 +24,7 @@ class ProductImageFactory extends Factory
             // Crea una nueva instancia de Product usando el factory y asigna su id al atributo product_id.
             // Cuando se guarda el modelo que contiene este atributo, Laravel automaticamente guarda la instancia de Product en la base de datos, obtiene su id y lo asigna al atributo product_id.
             'product_id' => Product::factory(), 
-            /* 'imagen' => "imagen/" . fake()->picsum("storage/app/public/imagen", 406, 486, false), //! Lo genero en el database seeder
+             'imagen' => "imagen/" . fake()->picsum("storage/app/public/imagen", 406, 486, false), //! Lo genero en el database seeder
             /* 'descripcion' => fake()->sentence(),*/ //! La genero en el database seeder
         ];
     }
