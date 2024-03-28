@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Image;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageController extends Controller
 {
@@ -58,8 +60,12 @@ class ImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Image $image)
-    {
-        //
-    }
+    public function destroy($image)
+{
+    $image = ProductImage::findOrFail($image); // Encuentra la imagen o falla
+    Storage::delete($image->url_imagen); // Asume que 'url_imagen' es el campo donde se guarda la ruta del archivo
+    $image->delete(); // Elimina el registro de la base de datos
+
+    return redirect()->back()->with('mensaje', 'Imagen eliminada correctamente.');
+}
 }
