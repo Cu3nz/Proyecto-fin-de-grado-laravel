@@ -19,7 +19,6 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -113,5 +112,6 @@
 
 
 </body>
+
 
 </html>

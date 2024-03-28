@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
@@ -46,8 +47,14 @@ Route::middleware([
 Route::get('category' , PrincipalCategory::class) -> name('Category.principal');
 
 //todo Para el index de productos con la tabla y el buscador
-
 Route::get('products' , PrincipalProducts::class) -> name('products.principal');
+
+//todo Para borrar las imagenes del update de products
+/* Route::delete('/products/images/{image}', 'ProductController@destroyImage')->name('products.images.destroy'); */
+Route::post('/products/images/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
+/* Route::post('/products/images/{image}', [ImageController::class, 'destroy'])->name('products.images.destroy'); */
+
+
 
 //! Borrar
 //todo Para el buscador de index de categorias: 

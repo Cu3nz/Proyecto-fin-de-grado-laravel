@@ -72,22 +72,39 @@
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes') }}</textarea>
                 <x-input-error for="descripcion_imagenes"></x-input-error>
 
+                @if ($imagenesProducto->isEmpty()) {{-- ! Si esta vacia --}}
+                    <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
+                        <img src="{{ Storage::url('noimage.png') }}" alt="Imagen por defecto"
+                            class="h-72 mx-auto rounded w-full object-cover border-4 border-gray-300">
+                    </div>
+                @else
+                    {{-- ? Si no mostramos las imagines --}}
+                    <div id="imagenPreview" class="flex flex-wrap mt-4">
+                        {{-- Iterar sobre las imágenes existentes --}}
+                        @foreach ($imagenesProducto as $imagen)
+                            <div class="relative w-full md:w-1/3 p-1" data-imagen-id="{{ $imagen->id }}">
+                                <img src="{{ Storage::url($imagen->url_imagen) }}"
+                                    class="object-cover h-48 w-full rounded-lg">
 
-                <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
-                    <img src="{{ Storage::url('noimage.png') }}" alt="Imagen por defecto"
-                        class="h-72 mx-auto rounded w-full object-cover border-4 border-gray-300">
-                </div>
-
-                <div id="imagenPreview" class="flex flex-wrap mt-4">
-                    {{-- ! Aqui se muestran las imagenes que suba el usuario --}}
-                </div>
+                                {{-- Formulario para borrar la imagen --}}
+                                <form method="POST" action="{{ route('products.images.destroy', $imagen->id) }}">
+                                    @csrf
+                                    <button type="submit"
+                                        class="absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer">
+                                        <i class="fas fa-trash text-red-600"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
                 <input type="hidden" id="ordenImagenes" name="ordenImagenes" value="">
             </div>
 
             <div class="flex flex-row-reverse flex-wrap">
                 <button type="submit" name="btn"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                    <i class="fas fa-save mr-1 text-xl"></i>Crear
+                    <i class="fas fa-save mr-1 text-xl"></i>Actualizar
                 </button>
                 <button type="reset"
                     class="mr-2 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
@@ -109,51 +126,54 @@
     <script>
         let previews = [];
         let archivosSeleccionados = [];
-        
+
         function handleFiles(imagenes) {
             const previewContainer = document.getElementById('imagenPreview');
             const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
             previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
             previews = [];
             archivosSeleccionados = []; // Limpiar la lista previa de archivos seleccionados
-    
+
             // Crear una estructura que almacene el archivo y el índice original de selección
             Array.from(imagenes).forEach((archivo, index) => {
-                archivosSeleccionados.push({ archivo, index }); // Guardar el archivo con su índice
+                archivosSeleccionados.push({
+                    archivo,
+                    index
+                }); // Guardar el archivo con su índice
                 const reader = new FileReader();
                 reader.onload = (e) => mostrarPreview(e, archivo, index);
                 reader.readAsDataURL(archivo);
             });
-    
+
             contenedorImagenDefecto.style.display = imagenes.length > 0 ? 'none' : 'block';
         }
-    
+
         function mostrarPreview(event, archivo, index) {
             const imgDiv = document.createElement('div');
             imgDiv.className = 'relative w-full md:w-1/3 p-1';
             imgDiv.dataset.index = index; // Guardar el índice original para mantener el orden
-    
+
             const img = document.createElement('img');
             img.src = event.target.result;
             img.className = 'object-cover h-48 w-full rounded-lg';
             imgDiv.appendChild(img);
-    
+
             const deleteButton = document.createElement('button');
             deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
             deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer';
             deleteButton.onclick = () => borrarPreview(imgDiv, archivo, index);
             imgDiv.appendChild(deleteButton);
-    
+
             const previewContainer = document.getElementById('imagenPreview');
             // Insertar la vista previa en el contenedor, manteniendo el orden original
             previews.splice(index, 0, imgDiv); // Insertar en el índice correcto
             previewContainer.insertBefore(imgDiv, previewContainer.children[index]);
         }
-    
+
         function borrarPreview(imgDiv, archivoABorrar, indexABorrar) {
             archivosSeleccionados = archivosSeleccionados.filter((item, index) => index !== indexABorrar);
             imgDiv.remove();
-    
+
             // Reordenar las vistas previas restantes según su índice original
             previews = previews.filter(preview => preview.dataset.index != indexABorrar);
             previews.forEach((preview, index) => {
@@ -161,108 +181,20 @@
                     preview.dataset.index--;
                 }
             });
-    
+
             if (previews.length === 0) {
                 document.getElementById('contenedorImagenDefecto').style.display = 'block';
             }
-    
+
             actualizarInputFiles();
         }
-    
+
         function actualizarInputFiles() {
             const dataTransfer = new DataTransfer();
-            archivosSeleccionados.forEach(({ archivo }) => dataTransfer.items.add(archivo));
+            archivosSeleccionados.forEach(({
+                archivo
+            }) => dataTransfer.items.add(archivo));
             document.getElementById('imagen').files = dataTransfer.files;
         }
     </script>
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    {{-- todo Script que funciona pero no lo hace bien --}}
-   {{--  <script>
-        let previews = [];
-        let archivosSeleccionados = []; // Necesitamos esta variable para mantener un registro de los archivos actualmente seleccionados
-
-    
-        function handleFiles(imagenes) {
-            const previewContainer = document.getElementById('imagenPreview'); //? Contenedor de las vistas previas
-            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //?
-            previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
-            previews = []; // Reiniciar la lista de archivos seleccionados al cargar nuevas imágenes
-            archivosSeleccionados = Array.from(imagenes); // Actualizar con los nuevos archivos seleccionados
-
-
-            if (imagenes.length > 0) { //* Si el usuario ha subido imagenes
-                contenedorImagenDefecto.style.display = 'none'; //? Ocultamos el div con la imagen por defecto
-            } else {
-                contenedorImagenDefecto.style.display = 'block'; //? Si no, mostramos el div con la imagen por defecto
-            }
-    
-
-            Array.from(imagenes).forEach((imagen, index) => {
-                const reader = new FileReader(); //? Crea una instancia de FileReader, que es una herramienta que permite leer los contenidos de archivos (o buffers de datos) almacenados en el cliente de forma asíncrona.
-                reader.onload = function(e) { // Define qué hacer cuando el FileReader ha terminado de cargar el archivo. 'e' es el evento de carga con la información del archivo cargado.
-                    const imgDiv = document.createElement('div'); //? Creamos un div donde se van a ir mostrando las imagenes en modo preview
-                    imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Le damos unos estilos al div mediante una clase, utilizo className para sobreescribir cualquier clase que tenga, en este caso no tiene ninguna pero mejor prevenir que lamentar
-                    
-                    const img = document.createElement('img'); //? Creamos un elemento img
-                    img.src = e.target.result; //? Carga la imagen leida por el FileReader en el elemento img, estableciendo el src de la imagen leida
-                    img.className = 'object-cover h-48 w-full rounded-lg'; //? Le damos unos estilos a la imagen
-    
-                    const deleteButton = document.createElement('button'); //? Creamos el boton de borrar
-                    deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Le metemos como texto un boton de una papelera con un color rojo
-                    deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1  rounded-full cursor-pointer'; //? Le damos estilos añadiendo una clase con tailwind
-                    deleteButton.addEventListener('click', () => borrarPreview(imgDiv, imagen)); // Evento para borrar la preview y el archivo
-
-    
-                    //todo Momento de añadir los elementos al DOM
-                    imgDiv.appendChild(img); //? Añadimos la imagen al div
-                    imgDiv.appendChild(deleteButton); //? Añadimos el boton de borrar al div
-                    previewContainer.appendChild(imgDiv);  //? Añadimos al al contenedor div donde se van a cargar todas las imagenes (contenedor Principal), los divs con cada una de las imagenes
-                    previews.push(imgDiv); //? Añadimos el div con la imagen al array de vistas previas
-                };
-                reader.readAsDataURL(imagen);
-            });
-        }
-    
-        function borrarPreview(imgDiv, archivo) {
-        // Encuentra y elimina el archivo del array de archivos seleccionados
-        const indiceArchivo = archivosSeleccionados.indexOf(archivo);
-        if (indiceArchivo > -1) {
-            archivosSeleccionados.splice(indiceArchivo, 1);
-        }
-
-        // Encuentra y elimina la vista previa del array y del DOM
-        const indicePreview = previews.indexOf(imgDiv);
-        if (indicePreview > -1) {
-            previews.splice(indicePreview, 1);
-            imgDiv.remove();
-        }
-
-        // Si no hay más vistas previas, mostramos la imagen por defecto
-        if (previews.length === 0) {
-            document.getElementById('contenedorImagenDefecto').style.display = 'block';
-        }
-
-        // Actualiza el input de archivos con los archivos restantes
-        const dataTransfer = new DataTransfer();
-        archivosSeleccionados.forEach(file => dataTransfer.items.add(file));
-        document.getElementById('imagen').files = dataTransfer.files;
-    }
-
-    </script>
- --}}
-
 </x-app-layout>
