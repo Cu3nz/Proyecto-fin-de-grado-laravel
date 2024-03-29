@@ -44,21 +44,34 @@ Route::middleware([
 
 
 //todo Para el index de categorias con la tabla y el buscador: 
-Route::get('category' , PrincipalCategory::class) -> name('Category.principal');
+Route::get('principal-category' , PrincipalCategory::class) -> name('Category.principal');
 
 //todo Para el index de productos con la tabla y el buscador
-Route::get('products' , PrincipalProducts::class) -> name('products.principal');
+Route::get('principal-products' , PrincipalProducts::class) -> name('products.principal');
 
 //todo Para borrar las imagenes del update de products
 /* Route::delete('/products/images/{image}', 'ProductController@destroyImage')->name('products.images.destroy'); */
 Route::post('/products/images/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
 /* Route::post('/products/images/{image}', [ImageController::class, 'destroy'])->name('products.images.destroy'); */
 
-
-
 //! Borrar
 //todo Para el buscador de index de categorias: 
 /* Route::get('/category/buscar' , 'CategoryController@buscar') -> name('category.buscar'); */
+
+
+
+//? PARA LOS PRODUCTOS
+
+//todo Para mostrar las subcategorias de una categoria padre: 
+Route::get('/category/{categoryId}/subcategorias' , [CategoryController::class , 'mostrarSubcategorias']) -> name('category.subcategorias');
+
+//todo Para mostrar en un card los productos de una subcategoria:
+Route::get('/category/{idSubcategoria}/productos' , [CategoryController::class , 'mostrarProductosSubcategorias']) -> name('subcategoria.productos');
+
+
+
+
+
 
 
 
