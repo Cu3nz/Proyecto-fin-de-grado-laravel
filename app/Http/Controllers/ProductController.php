@@ -126,7 +126,71 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        /* dd($request->all()); // Esto mostrará todos los datos del formulario */
+
+        
         //
+        
+        $request->validate([
+            'nombre' => ['required', 'string', 'min:3', 'unique:products,nombre,'. $product -> id],
+            'descripcion' => ['required', 'string', 'min:10'],
+            'estado' => ['nullable'],
+            'precio' => ['required', 'numeric'],
+            'stock' => ['required', 'numeric'],
+            'category_id' => ['required', 'exists:categories,id'],
+            'descripcion_imagenes' => ['required', 'string', 'min:10'],
+            'imagen' => ['nullable', 'array', 'max:4'],
+        ]);
+        
+        
+        
+        //? Actualizamos los atributos del producto 
+        $product -> update([
+            'nombre' => $request -> nombre,
+            'descripcion' => $request -> descripcion,
+            'estado' => ($request -> estado) ? 'DISPONIBLE' : 'NO DISPONIBLE',
+            'precio' => $request -> precio,
+            'stock' => $request -> stock,
+            'category_id' => $request -> category_id,
+            'user_id' => auth() -> user() -> id,
+        ]);
+        
+        
+        
+        //? Manejar las imágenes para guardarlas en la carpeta imagen y añadir un registro con la imagen y la descripcion a la tabla images
+        
+        if ($request->hasFile('imagen')) {
+            foreach ($request->file('imagen') as $imagen) {
+                $product->images()->create([
+                    'desc_imagen' => $request->descripcion_imagenes,
+                    'url_imagen' => $imagen->store('imagen'),
+                ]);
+            }
+        } else {
+            // Solo añadir 'noimage.png' si el producto no tiene imágenes actualmente
+            if ($product->images()->count() == 0) {
+                $product->images()->create([
+                    'desc_imagen' => $request->descripcion_imagenes,
+                    'url_imagen' => 'noimage.png',
+                ]);
+            }
+        }
+
+/*         // Manejo de imágenes para borrar
+    if ($request->filled('imagenes_para_borrar')) {
+        foreach ($request->input('imagenes_para_borrar') as $idImagen) {
+            $imagen = Image::find($idImagen);
+            if ($imagen) {
+                Storage::delete($imagen->url_imagen); // Asegúrate de eliminar el archivo físico si es necesario
+                $imagen->delete(); // Elimina el registro de la base de datos
+            }
+        }
+    } */
+
+    /* dd("hola"); */
+
+        return redirect() -> route('products.principal') -> with('mensaje', 'Producto actualizado correctamente'); 
+
     }
 
     /**
@@ -137,11 +201,14 @@ class ProductController extends Controller
         //
     }
 
+    //* Metodo que elimina las imagenes del div de imagenPreview y de la tabla iamges
     public function destroyImage($imageId)
 {
     try {
         $image = Image::findOrFail($imageId);
-        Storage::delete($image->url_imagen);
+        if(basename($image -> url_imagen) != 'noimage.png'){
+            Storage::delete($image->url_imagen);
+        }
         $image->delete();
 
         return back()->with('mensaje', 'Imagen eliminada correctamente.');

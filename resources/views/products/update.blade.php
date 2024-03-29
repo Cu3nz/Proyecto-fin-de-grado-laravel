@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="max-w-4xl mt-5  mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
-        <form action="{{ route('products.update', $product->id) }}" id="formUpdate" method="post" enctype="multipart/form-data"
-            class="space-y-4">
+        <h1 class="text-center text-xl font-bold">Modificando el producto con ID: <span class="text-red-600">{{$product->id}}</span></h1>
+        <form id="formUpdate" action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div>
@@ -71,81 +71,188 @@
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     onchange="handleFiles(this.files)">
                 <textarea name="descripcion_imagenes" placeholder="Escribe una descripción para todas las fotos"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes', $product->images->first()->desc_imagen ?? '') }}</textarea>
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes', $product->images->first()->desc_imagen ?? 'Imagen por defecto, sin img de productos') }}</textarea>
 
                 <x-input-error for="descripcion_imagenes"></x-input-error>
 
-             {{-- Verificar si hay imágenes asociadas con el producto --}}
-             @if ($imagenesProducto->isNotEmpty() && isset($imagenesProducto[0]))
-             <div style="display: none" class="img-wrapper relative w-full md:w-1/3 p-1">
-                 {{-- Asume que $imagenesProducto[0] es tu primera imagen --}}
-                 <img src="{{ Storage::url($imagenesProducto[0]->url_imagen) }}"
-                     alt="{{ $imagenesProducto[0]->desc_imagen }}" class="object-cover h-48 w-full rounded-lg">
-                 <button type="button"
-                     class="delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer"
-                     onclick="borrarImagen({{ $imagenesProducto[0]->id }})">
-                     <i class="fas fa-trash text-red-600"></i>
-                 </button>
+                {{-- Aqui verificamos que $iamgenesProducto NO este vacia y que exista el primerProducto de la variable $imagenesProducto --}}
+                @if ($imagenesProducto->isNotEmpty() && isset($imagenesProducto[0]))
+                    <div style="display: none" class="img-wrapper relative w-full md:w-1/3 p-1">
+                        <img src="{{ Storage::url($imagenesProducto[0]->url_imagen) }}"
+                            alt="{{ $imagenesProducto[0]->desc_imagen }}"  class="object-cover h-48 w-full rounded-lg">
+                        <button type="button"
+                            class="delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer"
+                            onclick="borrarImagen({{ $imagenesProducto[0]->id }})">
+                            <i class="fas fa-trash text-red-600"></i>
+                        </button>
 
-                 <form id="delete-image-form-{{ $imagenesProducto[0]->id }}"
-                     action="{{ route('products.images.destroy', $imagenesProducto[0]->id) }}" method="POST"
-                     style="display: none;">
-                     @csrf
-                     @method('DELETE')
-                 </form>
-             </div>
-         @endif
+                        <form id="delete-image-form-{{ $imagenesProducto[0]->id }}"
+                            action="{{ route('products.images.destroy', $imagenesProducto[0]->id) }}" method="POST"
+                            style="display: none;">
+                            @csrf
+                            @method('DELETE')
+                        </form>
+                    </div>
+                @endif
 
-         {{-- Imágenes y botones de borrado --}}
-         @if ($imagenesProducto->isEmpty())
-             <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto" style="display: block;">
-                 <img src="{{ Storage::url('noimage.png') }}" alt="Imagen por defecto"
-                     class="h-72 mx-auto rounded w-full object-cover border-4 border-gray-300">
-             </div>
-         @else
-             <div id="imagenPreview" class="flex flex-wrap mt-4">
-                 {{-- Aquí se muestran las imágenes cargadas --}}
-                 @foreach ($imagenesProducto as $imagen)
-                     {{-- @dd($imagen) --}}
-                     <div class="img-wrapper relative w-full md:w-1/3 p-1">
-                         <img src="{{ Storage::url($imagen->url_imagen) }}" alt="{{ $imagen->desc_imagen }}"
-                             class="object-cover h-48 w-full rounded-lg">
-                         <button type="button"
-                             class="delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer"
-                             onclick="borrarImagen({{ $imagen->id }})">
-                             <i class="fas fa-trash text-red-600"></i>
-                         </button>
+                {{-- Imágenes y botones de borrado --}}
+                @if ($imagenesProducto->isEmpty())
+                    <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
+                        <img src="{{ Storage::url('noimage.png') }}" alt="Imagen por defecto"
+                            class="h-72 mx-auto rounded w-full object-cover border-4 border-gray-300">
+                    </div>
+                @endif
 
-                         <form id="delete-image-form-{{ $imagen->id }}"
-                             action="{{ route('products.images.destroy', $imagen->id) }}" method="POST"
-                             style="display: none;">
-                             @csrf
-                         </form>
-                     </div>
-                 @endforeach
-             </div>
-         @endif
-     </div>
-                    
+
+                {{--  Lo que hace el style, si $imagenProducto esta vacio no contiene ninguna imagen, definimos este div como oculto, de lo contrario si tiene imagenes, asignamos una cadena vacia para mostrar las imagenes --}}
+                <div id="imagenPreview"  class="flex flex-wrap mt-4"
+                    style="{{ $imagenesProducto->isEmpty() ? 'display: none;' : '' }}">
+                    {{-- Aquí se muestran las imágenes cargadas --}}
+                    @foreach ($imagenesProducto as $imagen)
+                        {{-- @dd($imagen) --}}
+                        <div class="img-wrapper relative w-full md:w-1/3 p-1">
+                            <img src="{{ Storage::url($imagen->url_imagen) }}" alt="{{ $imagen->desc_imagen }}"
+                                class="object-cover h-48 w-full rounded-lg">
+                            <button type="button"
+                                class="delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer"
+                                onclick="borrarImagen({{ $imagen->id }})">
+                                <i class="fas fa-trash text-red-600"></i>
+                            </button>
+
+                            <form id="delete-image-form-{{ $imagen->id }}"
+                                action="{{ route('products.images.destroy', $imagen->id) }}" method="POST"
+                                style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
             <div class="flex flex-row-reverse flex-wrap">
                 <button type="submit" name="btn"
                     class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                    <i class="fas fa-save mr-1 text-xl"></i>Crear
-                </button>
-                <button type="reset"
-                    class="mr-2 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                    <i class="fas fa-paintbrush mr-1 text-xl"></i>Limpiar campos
+                    <i class="fas fa-save mr-1 text-xl"></i>Actualizar
                 </button>
                 <a href="{{ route('products.principal') }}"
                     class="mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
                     <i class="fas fa-xmark mr-1 text-xl"></i>Cancelar
                 </a>
             </div>
-
         </form>
     </div>
 
 
+    {{-- * Funcionando a la perfeccion --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            let previews = [];
+            let archivosSeleccionados = [];
+            let imagenesParaBorrar = [];
+
+            // Función para manejar la selección de nuevas imágenes
+            window.handleFiles = function(imagenes) {
+                const previewContainer = document.getElementById('imagenPreview');
+                const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
+
+                Array.from(imagenes).forEach((archivo, index) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => mostrarNuevaImagen(e, archivo, index);
+                    reader.readAsDataURL(archivo);
+                });
+
+                contenedorImagenDefecto.style.display = 'none';
+            };
+
+            // Función para mostrar una nueva imagen
+            function mostrarNuevaImagen(event, archivo, index) {
+                const imgDiv = document.createElement('div');
+                imgDiv.className = 'img-wrapper relative w-full md:w-1/3 p-1';
+
+                const img = document.createElement('img');
+                img.src = event.target.result;
+                img.className = 'object-cover h-48 w-full rounded-lg';
+                imgDiv.appendChild(img);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
+                deleteButton.className =
+                    'delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer';
+                deleteButton.onclick = () => borrarNuevaImagen(imgDiv, archivo);
+                imgDiv.appendChild(deleteButton);
+
+                previews.push(imgDiv);
+                archivosSeleccionados.push(archivo);
+                actualizarInputFiles();
+
+                const previewContainer = document.getElementById('imagenPreview');
+                if (previewContainer) {
+                    previewContainer.style.display = 'flex'; // Aseguramos que el contenedor esté visible
+                    previewContainer.appendChild(imgDiv); // Añadimos la nueva imagen al contenedor
+                } else {
+                    console.error('El contenedor de vista previa de la imagen no se encuentra.');
+                }
+            }
+
+            // Función para borrar una nueva imagen que se suba mediante el input de tipo file
+            function borrarNuevaImagen(imgDiv, archivo) {
+                const index = archivosSeleccionados.indexOf(archivo);
+                if (index !== -1) {
+                    archivosSeleccionados.splice(index, 1);
+                    actualizarInputFiles();
+                }
+                imgDiv.remove();
+                previews = previews.filter(preview => preview !== imgDiv);
+                /* mostrarContenedorPorDefectoSiEsNecesario(); */
+            }
+
+            // Función para mostrar el contenedor por defecto si no hay imágenes seleccionadas
+            /* function mostrarContenedorPorDefectoSiEsNecesario() {
+                const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
+                if (previews.length === 0) {
+                    contenedorImagenDefecto.style.display = 'block';
+                }
+            } */
+
+            // Función para enviar el formulario
+            /*  window.enviarFormulario = function() {
+                 const form = document.getElementById('formUpdate');
+                 // Agregar campos ocultos para las imágenes a borrar
+                 imagenesParaBorrar.forEach(id => {
+                     const input = document.createElement('input');
+                     input.type = 'hidden';
+                     input.name = 'imagenes_para_borrar[]';
+                     input.value = id;
+                     form.appendChild(input);
+                 });
+
+                 // Envío del formulario
+                 form.submit();
+             }; */
+
+            /* // Función para eliminar una imagen existente
+            window.borrarImagen = function(id) {
+                // Crear un input oculto para indicar la imagen a borrar
+                var inputParaBorrar = document.createElement("input");
+                inputParaBorrar.type = "hidden";
+                inputParaBorrar.name = "imagenes_para_borrar[]";
+                inputParaBorrar.value = id;
+
+                // Añadir este input al formulario
+                var form = document.getElementById("formUpdate");
+                form.appendChild(inputParaBorrar);
+
+                // Opcionalmente, eliminar la visualización de la imagen del DOM
+                document.querySelector(`#img-wrapper-${id}`).remove();
+            }; */
+
+            // Función para actualizar el input de tipo file con las imágenes seleccionadas
+            function actualizarInputFiles() {
+                const dataTransfer = new DataTransfer();
+                archivosSeleccionados.forEach(archivo => dataTransfer.items.add(archivo));
+                document.getElementById('imagen').files = dataTransfer.files;
+            }
+        });
+    </script>
 
     {{-- * Funcionando a la perfeccion --}}
 
@@ -219,109 +326,6 @@
             }
         }
     </script> --}}
-
-    {{-- * Funcionando a la perfeccion --}}
-
-    <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    let previews = [];
-    let archivosSeleccionados = [];
-    let imagenesParaBorrar = [];
-
-    // Función para manejar la selección de nuevas imágenes
-    window.handleFiles = function(imagenes) {
-        const previewContainer = document.getElementById('imagenPreview');
-        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
-
-        Array.from(imagenes).forEach((archivo, index) => {
-            const reader = new FileReader();
-            reader.onload = (e) => mostrarNuevaImagen(e, archivo, index);
-            reader.readAsDataURL(archivo);
-        });
-
-        contenedorImagenDefecto.style.display = 'none';
-    };
-
-    // Función para mostrar una nueva imagen
-    function mostrarNuevaImagen(event, archivo, index) {
-        const imgDiv = document.createElement('div');
-        imgDiv.className = 'img-wrapper relative w-full md:w-1/3 p-1';
-        
-        const img = document.createElement('img');
-        img.src = event.target.result;
-        img.className = 'object-cover h-48 w-full rounded-lg';
-        imgDiv.appendChild(img);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
-        deleteButton.className = 'delete-button absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer';
-        deleteButton.onclick = () => borrarNuevaImagen(imgDiv, archivo);
-        imgDiv.appendChild(deleteButton);
-
-        previews.push(imgDiv);
-        archivosSeleccionados.push(archivo);
-        actualizarInputFiles();
-        document.getElementById('imagenPreview').appendChild(imgDiv);
-    }
-
-    // Función para borrar una nueva imagen
-    function borrarNuevaImagen(imgDiv, archivo) {
-        const index = archivosSeleccionados.indexOf(archivo);
-        if (index !== -1) {
-            archivosSeleccionados.splice(index, 1);
-            actualizarInputFiles();
-        }
-        imgDiv.remove();
-        previews = previews.filter(preview => preview !== imgDiv);
-        mostrarContenedorPorDefectoSiEsNecesario();
-    }
-
-    // Función para mostrar el contenedor por defecto si no hay imágenes seleccionadas
-    function mostrarContenedorPorDefectoSiEsNecesario() {
-        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
-        if (previews.length === 0) {
-            contenedorImagenDefecto.style.display = 'block';
-        }
-    }
-
-    // Función para enviar el formulario
-    window.enviarFormulario = function() {
-        const form = document.getElementById('formUpdate');
-        // Agregar campos ocultos para las imágenes a borrar
-        imagenesParaBorrar.forEach(id => {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'imagenes_para_borrar[]';
-            input.value = id;
-            form.appendChild(input);
-        });
-
-        // Envío del formulario
-        form.submit();
-    };
-
-    // Función para eliminar una imagen existente
-    window.borrarImagen = function(id) {
-        // Solo para imágenes existentes en el servidor
-        imagenesParaBorrar.push(id);
-        document.querySelector('[data-imagen-id="' + id + '"]').remove();
-        mostrarContenedorPorDefectoSiEsNecesario();
-    };
-
-    // Función para actualizar el input de tipo file con las imágenes seleccionadas
-    function actualizarInputFiles() {
-        const dataTransfer = new DataTransfer();
-        archivosSeleccionados.forEach(archivo => dataTransfer.items.add(archivo));
-        document.getElementById('imagen').files = dataTransfer.files;
-    }
-});
-
-
-
-    </script>
-
-
-
 
 
 
