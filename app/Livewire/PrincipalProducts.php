@@ -23,12 +23,23 @@ class PrincipalProducts extends Component
     
     public function render()
     {
-        $productos = Product::orderBy($this -> campo , $this -> orden)
+
+        $productos = Product::query()
+        ->join('categories', 'products.category_id', '=', 'categories.id')
+        ->where('products.nombre', 'like', "%{$this->buscar}%")
+        ->orWhere('products.descripcion', 'like', "%{$this->buscar}%")
+        ->orWhere('products.codigo_articulo', 'like', "%{$this->buscar}%")
+        ->orWhere('products.estado', 'like', "%{$this->buscar}%")
+        ->orWhere('categories.nombre', 'like', "%{$this->buscar}%")
+        ->select('products.*') // Asegúrate de seleccionar solo los campos de los productos si no necesitas datos de la categoría en el resultado
+        ->orderBy('products.' . $this->campo, $this->orden)
+        ->paginate(5);
+       /*  $productos = Product::orderBy($this -> campo , $this -> orden)
         ->where('nombre' , 'like' , "$this->buscar%")
         ->orWhere('descripcion' , 'like' , "$this->buscar%")
         ->orWhere('codigo_articulo' , 'like' , "$this->buscar%")
         ->orWhere('estado' , 'like' , "$this->buscar%")
-        ->paginate(5);
+        ->paginate(5); */
         return view('livewire.principal-products' , compact('productos'));
     }
 
