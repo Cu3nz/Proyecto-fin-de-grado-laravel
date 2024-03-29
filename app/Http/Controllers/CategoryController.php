@@ -13,8 +13,62 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        //todo Esta vista mostrarar todas las categorias padres 
+
+        $categoriasPadres = Category::where('es_padre', true)->get();
+
+        return view('categorias.mostrarCategoriasPadres', compact('categoriasPadres'));
     }
+
+
+
+    //todo Metodo para mostrar las subcategorias de una categoria padre
+    public function mostrarSubcategorias($idCategoriapadre)
+    {
+        //? Buscamos por la categoria padre y a la vez por las hijas (subcategorias) de esa categoria padre, por lo tanto lo que hacemos es cargar todas las subcategorias que coincida con el atributo category_padre_id de la categoria padre 
+
+        //* Ejemplo de lo que hace with('children') en la query: 
+        //? Promociones -> id = 1 ($idCategoriapadre) category_padre_id = null
+        //* Nuevo -> id = 2 category_padre_id = 1
+        //* Oferta -> id = 3 category_padre_id = 1
+        //? por lo tanto con la relacion children lo que estamos haciendo es sacar las subcategorias que tienen el mismo id de la categoria padre en el atributo category_padre_id. Nuevo y Oferta son subcategorias de la categoria padre Promociones, porque en su category_padre_id tiene el id de la categoria padre Promociones = 1
+        // El metodo findorFail lo que hace es buscar la id que le pasamos por parametro, si la encuentra almacena en la variable lo que devuevle la query, si no la encuentra, devuelve un error 404 que es mostrado por pantalla
+        $subcategoriasDePadre = Category::with('children')->findOrFail($idCategoriapadre);
+        $array = [];
+        foreach ($subcategoriasDePadre->children as $item) {
+            $array[] = [
+                'categoria_padre' => $subcategoriasDePadre->nombre,
+                'id' => $item->id,
+                'nombre' => $item->nombre,
+                'category_padre_id' => $item->category_padre_id
+            ];
+        }
+        /* dd($array); */
+        return view('categorias.mostrarSubcategorias', compact('subcategoriasDePadre'));
+    }
+
+    //todo Metodo para mostrar todos los productos de una categoria
+
+    public function mostrarProductosSubcategorias($idSubcategoria)
+    {
+        //? Basicamente lo que hacemos es que en la tabla categories el id que esta en el atributo id de la categoria hija (subcategoria), tenga el mismo id en la tabla products en el atributo category_id
+
+        //* Ejemplo de lo que hace with('products') en la query si pasamos el id de subcategoria Death Note (id = 13):
+        //? tabla categories subcategoria Death Note = id = 13 category_padre_id = 5 (Anime)
+
+        //* por lo tanto busco en la tabla products (gracias a la relacion de with products) en el atributo category_id productos que tengan la id 13, y esos son los productos que tiene esa subcategoria llamada death note
+
+
+        $idDeSubcategoria = Category::with('products')->findOrFail($idSubcategoria);
+
+        //dd($idDeSubcategoria); //? Mostramos todos los atributos de la categoria pulsada, en este caso, si pulsamos en la categoria oferta nos da todos sus atributos, donde la id = 2
+
+        $productos = $idDeSubcategoria->products; //? Obtenemos todos los productos de la subcategoria pulsada gracias a su ID
+
+        return view('products.mostrarProductosSubcategoria', compact('productos'));
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -62,9 +116,9 @@ class CategoryController extends Controller
             'descripcion' => $request->descripcion,
         ]);
 
-        $ruta = ($request -> imagen) ? $request -> imagen -> store('categorias_imagenes') : 'noimage.png';
+        $ruta = ($request->imagen) ? $request->imagen->store('categorias_imagenes') : 'noimage.png';
 
-        
+
         $category->image()->create([
             'desc_imagen' => $request->descripcion,
             'url_imagen' => $ruta,
@@ -88,9 +142,9 @@ class CategoryController extends Controller
     {
         //
         $categoriasPadres = Category::select('id', 'nombre')
-        ->where('es_padre', true)
-        ->get();
-        return view('categorias.update', compact('category' , 'categoriasPadres'));
+            ->where('es_padre', true)
+            ->get();
+        return view('categorias.update', compact('category', 'categoriasPadres'));
     }
 
     /**
@@ -168,7 +222,7 @@ class CategoryController extends Controller
     }
 
 
-   
+
 
     /**
      * Remove the specified resource from storage.
@@ -176,7 +230,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //! BORRADO HECHO CON LIVEWIRE PARA "SEGUIR" CON LA MISMA ESTRUCTURA
-       /*  $category->delete();
+        /*  $category->delete();
         return redirect()->route('Category.principal')->with('mensaje', 'Categoria eliminada correctamente'); */
     }
 }
