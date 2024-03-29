@@ -23,6 +23,9 @@
                         <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Productos') }}
                     </x-nav-link>
                     @endauth
+                    <x-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('cçategory/*')">
+                        <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
+                    </x-nav-link>
                 </div>
             </div>
             @auth
@@ -173,6 +176,9 @@
                 <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Productos') }}
             </x-responsive-nav-link>
             @endauth
+            <x-responsive-nav-link href="{{ route('products.principal') }}" :active="request()->routeIs('Category/*')">
+                <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
