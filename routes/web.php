@@ -68,6 +68,9 @@ Route::get('/category/{categoryId}/subcategorias' , [CategoryController::class ,
 //todo Para mostrar en un card los productos de una subcategoria:
 Route::get('/category/{idSubcategoria}/productos' , [CategoryController::class , 'mostrarProductosSubcategorias']) -> name('productosConSubcategoria');
 
+//todo Product Overview de un producto 
+Route::get('/products/{product}/overview' , [ProductController::class , 'productOverviews']) -> name('overviewProduct');
+
 
 
 
