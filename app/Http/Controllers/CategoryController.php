@@ -92,7 +92,8 @@ class CategoryController extends Controller
             'nombre' => ['required', 'string', 'min:3', 'unique:categories,nombre'],
             'tipo' => ['required', 'in:padre,hijo'], //? Solo se puede seleccionar estos dos tipos, si se cambia el nombre dara un error
             'imagen' => ['nullable', 'image', ' max:2048'],
-            'descripcion' => ['required', 'string', ' min:10']
+            'descripcion' => ['required', 'string', ' min:10'], //? Descripcion de categoria
+            'desc_imagen' => ['required', 'string', ' min:10'] //? Descripcion de la imagen
         ];
 
         //todo Si el tipo es hijo se añadira el select para seleccionar las categorias que son padres por lo tanto, añadimos la validacion para el campo category_padre_id
@@ -120,7 +121,7 @@ class CategoryController extends Controller
 
 
         $category->image()->create([
-            'desc_imagen' => $request->descripcion,
+            'desc_imagen' => $request-> desc_imagen,
             'url_imagen' => $ruta,
         ]);
 
@@ -158,7 +159,8 @@ class CategoryController extends Controller
             'nombre' => ['required', 'string', 'min:3', 'unique:categories,nombre,' . $category->id],
             'tipo' => ['required', 'in:padre,hijo'], //? Solo se puede seleccionar estos dos tipos, si se cambia el nombre dara un error
             'imagen' => ['nullable', 'image', ' max:2048'],
-            'descripcion' => ['required', 'string', ' min:10']
+            'descripcion' => ['required', 'string', ' min:10'],
+            'desc_imagen' => ['required', 'string', ' min:10']
         ];
 
         //todo Comprobacion de la imagen, si se sube una nueva imagen, se eliminara la actual de esa categoria (solo si es distinta de la noimage.png) y se subira la nueva
@@ -208,12 +210,12 @@ class CategoryController extends Controller
 
         if ($category->image) {
             $category->image()->update([
-                'desc_imagen' => $request->descripcion,
+                'desc_imagen' => $request->desc_imagen,
                 'url_imagen' => $imagenActualCategoria
             ]);
         } else {
             $category->image()->create([
-                'desc_imagen' => $request->descripcion,
+                'desc_imagen' => $request->desc_imagen,
                 'url_imagen' => $imagenActualCategoria
             ]);
         }

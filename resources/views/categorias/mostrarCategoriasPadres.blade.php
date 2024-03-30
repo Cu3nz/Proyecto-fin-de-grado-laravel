@@ -6,7 +6,7 @@
                     <a href="{{ route('category.subcategorias', $item->id) }}"> {{-- ? Le pasamos la id de la categoria padre, para coger las subcategorias de esa categoria padre --}}
                         <div class="bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <img class="p-8 rounded-t-lg" src="{{ Storage::url($item->image->url_imagen) }}"
-                                alt="product image" />
+                                alt="{{$item -> image -> desc_imagen}}" />
                             <div class="px-5 pb-5">
                                 <h5
                                     class="text-xl text-center font-semibold tracking-tight text-gray-900 dark:text-white">
