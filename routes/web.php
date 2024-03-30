@@ -66,7 +66,7 @@ Route::post('/products/images/{image}', [ProductController::class, 'destroyImage
 Route::get('/category/{categoryId}/subcategorias' , [CategoryController::class , 'mostrarSubcategorias']) -> name('category.subcategorias');
 
 //todo Para mostrar en un card los productos de una subcategoria:
-Route::get('/category/{idSubcategoria}/productos' , [CategoryController::class , 'mostrarProductosSubcategorias']) -> name('subcategoria.productos');
+Route::get('/category/{idSubcategoria}/productos' , [CategoryController::class , 'mostrarProductosSubcategorias']) -> name('productosConSubcategoria');
 
 
 
