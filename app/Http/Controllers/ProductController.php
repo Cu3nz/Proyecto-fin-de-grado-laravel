@@ -217,6 +217,24 @@ class ProductController extends Controller
     }
 }
 
-    
+
+//todo Mostrar vista para la compra de un producto Product Overviews Previsualizacion del producto
+
+public function productOverviews(Product $product) //? Le pasamos todo los atributos del producto
+{
+    $imagenes = $product->images; //? Obtenemos todas las imagenes del producto
+
+    //dd($imagenes); //? Imprimimos las imagenes del producto 
+
+    //todo Obtener los productos relacionados con la misma categoria, pero sin obtener el producto que se esta visualizando
+    $productosRelacionadosCategoria = Product::where('category_id', $product->category_id)
+        ->where('id', '!=', $product->id)
+        ->get();
+        
+        //dd($productosRelacionadosCategoria); //? Imprimimos los productos relacionados 
+
+    return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria'));   
+
+}
 
 }
