@@ -30,15 +30,22 @@
                     <x-input-error for="category_padre_id"></x-input-error>
                 </div>
 
+                <div>
+                    <label for="descripcion" class="block mb-2 text-sm font-medium text-gray-900">Descripción</label>
+                    <textarea name="descripcion" id="descripcion" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Descripción de la categoría">{{ old('descripcion', $category->descripcion) }}</textarea>
+                    <x-input-error for="descripcion"></x-input-error>
+                </div>
+
                  {{-- todo Imagen --}}
                  <div class="mb-6">
                     <label for="imagen" class="block mb-2 text-sm font-medium text-gray-900">Imágenes</label>
                     <input type="file" id="imagen" oninput="img.src=window.URL.createObjectURL(this.files[0])" name="imagen" accept="image/*" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    <textarea name="descripcion" placeholder="Escribe una descripción para todas la/las foto/s" class="mt-1 block w-full text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{old('descripcion', $category -> image -> desc_imagen)}}</textarea>
-                    <x-input-error for="descripcion"></x-input-error>
+                    <label for="desc_imagen" class="block mb-2 text-sm font-medium text-gray-900">Descripción de la imagen</label>
+                    <textarea name="desc_imagen" id="desc_imagen" placeholder="Escribe una descripción para todas la/las foto/s" class="mt-1 block w-full text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{old('desc_imagen', $category -> image -> desc_imagen)}}</textarea>
+                    <x-input-error for="desc_imagen"></x-input-error>
                 
                     <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
-                        <img src="{{ Storage::url($category -> image -> url_imagen) }}" alt="Vista previa de la imagen" class="w-full h-auto md:h-72 rounded object-cover border-4 border-black" id="img">
+                        <img src="{{ Storage::url($category -> image -> url_imagen) }}" alt="{{$category -> image -> desc_imagen}}" class="w-full h-auto md:h-72 rounded object-cover border-4 border-black" id="img">
                     </div>
 
                 
