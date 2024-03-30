@@ -19,7 +19,7 @@
                         
 
                         <a class="group  relative inline-flex items-center overflow-hidden rounded bg-indigo-600 px-8 py-3 text-white focus:outline-none focus:ring active:bg-indigo-500"
-                            href="{{route('productosConSubcategoria' , $subcategoria ->  id)}}"> {{-- ? le pasamos la id padre de esa subcategoria , para que coja todos los productos en la tabla producto donde el atributo category_id tenga el mismo id que se pasa por esa ruta --}}
+                            href="{{route('productosConSubcategoria' , $subcategoria ->  id)}}"> {{-- ? le pasamos la id padre de esa subcategoria , para que coja todos los productos en la tabla products donde el atributo category_id tenga el mismo id que se pasa por esa ruta --}}
                             <span class="absolute -end-full transition-all group-hover:end-4">
                                 <svg class="size-5 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
