@@ -1,5 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto px-4">
+        {{-- ? Miga de pan 6 --}}
+        {{ Breadcrumbs::render('category.subcategorias', $subcategoriasDePadre) }}
         <h2 class="text-xl font-bold mb-4">Subcategorías de {{ $subcategoriasDePadre->nombre }}</h2>
         <section class="grid  grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach ($subcategoriasDePadre->children as $subcategoria)
