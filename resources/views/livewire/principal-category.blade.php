@@ -1,5 +1,7 @@
 <div>
 
+    {{-- ? Miga de pan 2 Livewire categorias --}}
+    {{ Breadcrumbs::render('gestion_categorias') }}
     <x-propio>
         <div class="flex w-full mb-1 items-center">
 
