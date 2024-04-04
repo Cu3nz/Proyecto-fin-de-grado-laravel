@@ -1,4 +1,6 @@
 <x-app-layout>
+  {{-- ? Miga de pan 5 --}}
+  {{ Breadcrumbs::render('category.index') }}
     <x-propio>
         <section class="flex flex-col items-center md:flex-row md:justify-center md:flex-wrap">
             @foreach ($categoriasPadres as $item)
