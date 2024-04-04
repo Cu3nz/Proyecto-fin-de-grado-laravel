@@ -1,4 +1,6 @@
 <x-app-layout>
+    {{-- ? Miga de pan 7 --}}
+    {{ Breadcrumbs::render('productosConSubcategoria', $categoriaPadre, $idDeSubcategoria) }}
     <x-propio>
         <section class=" gap-3  md:flex ">
             @foreach ($productos as $item)
