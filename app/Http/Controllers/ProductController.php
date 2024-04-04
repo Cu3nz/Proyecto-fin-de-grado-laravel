@@ -25,6 +25,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+        //abort(500, 'Mensaje opcional de error');
+        
         // Obtener todas las categorías que son padres
         $categoriasPadres = Category::where('es_padre', true)->get(['id', 'nombre']);
 
