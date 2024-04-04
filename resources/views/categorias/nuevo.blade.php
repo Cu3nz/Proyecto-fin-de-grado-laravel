@@ -1,4 +1,6 @@
 <x-app-layout>
+    {{-- ? Miga de pan 4 --}}
+    {{ Breadcrumbs::render('category.create') }}
     <x-propio>
         <div class="mx-4 p-6 rounded-xl shadow-xl bg-gray-400 dark:text-gray-200 sm:w-1/2 sm:mx-auto">
             <form action="{{ route('category.store') }}" method="POST" class="sm:max-w-lg sm:mx-auto"
