@@ -58,6 +58,29 @@ class CategoryController extends Controller
 
         //* por lo tanto busco en la tabla products (gracias a la relacion de with products) en el atributo category_id productos que tengan la id 13, y esos son los productos que tiene esa subcategoria llamada death note
 
+        $idDeSubcategoria = Category::with('products' , 'category_padre')->findOrFail($idSubcategoria);
+
+        $categoriaPadre = $idDeSubcategoria->category_padre; //! Para la miga de pan
+
+
+        //dd($idDeSubcategoria); //? Mostramos todos los atributos de la categoria pulsada, en este caso, si pulsamos en la categoria oferta nos da todos sus atributos, donde la id = 2
+
+        $productos = $idDeSubcategoria->products; //? Obtenemos todos los productos de la subcategoria pulsada gracias a su ID
+
+        return view('products.mostrarProductosSubcategoria', compact('productos' , 'categoriaPadre' , 'idDeSubcategoria'));
+    }
+
+
+    //! Anterior metodo para mostrar los productos de una subcategoria
+    /* public function mostrarProductosSubcategorias($idSubcategoria)
+    {
+        //? Basicamente lo que hacemos es que en la tabla categories el id que esta en el atributo id de la categoria hija (subcategoria), tenga el mismo id en la tabla products en el atributo category_id
+
+        //* Ejemplo de lo que hace with('products') en la query si pasamos el id de subcategoria Death Note (id = 13):
+        //? tabla categories subcategoria Death Note = id = 13 category_padre_id = 5 (Anime)
+
+        //* por lo tanto busco en la tabla products (gracias a la relacion de with products) en el atributo category_id productos que tengan la id 13, y esos son los productos que tiene esa subcategoria llamada death note
+
 
         $idDeSubcategoria = Category::with('products')->findOrFail($idSubcategoria);
 
@@ -66,7 +89,7 @@ class CategoryController extends Controller
         $productos = $idDeSubcategoria->products; //? Obtenemos todos los productos de la subcategoria pulsada gracias a su ID
 
         return view('products.mostrarProductosSubcategoria', compact('productos'));
-    }
+    } */
 
 
 
