@@ -5,9 +5,11 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
+use App\Http\Middleware\ChekearRoles;
 use App\Livewire\PrincipalCategory;
 use App\Livewire\PrincipalLogueado;
 use App\Livewire\PrincipalProducts;
+use App\Livewire\TablaUsers;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -37,17 +39,28 @@ Route::middleware([
         return view('dashboard' , compact('nuevos' , 'anime'));
     })->name('dashboard');
 
-    Route::resource('category' , CategoryController::class);
-    Route::resource('products' , ProductController::class);
+    /* Route::resource('category' , CategoryController::class); */
+    /* Route::resource('products' , ProductController::class); */
 
 });
 
 
-//todo Para el index de categorias con la tabla y el buscador: 
-Route::get('principal-category' , PrincipalCategory::class) -> name('Category.principal');
+//! Para los roles SuperAdmin y Admin, en estas clases solo se pueden acceder si el usuario tiene uno de estos roles, si son diferentes les saldra el abort(403)
+Route::middleware([ChekearRoles::class])->group(function () {
+    Route::resource('category', CategoryController::class); 
+    Route::resource('products', ProductController::class);
+    //todo Para el index de categorias con la tabla y el buscador: 
+    Route::get('principal-category' , PrincipalCategory::class) -> name('Category.principal');
+    //todo Para el index de productos con la tabla y el buscador
+    Route::get('principal-products' , PrincipalProducts::class) -> name('products.principal');
+    Route::get('tableUser' , TablaUsers::class) -> name('tableUser');
+});
 
-//todo Para el index de productos con la tabla y el buscador
-Route::get('principal-products' , PrincipalProducts::class) -> name('products.principal');
+//! Para mostrar las categorias padres cuando hagas click en el boton de categorias en el navbar, la he tenido que sacar por el rol ya que a esta ruta tiene que acceder usuarios normales
+Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+
+
+
 
 //todo Para borrar las imagenes del update de products
 /* Route::delete('/products/images/{image}', 'ProductController@destroyImage')->name('products.images.destroy'); */
