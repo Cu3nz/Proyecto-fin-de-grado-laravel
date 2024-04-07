@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password') -> nullable();
+            //todo Para los roles, por defecto el usuario cuando se registre va a ser un usuario normal
+            $table->enum('rol' , ['superAdmin' , 'admin' , 'user']) -> default('user');
             $table->string('google_id') -> nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
