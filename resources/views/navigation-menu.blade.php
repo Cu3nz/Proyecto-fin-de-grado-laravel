@@ -15,14 +15,19 @@
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    @auth 
-                    <x-nav-link href="{{ route('Category.principal') }}" :active="request()->routeIs('Category/*')">
-                        <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Categorias') }}
-                    </x-nav-link>
-                    <x-nav-link href="{{ route('products.principal') }}" :active="request()->routeIs('Products/*')">
-                        <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Productos') }}
-                    </x-nav-link>
-                    @endauth
+                    @auth
+                    @if(auth()->user()->rol == 'superAdmin' || auth()->user()->rol == 'admin')
+                        <x-nav-link href="{{ route('Category.principal') }}" :active="request()->routeIs('Category/*')">
+                            <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Categorias') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('products.principal') }}" :active="request()->routeIs('Products/*')">
+                            <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Productos') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('tableUser') }}" :active="request()->routeIs('Products/*')">
+                            <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Usuarios') }}
+                        </x-nav-link>
+                    @endif
+                @endauth    
                     <x-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('cçategory/*')">
                         <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
                     </x-nav-link>
@@ -176,7 +181,7 @@
                 <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Productos') }}
             </x-responsive-nav-link>
             @endauth
-            <x-responsive-nav-link href="{{ route('products.principal') }}" :active="request()->routeIs('Category/*')">
+            <x-responsive-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('Category/*')">
                 <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
             </x-responsive-nav-link>
         </div>
