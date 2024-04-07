@@ -9,6 +9,7 @@ use App\Models\ProductImage;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
@@ -16,8 +17,26 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+
+     protected static ?string $password; //? IMPORTANTE PONER ESTO PARA la contraseña
+
     public function run(): void
     {
+
+        User::factory(1)->create([
+            'name' => 'Sergio Gallegos',
+            'email' => 'superadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+        
+        User::factory(1) -> create([
+            'name' => 'Bichito',
+            'email' => 'bichitoadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+
         User::factory(2)->create();
 
         Storage::deleteDirectory('categorias_imagenes');
