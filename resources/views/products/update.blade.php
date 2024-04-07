@@ -31,7 +31,7 @@
 
             <div>
                 <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
-                <input type="number" id="precio" name="precio" value="{{ old('precio', $product->precio) }}"
+                <input type="number" id="precio" name="precio" step="0.01" value="{{ old('precio', $product->precio) }}"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <x-input-error for="precio"></x-input-error>
             </div>
