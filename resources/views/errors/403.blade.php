@@ -417,3 +417,8 @@
         </filter>
     </defs>
 </svg>
+<script type="text/javascript">
+    setTimeout(function() {
+        window.location.href = "{{ route('dashboard') }}";
+    }, 5000);
+    </script>
