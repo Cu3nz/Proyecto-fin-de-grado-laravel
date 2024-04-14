@@ -81,6 +81,7 @@
                 <div id="imagenPreview" class="flex flex-wrap mt-4">
                     {{-- ! Aqui se muestran las imagenes que suba el usuario --}}
                 </div>
+                <x-input-error for="imagen"></x-input-error>
                 <input type="hidden" id="ordenImagenes" name="ordenImagenes" value="">
             </div>
 
@@ -111,38 +112,38 @@
         let archivosSeleccionados = [];
         
         function handleFiles(imagenes) {
-            const previewContainer = document.getElementById('imagenPreview');
-            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
+            const previewContainer = document.getElementById('imagenPreview'); //? Definimos una constante para el div donde se van a ver las imagenes preview
+            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //? Definimos una constante para el div donde se va a ver la imagen por defecto
             previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
             previews = [];
             archivosSeleccionados = []; // Limpiar la lista previa de archivos seleccionados
     
-            // Crear una estructura que almacene el archivo y el índice original de selección
+            //? Convierto las imagenes en un array para poder interar por ellas con un foreach
             Array.from(imagenes).forEach((archivo, index) => {
-                archivosSeleccionados.push({ archivo, index }); // Guardar el archivo con su índice
-                const reader = new FileReader();
+                archivosSeleccionados.push({ archivo, index }); //? Añado cada imagen al array archivosSeleccionados jusnto con su indice original
+                const reader = new FileReader(); //? Creo una instancia de FileReader, herramienta que permite leer los contenidos de archivos almacenados en el cliente de forma asincrona
                 reader.onload = (e) => mostrarPreview(e, archivo, index);
-                reader.readAsDataURL(archivo);
+                reader.readAsDataURL(archivo); //? Leemos el contenido de la imagen para mostrarlo en la vista previa
             });
     
-            contenedorImagenDefecto.style.display = imagenes.length > 0 ? 'none' : 'block';
+            contenedorImagenDefecto.style.display = imagenes.length > 0 ? 'none' : 'block'; //? Si hay imagenes el contenedor con la imagen por defecto se elimina, de lo contrario se muestra.
         }
     
         function mostrarPreview(event, archivo, index) {
-            const imgDiv = document.createElement('div');
-            imgDiv.className = 'relative w-full md:w-1/3 p-1';
-            imgDiv.dataset.index = index; // Guardar el índice original para mantener el orden
+            const imgDiv = document.createElement('div'); //? Creamos un div
+            imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Le damos clases al div 
+            imgDiv.dataset.index = index; // Guardar el índice original para mantener el "orden"
     
-            const img = document.createElement('img');
-            img.src = event.target.result;
-            img.className = 'object-cover h-48 w-full rounded-lg';
-            imgDiv.appendChild(img);
+            const img = document.createElement('img'); //? Creamos un elemento img
+            img.src = event.target.result; //? Cargamos la imagen leida por el FileReader en el elemento img
+            img.className = 'object-cover h-48 w-full rounded-lg'; //? Le damos clase 
+            imgDiv.appendChild(img); //? Añadimos la imagen al div creado anteriormente
     
-            const deleteButton = document.createElement('button');
-            deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
-            deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer';
-            deleteButton.onclick = () => borrarPreview(imgDiv, archivo, index);
-            imgDiv.appendChild(deleteButton);
+            const deleteButton = document.createElement('button'); //? Creamos un boton para borrar la imagen
+            deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Le ponemos la papelera como icono
+            deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer'; //? Le damos clases css al boton
+            deleteButton.onclick = () => borrarPreview(imgDiv, archivo, index); //? Evento para borrar la imagen
+            imgDiv.appendChild(deleteButton); //? Añadimos el boton al div
     
             const previewContainer = document.getElementById('imagenPreview');
             // Insertar la vista previa en el contenedor, manteniendo el orden original
@@ -153,9 +154,9 @@
         function borrarPreview(imgDiv, archivoABorrar, indexABorrar) {
     // Actualiza la lista de archivos seleccionados removiendo el archivo que coincide con el archivo a borrar
     archivosSeleccionados = archivosSeleccionados.filter(item => item.archivo !== archivoABorrar);
-    imgDiv.remove(); // Remueve la imagen del DOM
+    imgDiv.remove(); //? Elimino la imagen del DOM
     
-    // Si no hay más elementos en la lista de vistas previas, mostrar el contenedor por defecto
+    // Si no hay mas elementos en la lista de vistas previas, mostrar el contenedor por defecto
     if (archivosSeleccionados.length === 0) {
         document.getElementById('contenedorImagenDefecto').style.display = 'block';
     }
