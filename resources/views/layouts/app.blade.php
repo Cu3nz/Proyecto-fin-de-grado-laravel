@@ -108,6 +108,23 @@
                 }
             });
         })
+        Livewire.on('confirmarDeleteUser', id => {
+            Swal.fire({
+                title: "¿Estás seguro de eliminar este registro?",
+                text: "Esta acción eliminará permanentemente el registro seleccionado. ¿Deseas continuar?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sí, eliminalo!",
+                reverseButtons: true // Coloca el botón de cancelar a la izquierda
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatchTo('tabla-users', 'deleteConfirmado', id);
+                }
+            });
+        })
+
     </script>
 
 
