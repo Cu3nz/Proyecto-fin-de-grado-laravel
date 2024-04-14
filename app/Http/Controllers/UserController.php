@@ -24,9 +24,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
 {
 
-    // Verifico si el usuario a editar es el usuario root
+    //? Verifico si el usuario si se esta intetando modificar el usuario root, si es asi, mensaje de error.
     if ($user->email === 'nombretienda@gmail.com') {
         return back()->withErrors(['error' => 'No está permitido modificar el usuario root.']);
+    }
+
+    //? Verifico si el usuario esta intentnando modificar su propio perfil con el que ha iniciado sesion, si es asi, mensaje de error
+    if (auth()->id() == $user->id) {
+        abort(400, 'ERROR!!! No puedes modificar tu propio perfil con el que has iniciado sesion.');
+
     }
 
     $request->validate([
@@ -46,9 +52,10 @@ class UserController extends Controller
     }
 
     //todo Comprobamos si el rol del usuario esta cambiando a 'user' desde 'admin' o 'superAdmin'
-    if ($user->rol !== 'user' && $input['rol'] === 'user') {
-        $this->reasignarProductosAOtroAdmin($user);
-    }
+    // Antes de intentar acceder a $input['rol'], comprueba si está establecido.
+if (isset($input['rol']) && $user->rol !== 'user' && $input['rol'] === 'user') {
+    $this->reasignarProductosAOtroAdmin($user);
+}
 
     $user->update($data);
 
