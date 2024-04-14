@@ -226,6 +226,8 @@ public function productOverviews(Product $product) //? Le pasamos todo los atrib
 {
     $imagenes = $product->images; //? Obtenemos todas las imagenes del producto
 
+    $primeraImagen = $imagenes->first(); //* Obtenemos la primera imagen del producto sin borrarla del array de imagenes, a comparacion de shift 
+
     //dd($imagenes); //? Imprimimos las imagenes del producto 
 
     //todo Obtener los productos relacionados con la misma categoria, pero sin obtener el producto que se esta visualizando
@@ -235,7 +237,7 @@ public function productOverviews(Product $product) //? Le pasamos todo los atrib
         
         //dd($productosRelacionadosCategoria); //? Imprimimos los productos relacionados 
 
-    return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria'));   
+    return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria' , 'primeraImagen')); //? Pasamos los datos a la vista ProductOverviews
 
 }
 
