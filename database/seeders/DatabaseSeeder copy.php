@@ -7,6 +7,7 @@ use App\Models\ProductImage;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        User::factory(1)->create([
+            'name' => 'Usuario Tienda',
+            'email' => 'nombretienda@gmail.com', //! IMPORTANTE PONER EL EMAIL DE LA TIENDA
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+
+        User::factory(1)->create([
+            'name' => 'Sergio Gallegos',
+            'email' => 'superadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+        User::factory(1)->create([
+            'name' => 'Fermin Trujillo',
+            'email' => 'superadmin2@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+        
+        User::factory(1) -> create([
+            'name' => 'Bichito',
+            'email' => 'bichitoadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+        User::factory(1) -> create([
+            'name' => 'Bichito2',
+            'email' => 'bichito2admin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+
         User::factory(2)->create();
 
         $this->call(CategorySeeder::class);
