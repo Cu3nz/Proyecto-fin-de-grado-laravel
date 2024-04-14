@@ -28,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol', //! Importante para que funcione el update de los roles en la vista de editar usuarios
     ];
 
     /**
