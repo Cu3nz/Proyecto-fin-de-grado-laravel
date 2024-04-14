@@ -21,7 +21,8 @@ return new class extends Migration
             $table -> string('codigo_articulo') -> unique();
             $table -> integer('stock'); //! Este stock puede existir o no, basicamente los pedidos se hacen segun llegan, pero si hay productos que se han hecho y al final pues no se han enviado porque se han cancelado se pone el numero de stock
             $table -> foreignId('category_id') -> constrained() -> onDelete('cascade'); //! como siempre
-            $table -> foreignId('user_id') -> constrained() -> onDelete('cascade'); //! como siempre
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null'); //todo cAMBIADO PARA BORRAR EL USUARIO, PARA QUE AL BORRARLO NO SE BORREN LOS PRODUCTOS
+            /* $table -> foreignId('user_id') -> constrained() -> onDelete('cascade'); //! como siempre */
             $table->timestamps();
         });
     }
