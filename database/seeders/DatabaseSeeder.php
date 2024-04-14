@@ -24,8 +24,21 @@ class DatabaseSeeder extends Seeder
     {
 
         User::factory(1)->create([
+            'name' => 'Usuario Tienda',
+            'email' => 'nombretienda@gmail.com', //! IMPORTANTE PONER EL EMAIL DE LA TIENDA
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+
+        User::factory(1)->create([
             'name' => 'Sergio Gallegos',
             'email' => 'superadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' =>  'superAdmin',
+        ]);
+        User::factory(1)->create([
+            'name' => 'Fermin Trujillo',
+            'email' => 'superadmin2@gmail.com',
             'password' => static::$password ??= Hash::make('password'),
             'rol' =>  'superAdmin',
         ]);
@@ -33,6 +46,12 @@ class DatabaseSeeder extends Seeder
         User::factory(1) -> create([
             'name' => 'Bichito',
             'email' => 'bichitoadmin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+        User::factory(1) -> create([
+            'name' => 'Bichito2',
+            'email' => 'bichito2admin@gmail.com',
             'password' => static::$password ??= Hash::make('password'),
             'rol' => 'admin',
         ]);
