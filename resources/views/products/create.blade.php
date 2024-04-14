@@ -151,23 +151,18 @@
         }
     
         function borrarPreview(imgDiv, archivoABorrar, indexABorrar) {
-            archivosSeleccionados = archivosSeleccionados.filter((item, index) => index !== indexABorrar);
-            imgDiv.remove();
+    // Actualiza la lista de archivos seleccionados removiendo el archivo que coincide con el archivo a borrar
+    archivosSeleccionados = archivosSeleccionados.filter(item => item.archivo !== archivoABorrar);
+    imgDiv.remove(); // Remueve la imagen del DOM
     
-            // Reordenar las vistas previas restantes según su índice original
-            previews = previews.filter(preview => preview.dataset.index != indexABorrar);
-            previews.forEach((preview, index) => {
-                if (preview.dataset.index > indexABorrar) {
-                    preview.dataset.index--;
-                }
-            });
+    // Si no hay más elementos en la lista de vistas previas, mostrar el contenedor por defecto
+    if (archivosSeleccionados.length === 0) {
+        document.getElementById('contenedorImagenDefecto').style.display = 'block';
+    }
     
-            if (previews.length === 0) {
-                document.getElementById('contenedorImagenDefecto').style.display = 'block';
-            }
-    
-            actualizarInputFiles();
-        }
+    actualizarInputFiles(); // Actualiza el input de archivos
+}
+
     
         function actualizarInputFiles() {
             const dataTransfer = new DataTransfer();
