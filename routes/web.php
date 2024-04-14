@@ -5,6 +5,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\ChekearRoles;
 use App\Livewire\PrincipalCategory;
 use App\Livewire\PrincipalLogueado;
@@ -53,7 +54,8 @@ Route::middleware([ChekearRoles::class])->group(function () {
     Route::get('principal-category' , PrincipalCategory::class) -> name('Category.principal');
     //todo Para el index de productos con la tabla y el buscador
     Route::get('principal-products' , PrincipalProducts::class) -> name('products.principal');
-    Route::get('tableUser' , TablaUsers::class) -> name('tableUser');
+    Route::get('tableUser' , TablaUsers::class) -> name('tableUser'); //? Tabla user y delete
+    Route::resource('users', UserController::class); //? Actualizar usuario
 });
 
 //! Para mostrar las categorias padres cuando hagas click en el boton de categorias en el navbar, la he tenido que sacar por el rol ya que a esta ruta tiene que acceder usuarios normales
