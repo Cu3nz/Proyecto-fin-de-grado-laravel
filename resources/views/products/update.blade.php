@@ -1,6 +1,9 @@
 <x-app-layout>
     <div class="max-w-4xl mt-5  mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
         <h1 class="text-center text-xl font-bold">Modificando el producto con ID: <span class="text-red-600">{{$product->id}}</span></h1>
+        <h1 class="text-center text-xl font-bold">
+            Creado por el usuario: <span class="text-green-600">{{ $product->user->name ?? 'Sin user' }}</span>
+        </h1>
         <form id="formUpdate" action="{{ route('products.update', $product->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
