@@ -31,7 +31,7 @@ class PrincipalProducts extends Component
         ->orWhere('products.codigo_articulo', 'like', "%{$this->buscar}%")
         ->orWhere('products.estado', 'like', "%{$this->buscar}%")
         ->orWhere('categories.nombre', 'like', "%{$this->buscar}%")
-        ->select('products.*') // Asegúrate de seleccionar solo los campos de los productos si no necesitas datos de la categoría en el resultado
+        ->select('products.*')
         ->orderBy('products.' . $this->campo, $this->orden)
         ->paginate(5);
        /*  $productos = Product::orderBy($this -> campo , $this -> orden)
@@ -107,18 +107,18 @@ class PrincipalProducts extends Component
 
         /* dd($product->images); */ //? Muestra todas las imagenes que tiene el producto
 
-        //todo Al llamar a $product->images, estás recuperando una colección de todos los objetos ProductImage relacionados con ese producto. Esto significa que cada objeto ProductImage en la colección $imagenesActualProducto tendrá todos los atributos correspondientes a un registro en la tabla product_images, que está relacionada con ese producto.
+        
 
-        $imagenesActualProducto = $product -> images; //? Guardamos en $imagenesActualProducto, todos los atibutos de la tabla product_images del producto en cuestion (id , product_id , imagen, descripcion , created_at , updated_at)
+        $imagenesActualProducto = $product -> images; //? Guardamos en $imagenesActualProducto, todos los atibutos de la tabla images del producto en cuestion (id , url_imagen , desc_imagen , imaginable type , imaginable_id , created_at , updated_at)
 
-        /* dd($imagenesActualProducto); */ //? Esto imprime un array con todos los atributos de la tabla product_images del producto en cuestion su id , product_id , imagen, descripcion , created_at , updated_at
+        /* dd($imagenesActualProducto); */ //? Esto imprime un array con todos los atributos de la tabla images del producto en cuestion su id , url_imagen , desc_imagen , imaginable type , imaginable_id , created_at , updated_at
 
-        //dd($imagenesActualProducto -> pluck('imagen')); //? Esto imprime un array con todas las imagenes del producto en cuestion
+        //dd($imagenesActualProducto -> pluck('url_imagen')); //? Esto imprime un array con todas las imagenes del producto en cuestion
 
         //todo Tenemos que comprobar cada una de las imagenes del producto en cuestion y eliminarlas si es son distintas a default.jpg
         foreach($imagenesActualProducto as $imagenProducto){
 
-            if(basename($imagenProducto -> url_imagen) != 'noimage.png'){ //? Tenemos que definir "-> imagen" porque estamos accediendo a un atributo de la tabla product_images
+            if(basename($imagenProducto -> url_imagen) != 'noimage.png'){ //? accedemos a la imagen mediante el atributo url_imagen que esta en la tabla images.
                 Storage::delete($imagenProducto -> url_imagen);
             }
 
