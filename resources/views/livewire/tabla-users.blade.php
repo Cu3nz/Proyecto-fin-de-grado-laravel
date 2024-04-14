@@ -1,7 +1,13 @@
 <div>
     <x-propio>
 
-        {{-- ? Hacer mañana --}}
+        <div class="flex w-full mb-1 items-center">
+            <div class="flex-1 ">
+                <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4"
+                    placeholder="Busca un articulo" wire:model.live="buscar">
+            </div>
+
+        </div>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -56,21 +62,22 @@
                                 "bg-red-500" => $usuario -> rol == "user"])></div> {{$usuario -> rol}}
                             </div>
                         </td>
+                        @auth
                         <td class="px-6 py-4">
-                           <form action="" method="post"> {{-- ? Route destroy pasando el id del usuario --}}
-                            @csrf
-                            @method('delete') 
-                            <a href=""><i class="fas fa-edit text-yellow-600 mr-2"></i></a>
-                            <button type="submit"><i class="fas fa-trash text-red-600"></i></button>
-                           </form>
+                            {{-- todo Solo le salen los botones a los usuarios que tienen el rango de SuperAdmin o admin --}}
+                            @if(auth()->user()->rol == 'superAdmin' || auth()->user()->rol == 'admin')    
+                            <a href="{{route('users.edit' , $usuario -> id)}}"><i class="fas fa-edit text-yellow-600 mr-2"></i></a>
+                            <button wire:click="pedirConfirmacion({{ $usuario->id }})" type="submit"><i class="fas fa-trash text-red-600"></i></button>
+                            @endif
                         </td>
+                        @endauth
                     </tr>
                     @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="my-2">
-                {{ $User->links() }}
-            </div>
+        </div>
+        <div class="my-2">
+            {{$User -> links()}}
+        </div>
     </x-propio>
 </div>
