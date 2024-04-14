@@ -114,14 +114,14 @@
 <script>
     // Esta función se llama cada vez que el usuario selecciona archivos.
     function handleFiles(imagenes) {
-        const previewContainer = document.getElementById('imagenPreview');
-        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
+        const previewContainer = document.getElementById('imagenPreview'); //? Donde se va a mostrar la imagen subida
+        const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //? Contenedor con la imagen por defecto.
         previewContainer.innerHTML = ''; // Limpiar las vistas previas existentes
         archivosSeleccionados = Array.from(imagenes); // Reiniciar y actualizar con los nuevos archivos
 
-        if (imagenes.length > 0) {
+        if (imagenes.length > 0) { //* Si existe mas de una imagen el contenedor de la imagen por defecto se oculta
             contenedorImagenDefecto.style.display = 'none';
-        } else {
+        } else { //* De lo contrario, se muestra el contenedor
             contenedorImagenDefecto.style.display = 'block';
         }
 
@@ -129,39 +129,39 @@
         Array.from(imagenes).forEach((imagen) => {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const imgDiv = document.createElement('div');
-                imgDiv.className = 'relative w-full w-3/8 md:w-3/8 text-center p-1';
+                const imgDiv = document.createElement('div'); //? Creamos un div 
+                imgDiv.className = 'relative w-full w-3/8 md:w-3/8 text-center p-1'; //? Le damos unas clases css al div
 
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'object-cover h-72 px-3 w-full rounded-lg';
+                const img = document.createElement('img'); //? Creamos un atributo img para la imagen
+                img.src = e.target.result; //? Asignamos en el src de la imagen, la imagen que se subio
+                img.className = 'object-cover h-72 px-3 w-full rounded-lg'; //? Le damos unos estilos css a la imagen
 
-                const deleteButton = document.createElement('button');
+                const deleteButton = document.createElement('button'); //? Creamos un elemento buttom, el cual sera la papelerar para borrar la imagen
                 deleteButton.innerHTML =
-                '<i class="fas fa-trash text-red-600"></i>'; //? Le metemos como texto un boton de una papelera con un color rojo
+                '<i class="fas fa-trash text-red-600"></i>'; //? Le metemos como texto un boton de una papelera con un color rojo de fontawesome
                 deleteButton.className =
-                    'absolute bottom-0 right-0 m-3 p-1  text-white rounded-full cursor-pointer';
-                deleteButton.onclick = () => {
+                    'absolute bottom-0 right-0 m-3 p-1  text-white rounded-full cursor-pointer'; //? Le damos unas clases al icono
+                deleteButton.onclick = () => { //? Le asignamos un evento click al boton para borrar la imagen 
                     borrarPreview(imgDiv, imagen);
                 };
 
-                imgDiv.appendChild(img);
-                imgDiv.appendChild(deleteButton);
-                previewContainer.appendChild(imgDiv);
+                imgDiv.appendChild(img); //? Añadimos la imagen al div
+                imgDiv.appendChild(deleteButton); //? Añadimos el boton de la papelera al div
+                previewContainer.appendChild(imgDiv); //? Añadimos el div con la imagen y el boton de borrar al contenedor de la imagen preview definido en el html.
             };
             reader.readAsDataURL(imagen);
         });
     }
 
-    // Esta funcion se encarga de eliminar una vista previa y el archivo correspondiente en el input de subir archivos
+    //* Esta funcion se encarga de eliminar una vista previa y el archivo correspondiente en el input de subir archivos
     function borrarPreview(imgDiv, archivo) {
         const index = archivosSeleccionados.indexOf(archivo);
         if (index > -1) {
-            archivosSeleccionados.splice(index, 1); //? Elimino el archivo del array
+            archivosSeleccionados.splice(index, 1); //? Elimino el archivo del array solamente ese nos posicionamos en el indice y borramos ese indice
         }
-        imgDiv.remove(); // Elimino la vista del DOM
+        imgDiv.remove(); //? Elimino la vista del DOM
 
-        // Actualiza el input de archivos con los archivos restantes (el input de subir archivos) este se actualiza con el nombre del archivo si solo se sube uno o si hay =>2 se define el numero de archivos
+        //? Actualiza el input de archivos con los archivos restantes (el input de subir archivos) este se actualiza con el nombre del archivo si solo se sube uno o si hay =>2 se define el numero de archivos
         const dataTransfer = new DataTransfer();
         archivosSeleccionados.forEach(file => dataTransfer.items.add(file));
         document.getElementById('imagen').files = dataTransfer.files;
