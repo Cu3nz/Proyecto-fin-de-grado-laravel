@@ -241,4 +241,18 @@ public function productOverviews(Product $product) //? Le pasamos todo los atrib
 
 }
 
+public function alternarLike(Request $request, $productId)
+{
+    $product = Product::findOrFail($productId);
+    $user = auth()->user(); // Obtiene el usuario autenticado
+
+    if ($user->likedProducts()->where('product_id', $productId)->exists()) {
+        $user->likedProducts()->detach($productId);
+        return back();
+    } else {
+        $user->likedProducts()->attach($productId);
+        return back();
+    }
+}
+
 }
