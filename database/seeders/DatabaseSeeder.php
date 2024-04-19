@@ -69,6 +69,8 @@ class DatabaseSeeder extends Seeder
         // Crea algunos productos
         $products = Product::factory(20)->create();
 
+        $this -> call(ProductUserLikeSeeder::class); //? Llamamos al seeder ProductUserLikeSeeder para que se ejecuten los likes de los productos
+
         // Para cada producto, genera una descripción única que se aplicará a todas sus imágenes
         $products->each(function ($product) {
             $description = fake()->sentence(); // Genera una descripción única para cada producto aquí
