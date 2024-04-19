@@ -58,6 +58,11 @@ class CategoryController extends Controller
 
         //* por lo tanto busco en la tabla products (gracias a la relacion de with products) en el atributo category_id productos que tengan la id 13, y esos son los productos que tiene esa subcategoria llamada death note
 
+        //! Mostramos solamente los productos que esten disponibles
+        /* $idDeSubcategoria = Category::with(['products' => function ($query) {
+            $query->where('estado', 'DISPONIBLE'); //? Solo mostramos los productos que esten disponibles
+        }, 'category_padre'])->findOrFail($idSubcategoria); */
+
         $idDeSubcategoria = Category::with('products' , 'category_padre')->findOrFail($idSubcategoria);
 
         $categoriaPadre = $idDeSubcategoria->category_padre; //! Para la miga de pan
