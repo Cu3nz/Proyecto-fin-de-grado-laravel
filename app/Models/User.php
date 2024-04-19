@@ -69,4 +69,9 @@ class User extends Authenticatable
     public function products(){
         return $this -> hasMany(Product::class);
     }
+
+    //todo Un usuario le puede gustar muchos productos, por lo tanto el nombre de la funcion en plural y utilizamos belongsToMany
+    public function likedProducts(){
+        return $this -> belongsToMany(Product::class, 'product_user_likes');
+    }
 }
