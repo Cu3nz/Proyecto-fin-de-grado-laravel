@@ -111,14 +111,21 @@ module.exports = {
       
 
       <div class="mt-10 flex">
-        <button type="submit" class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">Añadir al carrito</button>
+        @if($product->estado == 'DISPONIBLE')
+          <button type="submit" class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full">Añadir al carrito</button>
+        @else
+          <p class="text-red-500 font-bold flex items-center">Actualmente el producto no está disponible</p>
+        @endif
 
-        <button type="button" title="Pulsa para añadir a favoritos" class="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500">
-          <svg class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-          </svg>
-          <span class="sr-only">Add to favorites</span>
-        </button>
+        {{-- ! Corazon de twitter --}}
+        <div class="like-button ml-4 relative">
+          <form id="like-form" action="{{ route('alternarLike', $product->id) }}" method="POST">
+              @csrf
+              <button type="submit" class="heart-bg w-16 h-16 flex items-center justify-center">
+                  <div class="heart-icon w-16 h-16 bg-contain bg-no-repeat cursor-pointer {{ auth()->user() && auth()->user()->likedProducts->contains($product->id) ? 'liked' : '' }}"></div>
+              </button>
+          </form>
+      </div>
       </div>
 
       <div class="mt-10 border-t border-gray-200 pt-10">
@@ -426,6 +433,52 @@ miniatura.addEventListener('click', function() {
     });
   });
 </script>
+
+{{-- todo Para el boton de like --}}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (localStorage.getItem('scrollPosition')) {
+      window.scrollTo(0, localStorage.getItem('scrollPosition'));
+      localStorage.removeItem('scrollPosition'); // Limpia la posición después de usarla
+    }
+    
+    const heartIcon = document.querySelector(".like-button .heart-icon");
+    
+    heartIcon.addEventListener("click", function() {
+      this.classList.toggle("liked");
+      
+      // Guarda la posición de scroll antes de la recarga
+      localStorage.setItem('scrollPosition', window.scrollY);
+    });
+  });
+  
+</script>
+
+
+<style>
+  .heart-icon {
+    background-image: url('/storage/heart.png');
+    background-position: left center; /* Ajustar si es una imagen de sprite */
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100px; 
+  }
+  
+  .heart-icon.liked {
+    animation: like-anim 0.7s steps(28) forwards;
+  }
+  
+  @keyframes like-anim {
+    to {
+      background-position: right;
+    }
+  }
+  
+  /* Añade aquí cualquier otro estilo personalizado necesario */
+</style>
+
+{{-- todo Fin Para el boton de like --}}
 
 
 </x-app-layout>
