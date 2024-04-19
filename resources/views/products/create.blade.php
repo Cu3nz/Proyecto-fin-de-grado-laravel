@@ -22,7 +22,7 @@
                 <label for="estado" class="block text-sm font-medium text-gray-700">Estado</label>
                 <div class="mt-2">
                     <input type="checkbox" id="estado" name="estado" value="disponible"
-                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" {{ old('estado') == 'disponible' ? 'checked' : '' }}>
                     <label for="estado" class="ml-2 text-sm text-gray-700">Disponible</label>
                     <x-input-error for="estado"></x-input-error>
                 </div>
