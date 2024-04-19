@@ -246,10 +246,10 @@ public function alternarLike(Request $request, $productId)
     $product = Product::findOrFail($productId);
     $user = auth()->user(); // Obtiene el usuario autenticado
 
-    if ($user->likedProducts()->where('product_id', $productId)->exists()) {
+    if ($user->likedProducts()->where('product_id', $productId)->exists()) { //* Si el usuario ya ha dado like al producto, se lo quitamos
         $user->likedProducts()->detach($productId);
         return back();
-    } else {
+    } else { //* Si el usuario no ha dado like al producto, se lo añadimos
         $user->likedProducts()->attach($productId);
         return back();
     }
