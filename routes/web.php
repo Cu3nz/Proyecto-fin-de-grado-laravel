@@ -7,6 +7,7 @@ use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ChekearRoles;
+use App\Livewire\ListaVerLikes;
 use App\Livewire\PrincipalCategory;
 use App\Livewire\PrincipalLogueado;
 use App\Livewire\PrincipalProducts;
@@ -61,6 +62,11 @@ Route::middleware([ChekearRoles::class])->group(function () {
 //! Para mostrar las categorias padres cuando hagas click en el boton de categorias en el navbar, la he tenido que sacar por el rol ya que a esta ruta tiene que acceder usuarios normales
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 
+//todo Para ver los productos que ha dado like el usuario logueado
+Route::get('verLikes' , ListaVerLikes::class) -> name('verLikes');
+
+
+
 
 
 
@@ -85,6 +91,9 @@ Route::get('/category/{idSubcategoria}/productos' , [CategoryController::class ,
 
 //todo Product Overview de un producto 
 Route::get('/products/{product}/overview' , [ProductController::class , 'productOverviews']) -> name('overviewProduct');
+
+//todo Para dar like o quitar like a un producto
+Route::post('/products/{productId}/alternar-like', [ProductController::class , 'alternarLike'])->name('alternarLike')->middleware('auth');
 
 
 
