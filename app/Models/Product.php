@@ -42,4 +42,9 @@ class Product extends Model
         return $this->morphOne(Image::class, 'imageable')->orderBy('id', 'asc');
     }
 
+    //todo Un producto puede tener likes de muchos usuarios , por lo tanto el nombre de la funcion en plural y utilizamos belongsToMany
+    public function likeDeUsers() {
+        return $this->belongsToMany(User::class, 'product_user_likes');
+    }
+
 }
