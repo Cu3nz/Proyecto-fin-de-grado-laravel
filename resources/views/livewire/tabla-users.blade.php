@@ -1,6 +1,7 @@
 <div>
+    {{-- ? Miga de pan 12 --}}
+    {{ Breadcrumbs::render('gestion_usuarios') }}
     <x-propio>
-
         <div class="flex w-full mb-1 items-center">
             <div class="flex-1 ">
                 <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4"
