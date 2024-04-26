@@ -237,7 +237,13 @@ public function productOverviews(Product $product) //? Le pasamos todo los atrib
         
         //dd($productosRelacionadosCategoria); //? Imprimimos los productos relacionados 
 
-    return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria' , 'primeraImagen')); //? Pasamos los datos a la vista ProductOverviews
+         //! Para las migas de pan
+        /* $categoriaPadre = $product->category->category_padre()->first(); // Usando first() para obtener el primer resultado de la relacion */
+        $categoriaPadre = $product->category->category_padre; //? Obtenemos la categoria padre del producto
+        $subcategoria = $product->category; //? Obtenemos la subcategoria del producto
+
+
+        return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria' , 'primeraImagen' , 'categoriaPadre' , 'subcategoria')); //? Pasamos los datos a la vista ProductOverviews
 
 }
 
