@@ -29,6 +29,10 @@ module.exports = {
 <div class="bg-white">
 <div class="mx-auto px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
   <!-- Product -->
+  <div class="py-3">
+    {{-- ? Miga de pan 8 --}}
+    {{ Breadcrumbs::render('productOverviews', $categoriaPadre, $subcategoria, $product) }}
+  </div>
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
 
     <!--Image gallery -->
