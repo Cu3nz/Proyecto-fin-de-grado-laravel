@@ -1,5 +1,7 @@
 <div>
     <x-propio>
+        {{-- ? Miga de pan 9  --}}
+        {{ Breadcrumbs::render('gestion_productos') }}
         {{-- todo Buscador y boton de crear producto --}}
         <div class="flex w-full mb-1 items-center">
             <div class="flex-1 ">
