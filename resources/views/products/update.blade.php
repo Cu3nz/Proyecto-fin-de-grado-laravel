@@ -1,4 +1,6 @@
 <x-app-layout>
+    {{-- ? Miga de pan 11 --}}
+    {{ Breadcrumbs::render('products.update' , $product) }}
     <div class="max-w-4xl mt-5  mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
         <h1 class="text-center text-xl font-bold">Modificando el producto con ID: <span class="text-red-600">{{$product->id}}</span></h1>
         <h1 class="text-center text-xl font-bold">
