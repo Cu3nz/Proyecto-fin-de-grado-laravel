@@ -1,5 +1,7 @@
 <div>
     {{-- ? estoy a 16 de abril hacer para mañana  --}}
+    {{-- ? Miga de pan 14  --}}
+    {{ Breadcrumbs::render('visualizar_favoritos') }}
     <x-propio>
         <div class="flex w-full mb-1 justify-center">
                 <div class="flex-1 ">
