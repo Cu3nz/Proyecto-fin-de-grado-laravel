@@ -20,13 +20,12 @@ Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
 //? Home / Gestion de categorias ( para admin admin) Miga de pan 2 Livewire categorias
 Breadcrumbs::for('gestion_categorias', function (BreadcrumbTrail $trail) {
     $trail->parent('dashboard');
-    $trail->push('Gestion Categorias', route('Category.principal'));
+    $trail->push('Gestionar Categorias', route('Category.principal'));
 });
 
 //? Home / Gestion de categorias / Actualizando la Categoria Nombre categoria actualizando Miga de pan 3
 Breadcrumbs::for('category.update', function (BreadcrumbTrail $trail, $category) {
     $trail->parent('gestion_categorias');
-    // Asegúrate de que $category->name es una cadena. Si es null, proporciona un valor predeterminado.
     $categoryName = $category->nombre ?? 'Nombre de Categoría Desconocido';
     $trail->push('Actualizando la Categoria ' . $category -> nombre, route('category.update', $category->id)); //! Defino el nombre de la categoria con $category -> nombre
 });
@@ -49,25 +48,87 @@ Breadcrumbs::for('category.index', function (BreadcrumbTrail $trail) {
 });
 
 
-//? Home / Categorias / Tienda (La subcategoria seleccionada)  Miga de pan 6
+//? Home / Categorias / Tienda (La categoria padre seleccionada)  Miga de pan 6
 Breadcrumbs::for('category.subcategorias', function (BreadcrumbTrail $trail, $categoriaPadre) {
-    // Este es el breadcrumb para la página índice de categorías
     $trail->parent('category.index');
-    // Añade el breadcrumb para la categoría específica
     $trail->push($categoriaPadre->nombre, route('category.subcategorias', $categoriaPadre->id));
 });
 
 
 //? Home / Categorias / Tienda / Categoria (La subcategoria seleccionada)  Miga de pan 7
 Breadcrumbs::for('productosConSubcategoria', function (BreadcrumbTrail $trail, $categoriaPadre, $subcategoria) {
-    // Se asume que 'category.subcategorias' ya lleva a la categoría padre (Tienda)
     $trail->parent('category.subcategorias', $categoriaPadre);
-    // Aquí, 'subcategoria' es la variable que anteriormente llamabas 'idDeSubcategoria'
     $trail->push($subcategoria->nombre, route('productosConSubcategoria', $subcategoria->id));
 });
 
 
+//! Para mostrar la ruta en el producto ProductOverviews
+//? Home / Categorias / Tienda / Oferta / NombreProducto Miga de pan 8 
+Breadcrumbs::for('productOverviews', function (BreadcrumbTrail $trail, $categoriaPadre, $subcategoria, $producto) {
+    $trail->parent('productosConSubcategoria', $categoriaPadre, $subcategoria);
+    $trail->push($producto->nombre, route('overviewProduct', $producto->id));
+});
+
 //todo Fin link categorias del nav
+
+
+//todo Gestionar productos
+
+//? Home / Gestion de productos (Solo para admins) Miga de pan 9
+Breadcrumbs::for('gestion_productos', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Gestionar Productos', route('products.principal'));
+});
+
+
+//? Home / Gestion de productos / Crear Producto Miga de pan 10
+
+Breadcrumbs::for('products.create', function (BreadcrumbTrail $trail) {
+    $trail->parent('gestion_productos');
+    $trail->push('Crear Producto', route('products.create'));
+});
+
+
+//? Home / Gestion de productos / Actualizando Producto nombreProducto Miga de pan 11
+
+Breadcrumbs::for('products.update', function (BreadcrumbTrail $trail, $product) {
+    $trail->parent('gestion_productos');
+    $trail->push('Actualizando el producto '  . $product -> nombre, route('products.update', $product->id));
+});
+
+//todo Fin Gestionar productos
+
+
+//todo Gestionar usuarios
+
+//? Home / Gestión de usuarios (Solo para admins) Miga de pan 12
+
+Breadcrumbs::for('gestion_usuarios', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Gestionar Usuarios', route('tableUser'));
+});
+
+//? Home / Gestión de usuarios / Actualizando Usuario nombreUsuario Miga de pan 13
+
+Breadcrumbs::for('users.update', function (BreadcrumbTrail $trail, $user) {
+    $trail->parent('gestion_usuarios');
+    $trail->push('Actualizando el usuario '  . $user -> name, route('users.update', $user->id));
+});
+
+//todo Fin Gestionar usuarios
+
+
+//todo Ver likes
+//? Home / Tus productos favoritos de pan 14
+
+Breadcrumbs::for('visualizar_favoritos', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Tus productos favoritos', route('verLikes')); //? Seria como ver Favoritos pero lo voy a dejar asi
+});
+
+//todo Fin Ver likes
+
+
 
 
 
