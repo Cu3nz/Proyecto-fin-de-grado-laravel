@@ -61,13 +61,20 @@ class PrincipalProducts extends Component
 
     public function cambiarDisponibilidadClick(Product $producto){
 
-        $estado = ($producto -> estado == 'DISPONIBLE') ? 'NO DISPONIBLE' : 'DISPONIBLE'; //? Guardamos en $estado, el estado actual que tiene el producto al cual se ha hecho click, si el estado es DISPONIBLE lo ponemos en NO DISPONIBLE y si esta en NO DISPONIBLE lo ponemos en DISPONIBLE
-
-        //? Actualizamos el estado del producto
-        $producto -> update([
-            'estado' => $estado
-        ]);
+        $estado = ($producto->estado == 'DISPONIBLE') ? 'NO DISPONIBLE' : 'DISPONIBLE';
+    
+        // Preparamos el array de datos para actualizar
+        $datosParaActualizar = ['estado' => $estado];
+    
+        // Si vamos a cambiar el estado a NO DISPONIBLE y hay stock, entonces lo reducimos a 0
+        if ($estado == 'NO DISPONIBLE' && $producto->stock > 0) {
+            $datosParaActualizar['stock'] = 0;
+        }
+    
+        // Actualizamos el estado del producto y posiblemente el stock
+        $producto->update($datosParaActualizar);
     }
+    
 
 
     public function subirStock(Product $product){
