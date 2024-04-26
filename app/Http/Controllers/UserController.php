@@ -30,10 +30,10 @@ class UserController extends Controller
     }
 
     //? Verifico si el usuario esta intentnando modificar su propio perfil con el que ha iniciado sesion, si es asi, mensaje de error
-    if (auth()->id() == $user->id) {
+    /* if (auth()->id() == $user->id) {
         abort(400, 'ERROR!!! No puedes modificar tu propio perfil con el que has iniciado sesion.');
 
-    }
+    } */
 
     $request->validate([
         'name' => 'required|string|min:4',
