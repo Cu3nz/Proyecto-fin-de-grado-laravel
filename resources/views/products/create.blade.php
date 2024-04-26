@@ -1,5 +1,6 @@
 <x-app-layout>
-
+{{-- ? Migan de pan 10 --}}
+{{ Breadcrumbs::render('products.create') }}
 
     <div class="max-w-4xl mt-5  mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
         <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data" class="space-y-4">
