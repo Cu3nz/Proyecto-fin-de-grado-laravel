@@ -10,7 +10,7 @@
                     </a>
                     <div class="p-4 flex flex-col flex-grow">
                         <h5 class="text-lg font-bold text-gray-900 dark:text-white mb-2">{{ $item->nombre }}</h5>
-                        <div class="flex-grow overflow-y-auto">
+                        <div class="overflow-y-auto scrollbar-hidden-y max-h-24">
                             <p class="text-sm text-gray-700 dark:text-gray-400">{{ $item->descripcion }}</p>
                         </div>
                         <div class="mt-4">
