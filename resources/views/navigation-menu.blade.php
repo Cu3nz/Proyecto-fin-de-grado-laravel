@@ -27,12 +27,12 @@
                             <i class="fa-solid fa-users mr-2"></i>{{ __('Gestionar Usuarios') }}
                         </x-nav-link>
                     @endif
-                @endauth    
-                    <x-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('cçategory/*')">
-                        <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
-                    </x-nav-link>
                     <x-nav-link href="{{ route('verLikes') }}" :active="request()->routeIs('likes')">
                         <i class="fa-solid fa-thumbs-up mr-2"></i>{{ __('VerLikes') }}
+                    </x-nav-link>
+                @endauth    
+                    <x-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('category/*')">
+                        <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -187,13 +187,13 @@
             <x-responsive-nav-link href="{{ route('tableUser') }}" :active="request()->routeIs('Users/*')">
                 <i class="fa-solid fa-users mr-2"></i>{{ __('Gestionar Usuarios') }}
             </x-responsive-nav-link>
-            @endif
             @endauth
-            <x-responsive-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('Category/*')">
-                <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
-            </x-responsive-nav-link>
+            @endauth
             <x-responsive-nav-link href="{{ route('verLikes') }}" :active="request()->routeIs('likes')">
                 <i class="fa-solid fa-thumbs-up mr-2"></i>{{ __('VerLikes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('category.index') }}" :active="request()->routeIs('Category/*')">
+                <i class="fa-solid fa-list mr-2"></i>{{ __('Categorias') }}
             </x-responsive-nav-link>
         </div>
 
