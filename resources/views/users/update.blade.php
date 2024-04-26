@@ -1,8 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-xl text-gray-800 leading-tight">
-            Editando Usuario <span>{{ $user->name }}</span>
-        </h2>
+        {{-- ? Miga de pan 13 --}}
+        {{ Breadcrumbs::render('users.update' , $user) }}
     </x-slot>
 
     <div class="py-12">
