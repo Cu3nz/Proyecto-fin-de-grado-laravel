@@ -242,8 +242,14 @@ public function productOverviews(Product $product) //? Le pasamos todo los atrib
         $categoriaPadre = $product->category->category_padre; //? Obtenemos la categoria padre del producto
         $subcategoria = $product->category; //? Obtenemos la subcategoria del producto
 
+        //* Para recuperar todas las imagenes del producto y asi visualizarlas en un apartado de la vista
+        $imagenesReseña = $this->recuperarImagenesReviewsProducto($product); //? Llamamos al metodo recuperarImagenesReviewsProducto para obtener las imagenes de las reviews del producto
 
-        return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria' , 'primeraImagen' , 'categoriaPadre' , 'subcategoria')); //? Pasamos los datos a la vista ProductOverviews
+        //dd($imagenesReseña); //? Imprimimos las imagenes de las reviews del producto
+
+        $reseñasUsuariosEnProuctos = $this -> obteneReviewsDelProductoConUsuarios($product); //? Llamamos al metodo obteneReviewsDelProductoConUsuarios pasandole el producto del cual quiero obtener las reviews que hace el usuario en ese producto en especificos
+
+        return view('products.ProductOverviews', compact('product' , 'imagenes' , 'productosRelacionadosCategoria' , 'primeraImagen' , 'categoriaPadre' , 'subcategoria' , 'imagenesReseña' , 'reseñasUsuariosEnProuctos')); //? Pasamos los datos a la vista ProductOverviews
 
 }
 
@@ -260,5 +266,32 @@ public function alternarLike(Request $request, $productId)
         return back();
     }
 }
+
+//todo Metodo que ayuda a recuperar todas las imagenes de las reviews de un producto y mostrarlas en la vista de ProductOverviews en el apartado Reseña con imagenes
+public function recuperarImagenesReviewsProducto(Product $product)
+{
+    $imagenesReseña = [];
+
+    $reseñasConImagenes = $product->reviews()->with('reviewMultiMedia')->orderBy('id','desc')-> get(); //? Obtenemos todas las reviews del producto junto con sus imagenes (gracias al with de la relacion reviewMultiMedia que esta en el modelo de Review que esta conecada con la tabla polimorfica imageable).
+
+    foreach ($reseñasConImagenes as $reseña ) { //? Recorremos todas las reviews del producto
+        foreach ($reseña -> reviewMultiMedia as $imagenesDeReseña) { //? De cada una de las reviews obtenemos todas las imagenes y la almacenamos en el array imagenesReseña 
+            $imagenesReseña[] = $imagenesDeReseña;
+        }
+    }
+    return $imagenesReseña; //? Devolvemos todas las imagenes de las reviews del producto
+}
+
+//TODO RECUPERAR TODAS LAS REVIEWS QUE HACEN USUARIOS EN UN PRODUCTO EN ESPECIFICO Y MOSTRARLAS EN LA VISTA DE PRODUCTOVERVIEWS EN LA SECCION DE RESEÑAS
+public function obteneReviewsDelProductoConUsuarios(Product $product)
+{
+    $reviews = $product->reviews()->with('user')->orderBy('id','desc')-> get(); //* Obtenemos todas las reseñas del producto junto con el usuario que realizo cada reseña
+
+    return $reviews; //? Devolvemos todas las reviews del producto
+
+}
+
+
+
 
 }
