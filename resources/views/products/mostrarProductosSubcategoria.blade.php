@@ -1,7 +1,8 @@
 <x-app-layout>
-    {{-- ? Miga de pan 7 --}}
+    {{-- ! Cmaibado ahora el boton de ver mas siempre esta abajo de la card independientemente de la descripcion que tenga  --}}
     {{ Breadcrumbs::render('productosConSubcategoria', $categoriaPadre, $idDeSubcategoria) }}
     <x-propio>
+        
         <section class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 px-4 py-5">
             @foreach ($productos as $item)
                 <article class="flex flex-col duration-150 hover:scale-105 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
@@ -13,6 +14,7 @@
                         <div class="overflow-y-auto scrollbar-hidden-y max-h-24">
                             <p class="text-sm text-gray-700 dark:text-gray-400">{{ $item->descripcion }}</p>
                         </div>
+                        <div class="flex-grow"></div> {{-- ! Esto es para que el boton siempre este abajo de la card --}}
                         <div class="mt-4">
                             <span class="text-lg font-semibold text-gray-300">{{ $item->precio }}€</span>
                         </div>
@@ -26,8 +28,6 @@
                 </article>
             @endforeach
         </section>
-
-
 
     </x-propio>
 </x-app-layout>
