@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\UserController;
@@ -44,6 +45,8 @@ Route::middleware([
     /* Route::resource('category' , CategoryController::class); */
     /* Route::resource('products' , ProductController::class); */
 
+    Route::resource('reviews' , ReviewController::class); //! tiene que estar registrado para poder hacer reviews, actualizar y borrar
+    Route::get('/products/{product}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create'); //? Para pasar el producto al cual le quiero hacer la reseña a la vista del formulario (reseña.blade.php), para poner su nombre y la imagen del producto
 });
 
 
