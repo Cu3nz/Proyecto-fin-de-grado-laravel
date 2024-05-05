@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Product extends Model
 {
@@ -47,4 +48,38 @@ class Product extends Model
         return $this->belongsToMany(User::class, 'product_user_likes');
     }
 
+    //todo Un producto puede tener asociadas muchas reviews, por lo tanto el nombre de la funcion en plural y utilizamos hasMany
+    public function reviews(){
+        return $this -> hasMany(Review::class);
+    }
+
+
+    protected static function booted()
+    {
+        //* Escucha el evento de eliminacions del producto
+        static::deleting(function ($product) {
+            //? Elimina las imagenes de las reseñas asociadas al producto
+            $product->borrarImagenesReseñas();
+        });
+    }
+
+  
+
+    public function borrarImagenesReseñas()
+    {
+        // Obtiene todas las reseñas asociadas al producto
+        $reviews = $this->reviews()->with('reviewMultiMedia')->get();
+
+        // Elimina las imagenes de cada reseña
+        foreach ($reviews as $review) {
+            foreach ($review->reviewMultiMedia as $image) {
+                // Borra el archivo de la imagen del almacenamiento
+                Storage::delete($image->url_imagen);
+                // Borra el registro de la imagen de la base de datos
+                $image->delete();
+            }
+        }
+    }
 }
+
+
