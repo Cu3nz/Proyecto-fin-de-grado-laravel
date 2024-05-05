@@ -1,4 +1,12 @@
 <x-app-layout>
+
+    <style>
+        textarea{
+            resize: none;
+            field-sizing: content;
+        }
+    </style>
+
 {{-- ? Migan de pan 10 --}}
 {{ Breadcrumbs::render('products.create') }}
 
@@ -7,15 +15,15 @@
             @csrf
             <div>
                 <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-                <input type="text" id="nombre" name="nombre" value="{{ old('nombre') }}"
+                <input type="text" id="nombre" name="nombre" placeholder="Introduce el nombre del producto" value="{{ old('nombre') }}"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <x-input-error for="nombre"></x-input-error>
             </div>
 
             <div>
                 <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
-                <input type="text" id="descripcion" name="descripcion" value="{{ old('descripcion') }}"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <textarea type="text" placeholder="Escribe una descripción del producto" id="descripcion" name="descripcion" 
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion') }}</textarea>
                 <x-input-error for="descripcion"></x-input-error>
             </div>
 
@@ -31,7 +39,7 @@
 
             <div>
                 <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
-                <input type="number" id="precio" name="precio" value="{{ old('precio') }}"
+                <input type="number" id="precio"   name="precio" step="0.01" value="{{ old('precio') }}"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <x-input-error for="precio"></x-input-error>
             </div>
@@ -69,9 +77,12 @@
                 <input type="file" id="imagen" name="imagen[]" accept="image/*" multiple
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     onchange="handleFiles(this.files)">
-                <textarea name="descripcion_imagenes" placeholder="Escribe una descripcion para todas la/las foto/s"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes') }}</textarea>
-                <x-input-error for="descripcion_imagenes"></x-input-error>
+               
+                    <div class="py-2">
+                        <textarea name="descripcion_imagenes" placeholder="Escribe una descripcion para todas la/las foto/s"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes') }}</textarea>
+                    <x-input-error for="descripcion_imagenes"></x-input-error>
+                    </div>
 
 
                 <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
