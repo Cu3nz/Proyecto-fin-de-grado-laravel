@@ -85,7 +85,7 @@ class TablaUsers extends Component
             $usuario->products()->update(['user_id' => $idAdminReemplazo]);
         }
 
-        // Obtener todas las reseñas del usuario
+        // Obtener todas las reseñas del usuario cuando borramos a un usuario
         $reseñas = $usuario->reviews;
         foreach ($reseñas as $reseña) { //? Recorremos todas las reseñas que ha hecho el usuario
             //? Obtengo todas las imagenes asociadas a cada reseña
