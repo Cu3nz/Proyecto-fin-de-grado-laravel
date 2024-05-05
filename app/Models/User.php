@@ -66,12 +66,21 @@ class User extends Authenticatable
     }
 
     //todo Un usuario administrador cuantos productos puede crear? Muchos, por lo tanto el nombre de la funcion en plural y utilizamos hasMany
-    public function products(){
-        return $this -> hasMany(Product::class);
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 
     //todo Un usuario le puede gustar muchos productos, por lo tanto el nombre de la funcion en plural y utilizamos belongsToMany
-    public function likedProducts(){
-        return $this -> belongsToMany(Product::class, 'product_user_likes');
+    public function likedProducts()
+    {
+        return $this->belongsToMany(Product::class, 'product_user_likes');
+    }
+
+    //todo Un usuario puede crear muchas reviews, por lo tanto el nombre de la funcion en plural y utilizamos hasMany
+    //* El modelo User tiene una relación hasMany con Review, lo que indica que un usuario puede tener muchas reseñas. (mirar entidad relacion)
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }
