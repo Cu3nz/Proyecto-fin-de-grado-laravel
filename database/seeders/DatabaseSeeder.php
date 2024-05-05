@@ -55,6 +55,24 @@ class DatabaseSeeder extends Seeder
             'password' => static::$password ??= Hash::make('password'),
             'rol' => 'admin',
         ]);
+        User::factory(1) -> create([
+            'name' => 'Bichito3',
+            'email' => 'bichito3admin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+        User::factory(1) -> create([
+            'name' => 'Bichito4',
+            'email' => 'bichito4admin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
+        User::factory(1) -> create([
+            'name' => 'Bichito5',
+            'email' => 'bichito5admin@gmail.com',
+            'password' => static::$password ??= Hash::make('password'),
+            'rol' => 'admin',
+        ]);
 
         User::factory(2)->create();
 
@@ -66,8 +84,11 @@ class DatabaseSeeder extends Seeder
         Storage::deleteDirectory('imagen');
         Storage::makeDirectory('imagen');
 
+        Storage::deleteDirectory('imgReseñas');
+        Storage::makeDirectory('imgReseñas');
+
         // Crea algunos productos
-        $products = Product::factory(20)->create();
+        $products = Product::factory(50)->create();
 
         $this -> call(ProductUserLikeSeeder::class); //? Llamamos al seeder ProductUserLikeSeeder para que se ejecuten los likes de los productos
 
