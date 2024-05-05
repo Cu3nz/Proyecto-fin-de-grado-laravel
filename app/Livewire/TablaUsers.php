@@ -12,7 +12,7 @@ class TablaUsers extends Component
 {
 
     use WithPagination;
-    
+
 
     public string $buscar = "";
     public string $orden = "desc";
@@ -21,7 +21,7 @@ class TablaUsers extends Component
     public function render()
     {
 
-       /*  $User = User::orderBy($this -> campo, $this -> orden)
+        /*  $User = User::orderBy($this -> campo, $this -> orden)
             ->where('name', 'like', "{$this->buscar}%")
             ->orWhere('email', 'like', "{$this->buscar}%")
             ->paginate(5); */
@@ -61,36 +61,49 @@ class TablaUsers extends Component
         if ($usuario->email == 'nombretienda@gmail.com') {
             abort(403, 'El usuario root no puede ser eliminado.');
         }
-    
+
         //? Guarda la imagen de perfil que tiene el usuario
         $rutaImagenPerfil = $usuario->profile_photo_path;
-    
+
         //? Verifico que exista la imagen de perfil y que no sea la imagen por defecto
         if ($rutaImagenPerfil && $rutaImagenPerfil != 'noimage.png') {
             //* Borra la imagen
             Storage::delete($rutaImagenPerfil);
         }
-    
+
         //? Busco un administrador o superAdministrador que no sea el usuario actual para reasignar los productos
         $idAdminReemplazo = User::where('rol', 'admin')->where('id', '!=', $usuario->id)->first()->id ??
-                            User::where('rol', 'superAdmin')->where('id', '!=', $usuario->id)->first()->id ?? null;
-    
+            User::where('rol', 'superAdmin')->where('id', '!=', $usuario->id)->first()->id ?? null;
+
         //? Si no hay ningun administrador o superAdministrador disponible para reasignar los productos y el usuario tiene productos
         if (!$idAdminReemplazo && $usuario->products()->count() > 0) {
             abort(422, 'No hay ningún administrador o superAdministrador disponible para reasignar los productos.');
         }
-    
+
         //? Reasigna los productos del usuario a otro administrador o superAdministrador, en el caso de que esten todos borrados, se asignaran al usuario "root" que es el que tiene el email de la tienda
         if ($idAdminReemplazo) {
             $usuario->products()->update(['user_id' => $idAdminReemplazo]);
         }
-    
+
+        // Obtener todas las reseñas del usuario
+        $reseñas = $usuario->reviews;
+        foreach ($reseñas as $reseña) { //? Recorremos todas las reseñas que ha hecho el usuario
+            //? Obtengo todas las imagenes asociadas a cada reseña
+            $imagenes = $reseña->reviewMultiMedia;  //? Almaceno las imagenes de las reseñas que ha hecho usuario  en la variable $imagenes
+            foreach ($imagenes as $imagen) { //? Recorro todas las imagenes de cada reseña
+                //* Borro la imagen de la carpeta storage con nombre imgReseñas
+                Storage::delete($imagen->url_imagen);
+                //? Elimino la imagen de la base de datos
+                $imagen->delete();
+            }
+        }
+
         //? Borro el usuario
         $usuario->delete();
-    
+
         $this->dispatch('mensaje', 'Usuario eliminado y sus productos reasignados correctamente.');
     }
-    
+
 
 
 
@@ -148,7 +161,4 @@ public function delete(User $usuario)
     
     $this->dispatch('mensaje', 'Usuario y sus productos reasignados y borrados correctamente.');
 } */
-
-    
-
 }
