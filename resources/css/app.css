@@ -5,3 +5,9 @@
 [x-cloak] {
     display: none;
 }
+
+textarea{
+    resize: none;
+    field-sizing: content;
+}
+    
