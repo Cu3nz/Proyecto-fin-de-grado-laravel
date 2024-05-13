@@ -73,8 +73,13 @@
                                 <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                     {{ $item->nombre }}
                                 </td>
-                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                                {{-- <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                     {{ $item->descripcion }}
+                                </td> --}}
+                                <td class="px-6 py-4 font-semibold  text-gray-900 dark:text-white">
+                                    <div class="overflow-y-auto w-32 max-h-48">
+                                        {{ $item->descripcion }}
+                                    </div>
                                 </td>
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
