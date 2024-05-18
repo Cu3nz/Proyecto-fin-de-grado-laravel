@@ -77,8 +77,9 @@
           <svg class="text-gray-300 h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
             <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
           </svg>
+          <span class="font-bold mt-0.5 ml-1">({{$product -> reviews -> count()}})</span>
         </div>
-        <p class="sr-only">4 out of 5 stars</p>
+        <p class="sr-only">4 out of 5 stars</p> 
       </div>
     </div>
     </a>
@@ -289,7 +290,7 @@
         
                         <div class="relative ml-3 flex-1">
                           <div class="h-3 rounded-full border border-gray-200 bg-gray-100"></div>
-                          <div style="width: calc(147 / 1624 * 100%)" class="absolute inset-y-0 rounded-full border border-yellow-400 bg-yellow-400"></div>
+                          <div style="width: calc(147 / 3000 * 100%)" class="absolute inset-y-0 rounded-full border border-yellow-400 bg-yellow-400"></div>
                         </div>
                       </div>
                     </dt>
@@ -338,7 +339,7 @@
                         {{-- ! Aqui van los comentarios --}}
               <div class="max-w-full py-9 overflow-hidden">
               <span class="sr-only">Aqui van los comentarios</span>
-              {{-- ?  Toma las últimas 6 reseñas y reviértelas para que se muestren en orden cronologico --}}
+              {{-- ?  Toma las ultimas 6 reseñas de forma descendente, la 1 que se muestre es la ultima --}}
               @foreach ($reseñasUsuariosEnProuctos->take(6) as $item)
               @php
               $totalLength = strlen($item->reseña) + strlen($item->pros) + strlen($item->contras); // calculo el numero de caracteres total entre los campos del formulario reseña, pros y contras
@@ -365,31 +366,50 @@
                               <p id="review-text-{{$item->id}}" class="{{ $totalLength > 150 ? 'line-clamp-3' : '' }}">
                                   {{$item->reseña}}
                               </p>
-                              @if(isset($item -> pros) && isset($item -> contras))
-                              <p id="pros-text-{{$item->id}}" class="{{ $totalLength > 150 ? 'line-clamp-3' : '' }}">
+                              @if(isset($item->pros) && !empty($item->pros))
+                                <p id="pros-text-{{$item->id}}" class="{{ $totalLength > 150 ? 'line-clamp-3' : '' }}">
                                   <span class="font-bold text-green-600">Pros:</span> {{$item->pros}}
-                              </p>
-                              <p id="contras-text-{{$item->id}}" class="{{ $totalLength > 150 ? 'line-clamp-3' : '' }}">
+                                </p>
+                                @else
+                                <span class="font-bold text-green-600">Pros:</span> No hay pros
+                                @endif
+                                @if(isset($item->contras) && !empty($item->contras))
+                                <p id="contras-text-{{$item->id}}" class="{{ $totalLength > 150 ? 'line-clamp-3' : '' }}">
                                   <span class="font-bold text-red-600">Contras:</span> {{$item->contras}}
-                              </p>
-                              @else
-                              @endif
+                                </p>
+                                @else
+                                <span class="font-bold text-red-600">Contras:</span> <span>No hay contras</span>
+                                @endif
 
                               {{-- ? como ya tengo las imagenes cargadas de cada review con el metodo recuperarImagenesReviewsProducto y dentro de este foreach estoy recorriendo cada review que hacen los usuarios gracias al metodo obteneReviewsDelProductoConUsuarios y a la variable "reseñasUsuariosEnProuctos" lo unico que me falta es añadir la relacionreviewMultiMedia para acceder a las imagenes de cada review  --}}
                               <div class="flex mr-5 mt-2">
                                 @foreach ($item->reviewMultiMedia as $media)
                                 <div class="flex-none w-1/4 sm:2/4 mr-1">
-                                <img src="{{ Storage::url($media->url_imagen) }}" loading="lazy" title="{{$media->desc_imagen}}" alt="{{ $media->desc_imagen }}" class="w-full mr-2 h-48 object-cover rounded-lg" aria-hidden="true">
+                                <img src="{{ Storage::url($media->url_imagen) }}"  title="{{$media->desc_imagen}}" alt="{{ $media->desc_imagen }}" class="w-full mr-2 h-48 object-cover rounded-lg" aria-hidden="true">
                                 <span class="sr-only">{{$media->desc_imagen}}</span>
                                 </div>
                                 @endforeach
                               </div>
-
+                              {{-- ! botones para actualizar y borrar --}}
+                              <div class=" flex mt-2 space-x-3">
                               @if ($totalLength > 150)
                               <button class="read-more-btn text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out" data-review-id="{{$item->id}}" data-expanded="false">
                                   Leer más
                               </button>
                               @endif
+                              {{-- @if (Auth::check() && (Auth::user()->id == $item->user_id || Auth::user()->rol === 'superAdmin')) --}}
+                              {{-- * Solo podra ver los botones un usuario que este registrado y que el id del usuario concuerde con el id de la persona que ha hecho la reseña O que sea un administrador --}}
+                              @if (Auth::check() && (Auth::user()->id == $item->user_id || Auth::user()->rol === 'superAdmin'))
+                              <form id="form-deleteReview-{{ $item->id }}" action="{{ route('reviews.destroy', $item -> id) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                {{-- ? Pasamos el id del formulario tambien para que el script sea mas escalable --}}
+                                <button class="border border-gray-600 rounded-lg px-3  hover:bg-slate-200 transition duration-300 ease-in-out" type="button" onclick="confirmarDelete({{ $item->id }}, 'form-deleteReview-')">Eliminar</button>
+                                <a class="border border-gray-600 rounded-lg px-6 hover:bg-slate-200 transition duration-300 ease-in-out ml-2 py-1 text-sm " href="{{ route('reviews.edit', $item -> id) }}">Editar</a> {{-- ? Paso el id de la reseña para que en el edit pueda capturar el product_id y a partir de ahi sacar la imagen y el nombre del producto --}}
+                              </form>
+                              @else
+                              @endif
+                            </div>
                           </div>
                       </div>
                   </div>
