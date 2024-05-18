@@ -12,12 +12,21 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    @if(!Auth::check())
+                    <x-nav-link href="{{ route('welcome') }}" :active="request()->routeIs('welcome')">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    @endif
+                    
+                    @auth
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @endauth
+
                     @auth
                     @if(auth()->user()->rol == 'superAdmin' || auth()->user()->rol == 'admin')
-                        <x-nav-link href="{{ route('Category.principal') }}" :active="request()->routeIs('Category/*')">
+                        <x-nav-link href="{{ route('Category.principal') }}" :active="request()->routeIs('Category.principal')">
                             <i class="fa-solid fa-list mr-2"></i>{{ __('Gestionar Categorias') }}
                         </x-nav-link>
                         <x-nav-link href="{{ route('products.principal') }}" :active="request()->routeIs('Products/*')">
