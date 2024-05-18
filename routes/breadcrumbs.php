@@ -9,10 +9,15 @@ use Diglactic\Breadcrumbs\Breadcrumbs;
 // This import is also not required, and you could replace `BreadcrumbTrail $trail`
 //  with `$trail`. This is nice for IDE type checking and completion.
 use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+use Illuminate\Support\Facades\Auth;
 
 // ?  Home Miga de pan 1
 Breadcrumbs::for('dashboard', function (BreadcrumbTrail $trail) {
-    $trail->push('Home', route('dashboard'));
+    if(Auth::check()){ //* Si estas logueado te vas al dashboard
+        $trail->push('Home', route('dashboard'));
+    } else{ //! Si no estas logueado te vas a welcome cuando pulsas el boton de home
+        $trail->push('Home', route('welcome'));
+    }
 });
 
 //todo Link de Gestionar categorias (Solo para admins)
