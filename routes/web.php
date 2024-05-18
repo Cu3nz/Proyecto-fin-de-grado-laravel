@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+}) -> name('welcome');
 
 Route::middleware([
     'auth:sanctum',
@@ -47,6 +47,7 @@ Route::middleware([
 
     Route::resource('reviews' , ReviewController::class); //! tiene que estar registrado para poder hacer reviews, actualizar y borrar
     Route::get('/products/{product}/reviews/create', [ReviewController::class, 'create'])->name('reviews.create'); //? Para pasar el producto al cual le quiero hacer la reseña a la vista del formulario (reseña.blade.php), para poner su nombre y la imagen del producto
+    Route::delete('/reviews/images/{imgId}', [ReviewController::class, 'eliminarImgsUpdate'])->name('eliminar.imagen.reviews'); //? Para borrar las imagenes del update de reviews cuando se pulse en la papelera
 });
 
 
