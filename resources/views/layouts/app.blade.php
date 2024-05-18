@@ -15,6 +15,10 @@
     {{-- ? Para los iconos --}}
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
+    {{-- todo CDN para las alertas nuevas --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
     <!-- Fontawesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -127,6 +131,42 @@
             });
         })
 
+    </script>
+
+    {{-- ? script para el borrado de las reseñas imagenes de edit de reseñas y demas --}}
+
+    <script>
+        function confirmarDelete(elementId, idFormulario) { //? Pasamos el identificador del elemento y el prefijo del formulario
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "Esta acción eliminará permanentemente el registro seleccionado. ¿Deseas continuar?",
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true, // Coloca el botón de cancelar a la izquierda
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => { //? Si el usuario confirma la eliminación
+                if (result.isConfirmed) {
+                    document.getElementById(idFormulario + elementId).submit(); //? Enviamos el formulario con el id compuesto
+                }
+            });
+        }
+    </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Utiliza la instancia global de Notyf creada en app.js
+        @if(session('success'))
+            window.notyf.success('{{ session('success') }}');
+        @endif
+    
+        @if(session('error'))
+            window.notyf.error('{{ session('error') }}');
+        @endif
+
+    });
     </script>
 
 
