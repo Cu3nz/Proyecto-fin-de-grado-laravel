@@ -9,6 +9,7 @@ use App\Http\Controllers\Socialite\GoogleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ChekearRoles;
 use App\Livewire\ListaVerLikes;
+use App\Livewire\PreCompra;
 use App\Livewire\PrincipalCategory;
 use App\Livewire\PrincipalLogueado;
 use App\Livewire\PrincipalProducts;
@@ -26,20 +27,20 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        $nuevos = Product::join('categories', 'products.category_id', '=', 'categories.id')
+      /*   $nuevos = Product::join('categories', 'products.category_id', '=', 'categories.id')
         ->select('products.*', 'categories.nombre as category_name')
         ->where('categories.nombre', 'Nuevo')
         // ->where('products.estado', 'NO DISPONIBLE')
         ->with('primeraImagen') //? Obtiene la primera imagen de cada producto
-        ->get();
+        ->get(); */
     
-    $anime = Product::join('categories', 'products.category_id', '=', 'categories.id')
+    /* $anime = Product::join('categories', 'products.category_id', '=', 'categories.id')
         ->where('categories.nombre', 'Anime')
         ->select('products.*', 'categories.nombre as category_name')
         ->with('primeraImagen') // Obtiene la primera imagen de cada producto
-        ->get();
+        ->get(); */
 
-        return view('dashboard' , compact('nuevos' , 'anime'));
+        return view('dashboard');
     })->name('dashboard');
 
     /* Route::resource('category' , CategoryController::class); */
@@ -68,6 +69,9 @@ Route::get('/category', [CategoryController::class, 'index'])->name('category.in
 
 //todo Para ver los productos que ha dado like el usuario logueado
 Route::get('verLikes' , ListaVerLikes::class) -> name('verLikes');
+
+//todo Para ir a la Precompra, justo antes de ir a stripe para pagar
+Route::get('/carrito/precompra/{userId}' , PreCompra::class) -> name('preCompra');
 
 
 
