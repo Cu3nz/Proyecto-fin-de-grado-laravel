@@ -6,8 +6,47 @@
     display: none;
 }
 
+
 textarea{
     resize: none;
     field-sizing: content;
 }
-    
+
+
+/* Asegurar que los toasts ocupen todo el ancho en pantallas pequeñas y aparezcan en la parte inferior */
+@media (max-width: 767.98px) {
+    .toast-bottom-full-width {
+        bottom: 0px;  /* Ajusta el valor según lo necesites */
+        left: 0;
+        width: 100%;
+    }
+
+    .toast {
+        margin: 0 auto;
+    }
+}
+
+/* Estilos personalizados para toasts */
+.toast-success {
+    /* background-color: #28a745 !important; */ /* Verde sólido */
+    background-color: #218837 !important; /* Verde sólido */
+    color: white !important;
+    font-weight: bold;
+}
+
+
+
+.toast-error {
+    background-color: #fb041d !important; /* Rojo sólido */
+    color: white !important;
+}
+
+.toast-info {
+    background-color: #17a2b8 !important; /* Azul sólido */
+    color: white !important;
+}
+
+.toast-warning {
+    background-color: #ffc107 !important; /* Amarillo sólido */
+    color: black !important;
+}
