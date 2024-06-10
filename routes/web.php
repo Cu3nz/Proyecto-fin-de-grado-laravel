@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
@@ -13,6 +14,7 @@ use App\Livewire\PreCompra;
 use App\Livewire\PrincipalCategory;
 use App\Livewire\PrincipalLogueado;
 use App\Livewire\PrincipalProducts;
+use App\Livewire\ProductosEnStock;
 use App\Livewire\TablaUsers;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -73,6 +75,9 @@ Route::get('verLikes' , ListaVerLikes::class) -> name('verLikes');
 //todo Para ir a la Precompra, justo antes de ir a stripe para pagar
 Route::get('/carrito/precompra/{userId}' , PreCompra::class) -> name('preCompra');
 
+//todo Para ver los productos que tienen stock disponible 
+Route::get('ProductosConStock' , ProductosEnStock::class) -> name('productosEnStock');
+
 
 
 
@@ -117,3 +122,7 @@ Route::get('/google-auth/callback' , [GoogleController::class , 'callback']) -> 
 //todo login con facebook
 Route::get('/facebook-auth/redirect' , [FacebookController::class , 'redirect']) -> name('facebook.redirect');
 Route::get('/facebook-auth/callback' , [FacebookController::class , 'callback']) -> name('facebook.callback');
+
+//todo Envio de contacto por gmail
+Route::get('contacto', [ContactoController::class, 'pintarFormulario'])->name('mail.pintar');
+Route::post('contacto', [ContactoController::class, 'procesarFormulario'])->name('mail.enviar');
