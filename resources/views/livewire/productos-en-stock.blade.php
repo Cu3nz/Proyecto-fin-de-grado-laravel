@@ -77,7 +77,8 @@
                             <div class="mt-auto">
                                 <a href="{{route('productosConSubcategoria' , $producto -> category -> id)}}" class="mt-2  font-bold">{{ $producto->category->nombre }}</a>
                                 <p class="mt-2 text_rosa text-md font-bold">{{ $producto->precio }}€</p>
-                                <p class="mt-1 text-md text-black">Stock: 
+                                <p class="mt-2  text-md font-bold">Stock: {{ $producto->stock }}</p>
+                                {{-- <p class="mt-1 text-md text-black">Stock: 
                                     <span @class(["font-bold",
                                         'text_violeta' => $producto->stock >= 1 && $producto->stock <= 5,
                                         'text_violeta' => $producto->stock >= 6 && $producto->stock <= 15,
@@ -86,7 +87,7 @@
                                     ])>
                                         {{ $producto->stock }}
                                     </span>
-                                </p>
+                                </p> --}}
                             </div>
                         </div>
                     
