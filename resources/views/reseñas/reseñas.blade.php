@@ -1,7 +1,5 @@
 <x-app-layout>
     <x-propio>
-        {{-- ! ultima comprobacion y a produccion --}}
-      {{-- ! LAS RESEÑAS SE CREAN BIEN, CUANDO SE BORRA IMAGENES SE MANTIENEN LAS ANTIGUAS Y LAS NUEVAS TAMBIEN Y ASI SE CREA LA RESEÑA CON LAS IMAGENES ANTIGUA Y LAS NUEVAS. --}}
         <div class="my-5 mx-5">
             <form action="{{ route('reviews.store') }}" method="post" enctype="multipart/form-data" class="space-y-4">
                 @csrf
@@ -79,11 +77,11 @@
                                              src="https://cdn.lordicon.com/zrkkrrpl.json"
                                              trigger="hover"
                                              state="hover-swirl"
-                                             colors="primary:#c69cf4,secondary:#242424"
+                                             colors="primary:#c23373,secondary:#242424"
                                              style="width:110px;height:150px">
                                          </lord-icon>
                                         <div class="flex text-sm text-gray-600">
-                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text_rosa focus-within:outline-none">
                                                 
 
                                                 <span>Subir un archivo</span>
@@ -112,12 +110,12 @@
 
                         <div class="flex flex-row-reverse flex-wrap">
                             <button type="submit" name="btn"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                                <i class="fas fa-save mr-1 text-xl"></i>Crear
+                                class="text-white rosa focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center  mb-2 sm:mb-0">
+                                <i class="fa-regular fa-newspaper mr-2"></i>Crear Reseña
                             </button>
 
                             <a href="{{ route('overviewProduct' , $product -> id) }}"
-                                class="mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
+                                class="sm:mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
                                 <i class="fas fa-xmark mr-1 text-xl"></i>Cancelar
                             </a>
                         </div>
@@ -128,20 +126,25 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const estrellasIniciales = document.getElementById('puntuacion').value; // Obtiene el valor inicial
-            if (estrellasIniciales) {
+            const estrellasIniciales = document.getElementById('puntuacion').value; //? Obtengo el valor de las estrellas mediante el input oculto 
+            if (estrellasIniciales) { //? Si hay un valor de estrellas, se establece la valoración
                 valoracionEstrellas(null, estrellasIniciales); // Establece las estrellas al cargar la página
             }
         });
 
+        //? Función para establecer las estrellas seleccionadas que toma como parametros el elemento estrella y el rango de estrellas seleccionadas
         function valoracionEstrellas(starElement, rangoEstrellas) {
-            let estrellas = document.querySelectorAll('#rating .fa-star');
+            let estrellas = document.querySelectorAll('#rating .fa-star'); //? Selecciono todas las estrellas con la clase "fa-start" 
             let inputPuntuacion = document.getElementById('puntuacion');
-            //? Primero establecemos las estrellas a far (no estan rellenas)
+            
+            /**
+             * @param estrella.classList.remove('fas') Quita la clase "fas" que es la que rellena la estrella y añade la clase "far" que es la que la deja sin rellenar.
+             */
             estrellas.forEach(estrella => {
                 estrella.classList.remove('fas');
                 estrella.classList.add('far');
             });
+
             //? Recorre todas las estrellas y las rellena hasta el rango seleccionado
             for (let i = 0; i < rangoEstrellas; i++) {
                 estrellas[i].classList.remove('far');
@@ -164,16 +167,16 @@
         var archivos = []; //! Importante utilizar var, para que funcione tanto el drop como el boton de file
     
         function previewFiles() {
-    const inputLoadArchivos = document.getElementById('file-upload');
-    const nuevosArchivos = Array.from(inputLoadArchivos.files);
+    const inputLoadArchivos = document.getElementById('file-upload'); //? seleciionamos el input de tipo file
+    const nuevosArchivos = Array.from(inputLoadArchivos.files); //? Convertimos los archivos a un array
     const totalPermitido = 4 - archivos.length; // Calcula cuántas imágenes nuevas aún pueden ser cargadas
 
     // Si el total de los archivos actuales y los nuevos supera el límite, muestra un mensaje y sincroniza de nuevo los archivos válidos
     if (nuevosArchivos.length > totalPermitido) {
         if (totalPermitido === 0) {
-            window.notyf.error('Ya has cargado el máximo de 4 imágenes permitidas.');
+            window.toastr.error('Ya has cargado el máximo de 4 imágenes permitidas.');
         } else {
-            window.notyf.error(`No puedes cargar más de ${totalPermitido} imagen${totalPermitido > 1 ? 'es' : ''} nueva${totalPermitido > 1 ? 's' : ''}.`);
+            window.toastr.error(`No puedes cargar más de ${totalPermitido} imagen${totalPermitido > 1 ? 'es' : ''} nueva${totalPermitido > 1 ? 's' : ''}.`);
         }
         // Mantiene los archivos ya subidos en el input
         syncInputFiles();
@@ -182,27 +185,29 @@
 
     // Añade los nuevos archivos si no superan el límite
     archivos = archivos.concat(nuevosArchivos.slice(0, totalPermitido));
-    updatePreviews();
+    updatePreviews(); // Actualiza las vistas previas de los archivos
     syncInputFiles(); // Actualiza el input de tipo file con los archivos válidos
 }
 
 
     
         function updatePreviews() {
-            const contenedorPreview = document.getElementById('contenedor-preview');
+            const contenedorPreview = document.getElementById('contenedor-preview'); //? Selecciona el contenedor de las vistas previas
             contenedorPreview.innerHTML = ''; // Limpia el contenedor para rehacerlo con el estado actualizado
     
-            archivos.forEach((file, index) => {
-                const reader = new FileReader();
+            // Itera sobre los archivos y crea una vista previa para cada uno
+            archivos.forEach((file, index) => { 
+                const reader = new FileReader(); // Crea un nuevo objeto FileReader
+                //
                 reader.onload = (event) => {
-                    const imgDiv = document.createElement('div');
-                    imgDiv.className = 'relative w-full md:w-1/4 p-1';
+                    const imgDiv = document.createElement('div'); //* Creamos un div para la imagen
+                    imgDiv.className = 'relative w-full md:w-1/4 p-1'; //* Le damos estilos
     
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.className = 'object-cover h-96 w-full rounded-lg';
+                    const img = new Image(); //? Creamos una nueva instancia de la clase Image
+                    img.src = event.target.result; //? Al src de la imaagen le asignamos el archivo como resultado del evento de carga de la imagen
+                    img.className = 'object-cover h-96 w-full rounded-lg'; //? Le damos estilos a la imagen
     
-                    const botonBorrarImg = document.createElement('button');
+                    const botonBorrarImg = document.createElement('button'); //? Creamos un boton para borrar la imagen
                     botonBorrarImg.innerHTML = '<i class="fas fa-trash text-red-600"></i>';
                     botonBorrarImg.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer';
                     botonBorrarImg.type = 'button';
@@ -213,25 +218,25 @@
                         syncInputFiles(); // Re-sincroniza los archivos con el input después de eliminar
                     };
     
-                    imgDiv.appendChild(img);
-                    imgDiv.appendChild(botonBorrarImg);
-                    contenedorPreview.appendChild(imgDiv);
+                    imgDiv.appendChild(img); //? Añadimos la imagen al div
+                    imgDiv.appendChild(botonBorrarImg); //? Añadimos el boton de borrar  al div
+                    contenedorPreview.appendChild(imgDiv); //? Añadimos el div al contenedor de las vistas previas
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(file); //? Lee el contenido del archivo como una URL
             });
         }
     
         
             function syncInputFiles() {
-            const dataTransfer = new DataTransfer();
-            archivos.forEach(file => dataTransfer.items.add(file));
-            document.getElementById('file-upload').files = dataTransfer.files; // Reasigna los archivos previamente aceptados al input
+            const dataTransfer = new DataTransfer(); //? Crea un nuevo objeto DataTransfer que sirve para manipular archivos
+            archivos.forEach(file => dataTransfer.items.add(file)); //Recorro y añado los archivos al objeto DataTransfer
+            document.getElementById('file-upload').files = dataTransfer.files; // Reasigna los archivos previamente aceptados al input de tipo file para que se envíen con el formulario
         }
     
         document.querySelector('form').addEventListener('submit', function(event) {
             if (archivos.length > 4) {
                 event.preventDefault();
-                window.notyf.error('No puedes tener más de 4 imágenes en total. Por favor, ajusta las imágenes subidas.');
+                window.toastr.error('No puedes tener más de 4 imágenes en total. Por favor, ajusta las imágenes subidas.');
                 syncInputFiles(); // Asegura que los archivos están sincronizados al enviar el formulario
             }
         });
@@ -254,7 +259,7 @@
             evento.stopPropagation(); //? Detiene la propagacion del evento.
             evento.preventDefault();  //? Evita el comportamiento por defecto del navegador.
             //? Cambia el color del borde como indicación visual.
-            evento.currentTarget.style.borderColor = '#a866ee';
+            evento.currentTarget.style.borderColor = '#c23373';
         });
     
         //? Evento que se dispara cuando los archivos son soltados en el área.
@@ -270,7 +275,7 @@
         //? Evento que se dispara cuando un archivo deja el area de arrastre.
         areaArrastre.addEventListener('dragleave', (evento) => {
             //? Restablece el color del borde al original.
-            evento.currentTarget.style.borderColor = '#c69cf4';
+            evento.currentTarget.style.borderColor = '#A1295F';
         });
     </script>
     
