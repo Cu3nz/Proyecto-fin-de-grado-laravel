@@ -1,16 +1,11 @@
 <x-app-layout>
 
-    <style>
-        textarea{
-            resize: none;
-            field-sizing: content;
-        }
-    </style>
+    {{-- ! NUEVO CREATE DONDE PUEDO ARRASTRAR O HACER CLICK PARA SUBIR IMAGENES!!!! --}}
 
-{{-- ? Migan de pan 10 --}}
-{{ Breadcrumbs::render('products.create') }}
+    {{-- ? Miga de pan 10 --}}
+    {{ Breadcrumbs::render('products.create') }}
 
-    <div class="max-w-4xl mt-5  mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
+    <div class="max-w-4xl mt-5 mx-auto p-6 bg-gray-200 rounded-lg shadow-md">
         <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data" class="space-y-4">
             @csrf
             <div>
@@ -39,7 +34,7 @@
 
             <div>
                 <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
-                <input type="number" id="precio"   name="precio" step="0.01" value="{{ old('precio') }}"
+                <input type="number" id="precio" name="precio" step="0.01" value="{{ old('precio') }}"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 <x-input-error for="precio"></x-input-error>
             </div>
@@ -71,19 +66,43 @@
                 <x-input-error for="category_id"></x-input-error>
             </div>
 
+            <div class="py-2">
+                <label for="">Descripcion de imagenes</label>
+                <textarea name="descripcion_imagenes" id="descripcion_imagenes" placeholder="Escribe una descripcion para todas la/las foto/s"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes') }}</textarea>
+                <x-input-error for="descripcion_imagenes"></x-input-error>
+            </div>
+
             <div class="mb-6">
                 <label for="imagen" class="block mb-2 text-sm font-medium text-gray-700">Imágenes</label>
-                {{-- ! Creamos un array para alamacenar todas las imagenes que sube el usuario --}}
-                <input type="file" id="imagen" name="imagen[]" accept="image/*" multiple
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    onchange="handleFiles(this.files)">
-               
-                    <div class="py-2">
-                        <textarea name="descripcion_imagenes" placeholder="Escribe una descripcion para todas la/las foto/s"
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion_imagenes') }}</textarea>
-                    <x-input-error for="descripcion_imagenes"></x-input-error>
-                    </div>
-
+                <div class="flex flex-col">
+                    <label class="block">
+                        <span class="sr-only">Añadir una foto o video</span>
+                        <div class="mt-2 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <lord-icon
+                                src="https://cdn.lordicon.com/zrkkrrpl.json"
+                                trigger="hover"
+                                state="hover-swirl"
+                                colors="primary:#c23373,secondary:#242424"
+                                style="width:110px;height:150px">
+                            </lord-icon>
+                            <div class="flex text-sm text-gray-600">
+                                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text_rosa  focus-within:outline-none">
+                                    <span>Subir un archivo</span>
+                                    {{-- ! Creamos un array para almacenar todas las imágenes que sube el usuario --}}
+                                        <input id="file-upload" name="imagen[]" type="file" multiple
+                                            accept="image/*" class="sr-only" onchange="previewFiles()">
+                                    </label>
+                                    <p class="pl-1">o arrastra y suelta</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG, GIF .WEBP hasta 2048MB
+                                </p>
+                            </div>
+                        </div>
+                    </label>
+                </div>
 
                 <div class="w-full mt-2 px-5 md:w-3/8" id="contenedorImagenDefecto">
                     <img src="{{ Storage::url('noimage.png') }}" alt="Imagen por defecto"
@@ -91,186 +110,151 @@
                 </div>
 
                 <div id="imagenPreview" class="flex flex-wrap mt-4">
-                    {{-- ! Aqui se muestran las imagenes que suba el usuario --}}
+                    {{-- ! Aquí se muestran las imágenes que suba el usuario --}}
                 </div>
+                  <x-input-error for="imagen.*"></x-input-error>
                 <x-input-error for="imagen"></x-input-error>
                 <input type="hidden" id="ordenImagenes" name="ordenImagenes" value="">
             </div>
 
             <div class="flex flex-row-reverse flex-wrap">
                 <button type="submit" name="btn"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                    <i class="fas fa-save mr-1 text-xl"></i>Crear
+                    class="text-white rosa focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center  mb-2 sm:mb-0">
+                    <i class="fas fa-plus mr-1 text-xl"></i>Crear Producto
                 </button>
-                <button type="reset"
-                    class="mr-2 text-white bg-yellow-700 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-yellow-600 dark:hover:bg-yellow-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                    <i class="fas fa-paintbrush mr-1 text-xl"></i>Limpiar campos
-                </button>
+                
                 <a href="{{ route('products.principal') }}"
                     class="mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
                     <i class="fas fa-xmark mr-1 text-xl"></i>Cancelar
                 </a>
             </div>
-
         </form>
     </div>
 
-
-
-    {{-- * Funcionando a la perfeccion --}}
-
+    {{-- * Script para manejar la carga de imágenes --}}
     <script>
-        let previews = [];
-        let archivosSeleccionados = [];
-        
-        function handleFiles(imagenes) {
-            const previewContainer = document.getElementById('imagenPreview'); //? Definimos una constante para el div donde se van a ver las imagenes preview
-            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //? Definimos una constante para el div donde se va a ver la imagen por defecto
-            previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
-            previews = [];
-            archivosSeleccionados = []; // Limpiar la lista previa de archivos seleccionados
+        var archivos = []; // Importante utilizar var, para que funcione tanto el drop como el boton de file
     
-            //? Convierto las imagenes en un array para poder interar por ellas con un foreach
-            Array.from(imagenes).forEach((archivo, index) => {
-                archivosSeleccionados.push({ archivo, index }); //? Añado cada imagen al array archivosSeleccionados jusnto con su indice original
-                const reader = new FileReader(); //? Creo una instancia de FileReader, herramienta que permite leer los contenidos de archivos almacenados en el cliente de forma asincrona
-                reader.onload = (e) => mostrarPreview(e, archivo, index);
-                reader.readAsDataURL(archivo); //? Leemos el contenido de la imagen para mostrarlo en la vista previa
-            });
-    
-            contenedorImagenDefecto.style.display = imagenes.length > 0 ? 'none' : 'block'; //? Si hay imagenes el contenedor con la imagen por defecto se elimina, de lo contrario se muestra.
-        }
-    
-        function mostrarPreview(event, archivo, index) {
-            const imgDiv = document.createElement('div'); //? Creamos un div
-            imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Le damos clases al div 
-            imgDiv.dataset.index = index; // Guardar el índice original para mantener el "orden"
-    
-            const img = document.createElement('img'); //? Creamos un elemento img
-            img.src = event.target.result; //? Cargamos la imagen leida por el FileReader en el elemento img
-            img.className = 'object-cover h-48 w-full rounded-lg'; //? Le damos clase 
-            imgDiv.appendChild(img); //? Añadimos la imagen al div creado anteriormente
-    
-            const deleteButton = document.createElement('button'); //? Creamos un boton para borrar la imagen
-            deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Le ponemos la papelera como icono
-            deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer'; //? Le damos clases css al boton
-            deleteButton.onclick = () => borrarPreview(imgDiv, archivo, index); //? Evento para borrar la imagen
-            imgDiv.appendChild(deleteButton); //? Añadimos el boton al div
-    
-            const previewContainer = document.getElementById('imagenPreview');
-            // Insertar la vista previa en el contenedor, manteniendo el orden original
-            previews.splice(index, 0, imgDiv); // Insertar en el índice correcto
-            previewContainer.insertBefore(imgDiv, previewContainer.children[index]);
-        }
-    
-        function borrarPreview(imgDiv, archivoABorrar, indexABorrar) {
-    // Actualiza la lista de archivos seleccionados removiendo el archivo que coincide con el archivo a borrar
-    archivosSeleccionados = archivosSeleccionados.filter(item => item.archivo !== archivoABorrar);
-    imgDiv.remove(); //? Elimino la imagen del DOM
-    
-    // Si no hay mas elementos en la lista de vistas previas, mostrar el contenedor por defecto
-    if (archivosSeleccionados.length === 0) {
-        document.getElementById('contenedorImagenDefecto').style.display = 'block';
-    }
-    
-    actualizarInputFiles(); // Actualiza el input de archivos
-}
+        function previewFiles() {
+            const inputLoadArchivos = document.getElementById('file-upload'); //? Definimos el input de tipo file
+            const nuevosArchivos = Array.from(inputLoadArchivos.files); //? Convertimos los archivos a un array
+            const totalPermitido = 4 - archivos.length; //? Calcula cuantas imagenes nuevas aun pueden ser cargadas
 
-    
-        function actualizarInputFiles() {
-            const dataTransfer = new DataTransfer();
-            archivosSeleccionados.forEach(({ archivo }) => dataTransfer.items.add(archivo));
-            document.getElementById('imagen').files = dataTransfer.files;
-        }
-    </script>
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    {{-- todo Script que funciona pero no lo hace bien --}}
-   {{--  <script>
-        let previews = [];
-        let archivosSeleccionados = []; // Necesitamos esta variable para mantener un registro de los archivos actualmente seleccionados
-
-    
-        function handleFiles(imagenes) {
-            const previewContainer = document.getElementById('imagenPreview'); //? Contenedor de las vistas previas
-            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto'); //?
-            previewContainer.innerHTML = ''; // Limpiar vistas previas anteriores
-            previews = []; // Reiniciar la lista de archivos seleccionados al cargar nuevas imágenes
-            archivosSeleccionados = Array.from(imagenes); // Actualizar con los nuevos archivos seleccionados
-
-
-            if (imagenes.length > 0) { //* Si el usuario ha subido imagenes
-                contenedorImagenDefecto.style.display = 'none'; //? Ocultamos el div con la imagen por defecto
-            } else {
-                contenedorImagenDefecto.style.display = 'block'; //? Si no, mostramos el div con la imagen por defecto
+            // Si el total de los archivos actuales y los nuevos supera el limite, muestra un mensaje y sincroniza de nuevo los archivos
+            if (nuevosArchivos.length > totalPermitido) {
+                if (totalPermitido === 0) {
+                    window.toastr.error('Ya has cargado el máximo de 4 imágenes permitidas.' , 'Imágenes excedidas.');
+                } else {
+                    window.toastr.error(`No puedes cargar más de ${totalPermitido} imagen${totalPermitido > 1 ? 'es' : ''} nueva${totalPermitido > 1 ? 's' : ''}.` , 'Error al cargar las imágenes.');
+                }
+                //? Mantiene los archivos cargados en el input
+                syncInputFiles();
+                return; //? Detiene la funcion si se supera el limite
             }
-    
 
-            Array.from(imagenes).forEach((imagen, index) => {
-                const reader = new FileReader(); //? Crea una instancia de FileReader, que es una herramienta que permite leer los contenidos de archivos (o buffers de datos) almacenados en el cliente de forma asíncrona.
-                reader.onload = function(e) { // Define qué hacer cuando el FileReader ha terminado de cargar el archivo. 'e' es el evento de carga con la información del archivo cargado.
-                    const imgDiv = document.createElement('div'); //? Creamos un div donde se van a ir mostrando las imagenes en modo preview
-                    imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Le damos unos estilos al div mediante una clase, utilizo className para sobreescribir cualquier clase que tenga, en este caso no tiene ninguna pero mejor prevenir que lamentar
-                    
-                    const img = document.createElement('img'); //? Creamos un elemento img
-                    img.src = e.target.result; //? Carga la imagen leida por el FileReader en el elemento img, estableciendo el src de la imagen leida
-                    img.className = 'object-cover h-48 w-full rounded-lg'; //? Le damos unos estilos a la imagen
-    
-                    const deleteButton = document.createElement('button'); //? Creamos el boton de borrar
-                    deleteButton.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Le metemos como texto un boton de una papelera con un color rojo
-                    deleteButton.className = 'absolute bottom-0 right-0 m-1 p-1  rounded-full cursor-pointer'; //? Le damos estilos añadiendo una clase con tailwind
-                    deleteButton.addEventListener('click', () => borrarPreview(imgDiv, imagen)); // Evento para borrar la preview y el archivo
+            
+            //? Añado los nuevos archivos al array de archivos si no supera el limite.
+            archivos = archivos.concat(nuevosArchivos.slice(0, totalPermitido));
+            updatePreviews(); //? Actualiza las vistas previas de las imagenes
+            syncInputFiles();  //? Actualiza el input de tipo file con los archivos que son validos
+        }
 
-    
-                    //todo Momento de añadir los elementos al DOM
-                    imgDiv.appendChild(img); //? Añadimos la imagen al div
-                    imgDiv.appendChild(deleteButton); //? Añadimos el boton de borrar al div
-                    previewContainer.appendChild(imgDiv);  //? Añadimos al al contenedor div donde se van a cargar todas las imagenes (contenedor Principal), los divs con cada una de las imagenes
-                    previews.push(imgDiv); //? Añadimos el div con la imagen al array de vistas previas
+        function updatePreviews() {
+            const contenedorPreview = document.getElementById('imagenPreview'); //? Selecciono el contenedor donde se van a ver la preview de imagenes
+            contenedorPreview.innerHTML = ''; //? Limpio el contenedor para rehacerlo con el estado actualizado
+
+
+            archivos.forEach((file, index) => { //? Recorro el array de archivos
+                const reader = new FileReader(); //? Creo un nuevo objeto FileReader
+
+                reader.onload = (event) => { //? Esta funcion o evento se ejecuta cuando el archivo se ha cargado
+                    const imgDiv = document.createElement('div'); //? Creamos un div
+                    imgDiv.className = 'relative w-full md:w-1/3 p-1'; //? Le damos estilos al div
+
+                    const descripcionImagenes = document.getElementById('descripcion_imagenes').value; //? Obtenemos la descripcion de las imagenes
+
+                    const img = new Image(); //? creo un objeto o elemento de tipo imagen
+                    img.src = event.target.result; //? Defino que el atributo src de la imagen sea el resultado de la carga del archivo
+                    img.className = 'object-cover w-full h-48 md:h-64 rounded-lg'; //? Le doy unos estilos a la imagen
+                    img.alt = descripcionImagenes; //? Defino el atributo alt de la imagen
+
+                    //todo Boton de borrar
+                    const botonBorrarImg = document.createElement('button'); //? Creo el boton
+                    botonBorrarImg.innerHTML = '<i class="fas fa-trash text-red-600"></i>'; //? Le defino el icono de la papelera
+                    botonBorrarImg.className = 'absolute bottom-0 right-0 m-1 p-1 rounded-full cursor-pointer'; //? Le doy unos estilos al boton
+                    botonBorrarImg.type = 'button'; //? Defino el boton, el cual es de tipo button.
+
+                    //? Evento que se dispara cuando se hace click en el boton de borrar
+                    botonBorrarImg.onclick = function(event) {
+                        event.preventDefault(); //* Evita que el botón envie el formulario
+                        archivos.splice(index, 1); //* Elimina el archivo del array
+                        updatePreviews(); //* Actualiza las vistas previas después de eliminar
+                        syncInputFiles(); //* Re-sincroniza los archivos con el input después de eliminar
+                    };
+
+                    imgDiv.appendChild(img); //? Añado el boton de borrar, junto con la imagen al contenedor
+                    imgDiv.appendChild(botonBorrarImg); 
+                    // Añado el div contenedor al contenedor de vistas previas
+                    contenedorPreview.appendChild(imgDiv);
                 };
-                reader.readAsDataURL(imagen);
+                // Lee el archivo como una URL de datos (data URL)
+                reader.readAsDataURL(file);
             });
-        }
-    
-        function borrarPreview(imgDiv, archivo) {
-        // Encuentra y elimina el archivo del array de archivos seleccionados
-        const indiceArchivo = archivosSeleccionados.indexOf(archivo);
-        if (indiceArchivo > -1) {
-            archivosSeleccionados.splice(indiceArchivo, 1);
+
+            // Mostrar u ocultar la imagen por defecto
+            const contenedorImagenDefecto = document.getElementById('contenedorImagenDefecto');
+            contenedorImagenDefecto.style.display = archivos.length === 0 ? 'block' : 'none';
         }
 
-        // Encuentra y elimina la vista previa del array y del DOM
-        const indicePreview = previews.indexOf(imgDiv);
-        if (indicePreview > -1) {
-            previews.splice(indicePreview, 1);
-            imgDiv.remove();
+        function syncInputFiles() {
+            //* Creo un nuevo objeto o instancia del objeto DataTransfer
+            const dataTransfer = new DataTransfer();
+            //? Iteraro sobre el array de archivos y añade a cada archivo a la lista de los intems DataTransfer
+            archivos.forEach(file => dataTransfer.items.add(file));
+            //? Reasigna la lista de archivos del input de tipo file con los archivos almacenados en el objeto DataTransfer
+            document.getElementById('file-upload').files = dataTransfer.files; // Reasigna los archivos previamente aceptados al input
         }
 
-        // Si no hay más vistas previas, mostramos la imagen por defecto
-        if (previews.length === 0) {
-            document.getElementById('contenedorImagenDefecto').style.display = 'block';
-        }
+        document.querySelector('form').addEventListener('submit', function(event) {
+                // Verifica si hay más de 4 archivos en el array archivos
+            if (archivos.length > 4) {
+                // Previene el envío del formulario
+                event.preventDefault();
 
-        // Actualiza el input de archivos con los archivos restantes
-        const dataTransfer = new DataTransfer();
-        archivosSeleccionados.forEach(file => dataTransfer.items.add(file));
-        document.getElementById('imagen').files = dataTransfer.files;
-    }
-
+                window.toastr.error('No puedes tener más de 4 imágenes en total. Por favor, ajusta las imágenes subidas.');
+                // Asegura que los archivos están sincronizados con el input
+                syncInputFiles(); // Asegura que los archivos estan sincronizados al enviar el formulario
+            }
+        });
     </script>
- --}}
 
+    {{-- ? Para arrastrar las imágenes --}}
+    <script>
+        // Seleccionamos el area de arrastre usando la clase del div.
+        const areaArrastre = document.querySelector('.border-dashed');
+        
+        // Evento que se dispara cuando un archivo es arrastrado sobre el area.
+        areaArrastre.addEventListener('dragover', (evento) => {
+            evento.stopPropagation(); // Detiene la propagación del evento.
+            evento.preventDefault();  // Evita el comportamiento por defecto del navegador.
+            // Cambia el color del borde como indicación visual.
+            evento.currentTarget.style.borderColor = '#c23373';
+        });
+
+        // Evento que se dispara cuando los archivos son soltados en el area.
+        areaArrastre.addEventListener('drop', (evento) => {
+            evento.stopPropagation(); // Detiene la propagación del evento.
+            evento.preventDefault();  // Evita el comportamiento por defecto del navegador (importante hacerlo).
+            // Asigna los archivos al input de archivo.
+            document.getElementById('file-upload').files = evento.dataTransfer.files;
+            // Llama a la función de vista previa.
+            previewFiles();
+        });
+
+        // Evento que se dispara cuando un archivo deja el area de arrastre.
+        areaArrastre.addEventListener('dragleave', (evento) => {
+            // Restablece el color del borde al original.
+            evento.currentTarget.style.borderColor = '#A1295F';
+        });
+    </script>
 </x-app-layout>
