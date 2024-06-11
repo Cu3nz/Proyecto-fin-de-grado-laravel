@@ -3,15 +3,15 @@
     {{-- ? Miga de pan 2 Livewire categorias --}}
     {{ Breadcrumbs::render('gestion_categorias') }}
     <x-propio>
-        <div class="flex w-full mb-1 items-center">
+        <div class="flex w-full px-2 mb-1 items-center">
 
-            <div class="flex-1 ">
+            <div class="flex-1  ">
                 <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4"
                     placeholder="Busca un articulo" wire:model.live="buscar">
             </div>
 
             <div>
-                <a class=" mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <a class=" mb-2 rosa transition duration-200 ease-in text-white font-bold py-2 px-4 rounded"
                     href="{{ route('category.create') }}"><i class="fas fa-add mr-2"></i>Añadir Categoria</a>
             </div>
 
@@ -27,10 +27,13 @@
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">
+                                Imagen
+                            </th>
+                            <th scope="col" class="px-6 py-3">
                                 Nombre
                             </th>
                             <th scope="col" class="px-6 py-3">
-                                Categoria
+                                Descripción
                             </th>
                             <th scope="col" class="px-6 py-3">
                                 Botones
@@ -40,15 +43,20 @@
                     <tbody>
                         @foreach ($categorias as $item)
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                <th scope="row"
-                                    class="px-6 py-4 font-medium text-gray-900 whitespace dark:text-white">
-                                    {{ $item->nombre }}
-                                </th>
                                 <td class="p-4">
                                     <div
                                         class="w-16 md:w-32 max-w-full max-h-full rounded-lg shadow-md overflow-hidden aspect-square">
                                         <img src="{{ Storage::url($item->image?->url_imagen) }}"
                                             class="object-cover w-full h-full" alt="{{ $item->image?->desc_imagen }}">
+                                    </div>
+                                </td>
+                                <th scope="row"
+                                    class="px-6 py-4 font-medium text-gray-900 whitespace dark:text-white">
+                                    {{ $item->nombre }}
+                                </th>
+                                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white overflow-y-auto max-h-48 w-full sm:w-10">
+                                    <div class="max-h-48 overflow-y-auto">
+                                        {{ $item->descripcion }}
                                     </div>
                                 </td>
                                 <td class="px-6 py-4">
@@ -73,7 +81,7 @@
                             <p class="mb-8">Por favor verifica que la categoria exista o intenta con otro nombre</p>
 
                             <a href="{{ route('Category.principal') }}"
-                                class="px-4 inline py-2 text-sm font-medium leading-5 shadow text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none focus:shadow-outline-blue bg-blue-600 active:bg-blue-600 hover:bg-blue-700">Volver
+                                class="px-4 inline py-2 text-sm font-medium leading-5 shadow text-white transition-colors duration-150 border border-transparent rounded-lg focus:outline-none focus:shadow-outline-blue rosa">Volver
                                 a la pagina principal</a>
                         </div>
                         <div class="max-w-lg">
