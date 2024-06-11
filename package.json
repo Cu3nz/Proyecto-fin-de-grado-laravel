@@ -16,6 +16,9 @@
         "vite": "^5.0"
     },
     "dependencies": {
-        "notyf": "^3.10.0"
+        "@lordicon/element": "^1.6.0",
+        "lottie-web": "^5.12.2",
+        "notyf": "^3.10.0",
+        "toastr": "^2.1.4"
     }
 }
