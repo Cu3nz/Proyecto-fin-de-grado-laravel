@@ -16,7 +16,7 @@ class CategorySeeder extends Seeder
         //? Categorias para la tienda en plan tipo nuevo en oferta , etc
         $tienda = Category::firstOrCreate(['nombre' => 'Tienda'], ['category_padre_id' => null, 'es_padre' => true, 'descripcion' => "Categorías principales de la tienda"]);
 
-        $subcategoriasTienda = ['Oferta', 'Nuevo'];
+        $subcategoriasTienda = ['Oferta', 'Nuevos'];
 
         foreach ($subcategoriasTienda as $nombreSubcategoria) {
             Category::firstOrCreate(['nombre' => $nombreSubcategoria], ['category_padre_id' => $tienda->id, 'es_padre' => false, 'descripcion' => fake()->sentence]);
