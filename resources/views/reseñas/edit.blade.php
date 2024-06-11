@@ -87,7 +87,7 @@
 
                                                 <span>Subir un archivo</span>
                                                 <input id="file-upload" name="imagen[]" type="file" multiple
-                                                    accept="image/*" class="" onchange="previewFiles()">
+                                                    accept="image/*" class="sr-only" onchange="previewFiles()">
                                             </label>
                                             <p class="pl-1">o arrastra y suelta</p>
                                         </div>
