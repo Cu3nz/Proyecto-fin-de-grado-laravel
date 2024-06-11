@@ -134,7 +134,7 @@ class PrincipalProducts extends Component
 
         $product -> delete();
 
-        $this -> dispatch('mensaje' , 'Producto borrado correctamente');
+        $this->dispatch('deleteProduct', 'Producto borrado correctamente');
 
     }
 
