@@ -80,6 +80,24 @@ class Product extends Model
             }
         }
     }
+
+
+    //todo Para la puntuacion de los productos, basicamente para hacer las estrellas y el recuadro de las reseñas con el %
+
+    public function puntuacionPromedio()
+    {
+        //? Si no hay reseñas, la puntuación promedio es 0
+        $totalResenas = $this->reviews->count(); //* Cuenta el numero de reseñas asociadas al producto utilizando la relacion reviews() y count() para contar
+         //dd($totalResenas);
+        if ($totalResenas == 0) {
+            return 0;
+        }
+
+        //? Suma de todas las puntuaciones de las reseñas de un producto osea busca un producto y suma todos los valores de la columna puntuacion de la tabla reviews
+        $puntuacionTotal = $this->reviews->sum('puntuacion'); 
+        //? Dividimos la suma total del atributo puntuacion y lo dividimos por el total de reseña que tiene el producto y redondeadmos a 1 decimal. 
+        return round($puntuacionTotal / $totalResenas, 1); //? Redondeo a 1 decimal
+    }
 }
 
 
