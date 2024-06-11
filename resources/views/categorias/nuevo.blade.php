@@ -7,10 +7,10 @@
                 enctype="multipart/form-data">
                 @csrf
                 <div class="mb-6">
-                    <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900">Nombre de la
+                    <label for="nombre" class="block mb-2 text-md font-bold  text-gray-900">Nombre de la
                         categoría</label>
                     <input type="text" value="{{ old('nombre') }}" name="nombre" id="nombre"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        class="bg-gray-50 border border-gray-300 font-bold text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Nombre de la categoría">
                     <x-input-error for="nombre"></x-input-error>
                 </div>
@@ -20,10 +20,10 @@
 
 
                 <div class="mb-6">
-                    <label for="tipo-categoria" class="block mb-2 text-sm font-medium text-gray-900">Tipo de
+                    <label for="tipo-categoria" class="block mb-2 text-md font-bold  text-gray-900">Tipo de
                         categoría</label>
                     <select name="tipo" id="tipo-categoria" onchange="mostrarSelectPadres(this.value)"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        class="bg-gray-50 border border-gray-300 font-bold text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">---- Selecciona una opción --------</option>
                         <option value="padre" @if (old('tipo') == 'padre') selected @endif>Categoría Padre
                         </option>
@@ -36,10 +36,10 @@
 
 
                 <div class="mb-6" id="padre-select-container" style="display: none;">
-                    <label for="select-padres" class="block mb-2 text-sm font-medium text-gray-900">Categoría
+                    <label for="select-padres" class="block mb-2 text-md font-bold text-gray-900">Categoría
                         Padre</label>
                     <select name="category_padre_id" id="select-padres"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-md font-bold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                         <option value="">---- Selecciona una opción --------</option>
                         @foreach ($categoriasPadres as $categoriaPadre)
                             <option value="{{ $categoriaPadre->id }}"
@@ -50,22 +50,23 @@
                     <x-input-error for="category_padre_id"></x-input-error>
                 </div>
 
-                <label for="descripcion" class="block mb-2 text-sm font-medium text-gray-900">Descripción para la categoria</label>
+                <label for="descripcion" class="block mb-2 text-md font-bold text-gray-900">Descripción para la categoria</label>
                 <textarea name="descripcion" id="descripcion" placeholder="Escribe una descripción para la categoria"
-                class="mt-1 block w-full text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion') }}</textarea>
+                class="mt-1 block w-full mb-5 text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('descripcion') }}</textarea>
                 <x-input-error for="descripcion"></x-input-error>
 
 
                 {{-- todo Imagen --}}
                 <div class="mb-6">
-                    <label for="imagen" class="block mb-2 text-sm font-medium text-gray-900">Imágenes</label>
+                    <label for="imagen" class="block my-2 text-md font-bold text-gray-900">Imágenes</label>
                     {{-- ! Creamos un array para alamacenar todas las imagenes que sube el usuario --}}
                     <input type="file" id="imagen" name="imagen" accept="image/*"
                         onchange="handleFiles(this.files)"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        class="bg-gray-50 border mb-5 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " />
 
-                    <textarea name="desc_imagen" placeholder="Escribe una descripción para todas la/las foto/s"
-                        class="mt-1 block w-full text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('desc_imagen') }}</textarea>
+                    <label for="desc_imagen" class="text-gray-900 mt-5 text-md font-bold">Descripción imagen</label>
+                    <textarea name="desc_imagen" id="desc_imagen" placeholder="Escribe una descripción para todas la/las foto/s"
+                    class="mt-1 block w-full mb-5  text-black font-bold rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('desc_imagen') }}</textarea>
                     <x-input-error for="desc_imagen"></x-input-error>
 
 
@@ -84,24 +85,26 @@
 
                 <div class="flex flex-row-reverse">
                     <button type="submit"
-                        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center">Crear
+                        class="text-white rosa focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm  sm:w-auto px-5 py-2.5 text-center"><i class="fa-solid fa-plus mr-2"></i>Crear
                         Categoría</button>
+                        
                     <a class="mr-2 bg-red-600 hover:bg-red-800 text-white font-bold py-2 px-4 rounded"
-                        href="{{ route('Category.principal') }}">Salir</a>
+                        href="{{ route('Category.principal') }}"><i class="fa-solid fa-xmark mr-2"></i>Salir</a>
                 </div>
             </form>
         </div>
 
         <script>
             function mostrarSelectPadres(value) {
-                var selectPadres = document.getElementById('padre-select-container');
-                if (value === 'hijo') {
+                var selectPadres = document.getElementById('padre-select-container'); //? Seleccionamos el contenedor de selección de categorías padre
+
+                if (value === 'hijo') { //* Si el valor es hijo, se muestra el contenedor de selección de categorías padre
                     selectPadres.style.display = 'block';
-                } else {
+                } else { //? De lo contrario, se oculta
                     selectPadres.style.display = 'none';
                 }
             }
-            // Asegurarse de que el contenedor de selección de categorías padre se muestre correctamente cuando se recargue la página con un valor previo seleccionado
+            //? Esto es para que se muestre u oculte el select de categorías padre dependiendo del valor del select de tipo de categoría
             document.addEventListener('DOMContentLoaded', function() {
                 mostrarSelectPadres(document.getElementById('tipo-categoria').value);
             });
