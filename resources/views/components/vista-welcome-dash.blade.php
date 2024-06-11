@@ -268,7 +268,7 @@
   
           <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
             @foreach ($ShingekinoKyojin -> take(10) as $item)
-            <div class="group relative">
+            <div class="group mt-5 relative">
                 <a href="{{route('overviewProduct' , $item -> id)}}">
                     <div class="h-56 w-full  overflow-hidden rounded-md group-hover:opacity-75 lg:h-72 xl:h-80">
                         <img loading="lazy" src="{{Storage::url($item -> primeraImagen -> url_imagen)}}" alt="{{$item -> primeraImagen -> desc_imagen}}" title="{{$item -> primeraImagen -> desc_imagen}}" aria-label="{{$item -> primeraImagen -> desc_imagen}}" class="h-full w-full object-cover object-center">
