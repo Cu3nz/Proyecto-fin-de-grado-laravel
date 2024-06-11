@@ -59,7 +59,7 @@ if (isset($input['rol']) && $user->rol !== 'user' && $input['rol'] === 'user') {
 
     $user->update($data);
 
-    return redirect()->route('tableUser')->with('mensaje', 'Usuario actualizado correctamente');
+    return redirect()->route('tableUser')->with('userUpdate', 'Usuario actualizado correctamente');
 }
 
 /** 
