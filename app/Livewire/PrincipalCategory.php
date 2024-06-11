@@ -80,7 +80,7 @@ class PrincipalCategory extends Component
         //* Elimina la categoria de la tabla categories
         $category->delete();
         
-        $this -> dispatch('mensaje' , 'Categoria borrada correctamente');
+        $this -> dispatch('categoryDelete' , 'Categoria ' . $category -> nombre .'borrada correctamente');
     }
 
 
