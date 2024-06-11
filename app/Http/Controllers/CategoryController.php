@@ -153,7 +153,7 @@ class CategoryController extends Controller
             'url_imagen' => $ruta,
         ]);
 
-        return redirect()->route('Category.principal')->with('mensaje', 'Categoría creada correctamente');
+        return redirect()->route('Category.principal')->with('categoryCreate', 'Categoría creada correctamente');
     }
 
     /**
@@ -248,7 +248,7 @@ class CategoryController extends Controller
             ]);
         }
 
-        return redirect()->route('Category.principal')->with('mensaje', 'Categoria actualizada correctamente');
+        return redirect()->route('Category.principal')->with('categoryUpdate', 'Categoria actualizada correctamente');
     }
 
 
