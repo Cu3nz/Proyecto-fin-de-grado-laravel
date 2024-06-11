@@ -1,13 +1,12 @@
 <div>
     {{-- ? Miga de pan 12 --}}
-    {{ Breadcrumbs::render('gestion_usuarios') }}
     <x-propio>
-        <div class="flex w-full mb-1 items-center">
-            <div class="flex-1 ">
-                <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4"
-                    placeholder="Busca un articulo" wire:model.live="buscar">
+        {{ Breadcrumbs::render('gestion_usuarios') }}
+        <div class="flex w-full mb-2 justify-center">
+            <div class="flex items-center justify-center w-full">
+                <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4 max-w-md"
+                placeholder="Busca un articulo" wire:model.live="buscar">
             </div>
-
         </div>
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
