@@ -1,66 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+[![License: CC BY-NC-ND 4.0](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Nombre de la tienda
+Imagen del logo de la tienda centrado
 
-## About Laravel
+## Versiones de los diferentes framework y lenguajes de programación: 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Laravel Framework PHP**: V11.0.1
+- **PHP**: V8.2
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Tecnologías utilizadas para su desarollo
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white) ![Laravel](https://img.shields.io/badge/laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white) ![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+ ![NPM](https://img.shields.io/badge/NPM-%23CB3837.svg?style=for-the-badge&logo=npm&logoColor=white)
+ 
+ 
+ 
+ ## 📖 Descripción del Proyecto
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Bienvenido a **Nombre de la Tienda**, tu destino ideal para una experiencia de compra online sin igual. Nuestra plataforma no solo ofrece una amplia variedad de productos de alta calidad, sino que también garantiza una navegación intuitiva y un proceso de compra eficiente y seguro.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Funcionalidades Principales
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Añadir Productos al Carrito:** Los usuarios pueden explorar productos y añadirlos a su carrito de compras para una experiencia de compra fluida.
+- **Sistema de Likes:** Los usuarios pueden dar "me gusta" a los productos, y gestionar y visualizar sus productos favoritos de manera sencilla.
+- **Gestión Administrativa:** 
+  - **Usuarios:** Los administradores pueden gestionar la base de usuarios, incuyendo la actualización de datos del usuario o de rol  y eliminación de cuentas.
+  - **Productos:** Administración completa de los productos, desde añadir nuevos productos hasta la actualización y eliminación de los existentes. Los administradores también pueden definir los productos como disponibles o no disponibles, y gestionar los reportes gracias a una zona de contacto (En gmail).
+  - **Categorías:** Los administradores pueden organizar los productos en categorías, facilitando la navegación y la gestión del inventario.
+  - **Reportes:** Gestión de reportes enviados por los usuarios a través de la zona de contacto llegando a la cuenta de soporte gmail de la tienda.
+  - **Pasarela de Pago:** Integración con una pasarela de pago  [Stripe](https://dashboard.stripe.com/test/dashboard) para realizar transacciones seguras y eficientes.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Características Adicionales
 
-## Laravel Sponsors
+- **Seguridad:** Implementación de prácticas de seguridad modernas para proteger la información de los usuarios y la integridad del sistema.
+- **Rendimiento:** Optimización del rendimiento para garantizar tiempos de carga rápidos y una experiencia de usuario suave.
+- **Escalabilidad:** Arquitectura escalable que permite añadir nuevas funcionalidades y manejar un incremento en el tráfico y las transacciones sin comprometer el rendimiento.
+- **Responsividad:** Diseño responsivo que garantiza que la tienda se vea y funcione bien en dispositivos de escritorio, tabletas y móviles.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+ 
+## 💻 Requisitos necesarios
+- [Composer](https://getcomposer.org/)
+- PHP versión (7.4 o posterior)
+- [Node.js](https://nodejs.org/) (incluye npm)
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## 🧑🏻‍💻 Instalación
 
-## Contributing
+### 🖱️ Clonar el repositorio
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+git clone https://github.com/Cu3nz/Proyecto-fin-de-grado-laravel.git
+```
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+### Instalaciones previsas
+> [!IMPORTANT]
+> Importante para porder ejecutar el proyecto
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Instalar dependecias de PHP 
 
-## License
+```
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Instalar dependecias de JavaScript
+```
+npm install
+```
+
+## Configurar el entorno
+
+> [!IMPORTANT]
+> Importante seguir estos pasos:
+
+1. Ejecutar el siguiente comando: 
+```
+composer update 
+```
+2. Copiar el archivo de configuracion de ejemplo y renombrarlo a `.env`. 
+
+    ```
+    cp .env.example .env
+    ```
+    
+3. Editar el archivo `.env ` con las configuraciones adecuadas para tu entorno
+
+
+4. Generar la clave de la aplicación
+ ```
+ php artisan key:generate
+ ``` 
+4. Ejecutar las migraciones de la base de datos
+```
+php artisan migrate
+``` 
+> [!NOTE]
+> En el caso de que quieras utilizar datos falsos tendras que hacer lo siguiente: 
+
+- Recorres la siguiente estructura de datos `database/seeder/DatabaseSeeder.php` y descomentas todo el código. 
+
+Para tener datos falsos deberas ejecutar el siguiente comando: 
+```
+php artisan migrate:fresh --seed
+```
+
+5. Compilamos los assets de frontend
+```
+npm run dev
+```
+6. Ejecutar el servidor local 
+```
+php artisan serve
+```
+
+Ahora deberias poder acceder a tu aplicacion en `http://localhost:8000`. 
+
+## 🧑🏻‍💻 Autor
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)]()
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sergio-gallegos-guerrero-7525762a5/)
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/) 
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](sergiogalledaw@gmail.com)
+
+
+
+## Derechos Reservados
+> [!WARNING]
+> Leer atentamente
+
+**Todo el contenido de este proyecto, incluyendo, pero no limitado a, el código fuente, documentación, imágenes y otros archivos, es propiedad exclusiva del autor. Ninguna parte de este proyecto puede ser reproducida, distribuida, ni transmitida de ninguna forma, ni por ningún medio, sin el permiso previo por escrito del autor.**
