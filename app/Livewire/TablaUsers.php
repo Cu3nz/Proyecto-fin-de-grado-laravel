@@ -101,7 +101,7 @@ class TablaUsers extends Component
         //? Borro el usuario
         $usuario->delete();
 
-        $this->dispatch('mensaje', 'Usuario eliminado y sus productos reasignados correctamente.');
+        $this->dispatch('UserEliminado', 'Usuario eliminado y sus productos reasignados correctamente.');
     }
 
 
