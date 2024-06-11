@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Review;
+use Intervention\Image\Facades\Image as OptimizarImagen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -70,16 +71,40 @@ class ReviewController extends Controller
         if ($request->hasFile('imagen')) { //? Si se han subido un tipo de archivo imagen (concuerda con el name del input file del formulario de reseñas.blade.php (name="imagen[]"))
             foreach ($request->file('imagen') as $imagen) { //? Recorro cada imagen que se ha subido
                 $imagenesReseña[] = $imagen; //* La almaceno en el array para controlar que se estan pasando las imagenes
+                
+                //todo OPTIMIZAR IMAGENES   
+
+                // Guardar la imagen original
+            $path = $imagen->store('imgReseñas');
+            
+            // Optimizar la imagen
+            $imagenTemporal = Storage::get($path);
+            $filename = pathinfo($path, PATHINFO_FILENAME) . '.webp';
+            $optimizedPath = 'imgReseñas/' . $filename;
+
+            $imagenOptimizada = OptimizarImagen::make($imagenTemporal)
+                ->resize(1500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode('jpg', 75);
+
+            // Guardar la imagen optimizada en el almacenamiento
+            Storage::put($optimizedPath, (string) $imagenOptimizada);
+
+            // Eliminar la imagen original
+            Storage::delete($path);
+
+
                 $reseñaCreada->reviewMultiMedia()->create([ //? creo la imagen y la descripcion para la imagen en la tabla images de la siguiente manera , "reviewMultiMedia" viene de la funcion que esta en el modelo Review.php
-                    'url_imagen' => $imagen->store('imgReseñas'), //? Guardo la imagen en la carpeta imgReseñas
+                    'url_imagen' => $optimizedPath, //? Guardo la imagen en la carpeta imgReseñas
                     'desc_imagen' => 'Imagen de reseña del producto' . " " . $product->nombre, //? Descripcion de la imagen con el nombre del producto
                 ]);
             }
         }
-
         //dd($imagenesReseña);
 
-        return redirect()->route('overviewProduct', $request->product_id)->with('success', 'Gracias por tu reseña, se ha guardado correctamente 🥰');
+        return redirect()->route('overviewProduct', $request->product_id)->with('reviewCreate', 'Gracias por tu reseña, se ha guardado correctamente 🥰');
     }
 
     /**
@@ -152,17 +177,40 @@ class ReviewController extends Controller
         
         if ($request->hasFile('imagen')) { //? Si se han subido un tipo de archivo imagen (concuerda con el name del input file del formulario de edit.blade.php (carpeta reseñas) (name="imagen[]"))
             foreach ($request->file('imagen') as $imagen) { //? Recorro cada imagen que se ha subido
-                $imagenesReseña[] = $imagen; //* La almaceno en el array para controlar que se estan pasando las imagenes
-                $review->reviewMultiMedia()->create([ //? creo la imagen y la descripcion para la imagen en la tabla images de la siguiente manera , "reviewMultiMedia" viene de la funcion que esta en el modelo Review.php
-                    'url_imagen' => $imagen->store('imgReseñas'), //? Guardo la imagen en la carpeta imgReseñas
-                    'desc_imagen' => 'Imagen de reseña del producto' . " " . $product->nombre, //? Descripcion de la imagen con el nombre del producto
+                $imagenesReseña[] = $imagen; //* La almaceno en el array para controlar que se están pasando las imágenes
+                
+                // Guardar la imagen original
+                $path = $imagen->store('imgReseñas');
+                
+                // Optimizar la imagen
+                $imagenTemporal = Storage::get($path);
+                $filename = pathinfo($path, PATHINFO_FILENAME) . '.webp';
+                $optimizedPath = 'imgReseñas/' . $filename;
+    
+                $imagenOptimizada = OptimizarImagen::make($imagenTemporal)
+                    ->resize(1500, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg', 85);
+    
+                // Guardar la imagen optimizada en el almacenamiento
+                Storage::put($optimizedPath, (string) $imagenOptimizada);
+    
+                // Eliminar la imagen original
+                Storage::delete($path);
+    
+                // Crear registro de la imagen optimizada en la base de datos
+                $review->reviewMultiMedia()->create([
+                    'url_imagen' => $optimizedPath,
+                    'desc_imagen' => 'Imagen de reseña del producto ' . $product->nombre,
                 ]);
             }
         }
 
         //dd($imagenesReseña);
 
-        return redirect() -> route('overviewProduct' , $request -> product_id) -> with('success' , 'Reseña actualizada correctamente');
+        return redirect() -> route('overviewProduct' , $request -> product_id) -> with('reviewUpdate' , 'Reseña actualizada correctamente');
         
     }
     /**
@@ -185,7 +233,7 @@ class ReviewController extends Controller
         $review -> delete(); //? Borramos la reseña de la tabla reviews
 
 
-        return redirect() -> back() -> with('success', 'Reseña eliminada correctamente');
+        return redirect() -> back() -> with('reviewDelete', 'Reseña eliminada correctamente');
 
     }
 
