@@ -3,14 +3,14 @@
         {{-- ? Miga de pan 9  --}}
         {{ Breadcrumbs::render('gestion_productos') }}
         {{-- todo Buscador y boton de crear producto --}}
-        <div class="flex w-full mb-1 items-center">
+        <div class="flex w-full mb-1 px-2 items-center">
             <div class="flex-1 ">
                 <input class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm w-3/4"
                     placeholder="Busca un articulo" wire:model.live="buscar">
             </div>
 
             <div>
-                <a class=" mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <a class=" mb-2 rosa transition duration-200 ease-in text-white font-bold py-2 px-4 rounded"
                     href="{{ route('products.create') }}"><i class="fas fa-add mr-2"></i>Crear producto</a>
             </div>
 
