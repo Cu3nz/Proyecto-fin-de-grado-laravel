@@ -1,9 +1,5 @@
 <x-app-layout>
     <x-propio>
-        {{-- ! estoy en producccin revisar y subir a github  --}}
-      {{-- ! 13 de mayo 2:23 revisar mañaan a las 6 am --}}
-        
-      
         <div class="my-5 mx-5">
             <form action="{{ route('reviews.update' , $review -> id) }}" method="post" enctype="multipart/form-data" class="space-y-4">
                 @csrf
@@ -82,11 +78,11 @@
                                              src="https://cdn.lordicon.com/zrkkrrpl.json"
                                              trigger="hover"
                                              state="hover-swirl"
-                                             colors="primary:#c69cf4,secondary:#242424"
+                                             colors="primary:#c23373,secondary:#242424"
                                              style="width:110px;height:150px">
                                          </lord-icon>
                                         <div class="flex text-sm text-gray-600">
-                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none">
+                                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text_rosa focus-within:outline-none">
                                                 
 
                                                 <span>Subir un archivo</span>
@@ -108,7 +104,7 @@
                         <x-input-error for="imagen.*"></x-input-error>
                         <x-input-error for="imagen"></x-input-error>
 
-                        <section id="contenedor-imagenes-existentes" class="flex w-full flex-wrap mt-4">
+                       {{--  <section id="contenedor-imagenes-existentes" class="flex w-full flex-wrap mt-4">
                             @foreach ($imagenesReseña as $imagen)
                             <div class="relative w-full md:w-1/3 p-1">
                                 <img class="imagenes-existentes object-cover h-48 md:h-64 w-full rounded-lg" src="{{ Storage::url($imagen->url_imagen) }}" alt="{{ $imagen->desc_imagen }}">
@@ -123,7 +119,9 @@
                                     </form>
                                 </div>
                             @endforeach
-                        </section>
+                        </section> --}}
+
+                        @livewire('btn-delete-img-div', ['imageable_id' => $review->id, 'imageable_type' => 'App\Models\Review'])
                         
                         {{-- ? Preview  Para las imagenes que se van a cargar en el update --}}
                         <section id="contenedor-preview" class="flex flex-wrap mt-4"></section>
@@ -135,11 +133,11 @@
 
                         <div class="flex flex-row-reverse flex-wrap">
                             <button type="submit" name="btn"
-                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-2 sm:mb-0">
-                                <i class="fas fa-save mr-1 text-xl"></i>Actualizar Reseña
+                                class="text-white rosa focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center  mb-2 sm:mb-0">
+                                <i class="fa-solid fa-rotate mr-2"></i>Actualizar Reseña
                             </button>
                             <a href="{{ route('overviewProduct' , $product -> id) }}"
-                                class="mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
+                                class="sm:mr-2 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-xl w-full sm:w-auto px-4 py-1.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 mb-2 sm:mb-0">
                                 <i class="fas fa-xmark mr-1 text-xl"></i>Cancelar
                             </a>
                         </div>
@@ -186,18 +184,21 @@
         var archivos = []; // Almacena todos los archivos seleccionados para nuevas imágenes
     
         function previewFiles() {
-            const inputLoadArchivos = document.getElementById('file-upload');
-            const archivosTemporales = Array.from(inputLoadArchivos.files);
-            const imagenesExistentes = document.querySelectorAll('.imagenes-existentes').length;
-            const totalPermitido = 4 - imagenesExistentes;
+            const inputLoadArchivos = document.getElementById('file-upload'); //? obtengo el input de tipo file
+            const archivosTemporales = Array.from(inputLoadArchivos.files); //? Convierto los archivos seleccionados en un array
+            const imagenesExistentes = document.querySelectorAll('.imagenes-existentes').length; // cuento las imagenes existentes en el contenedor de preview
+            const totalPermitido = 4 - imagenesExistentes; //? Calculo el numero total de nuevas imagenes permitidas
             
-            // Combina los archivos temporales con los actuales mientras se filtran duplicados
+            /**
+             * @nuevosArchivos filtra los archivos temporales (variable ArchivosTemporales) excluyendo los que ya estan en archivos evitando asi duplicados
+             * @archivosCombinados se encarga de combinar los archivos existentes con los nuevos archivos que se cargan
+            */
             let nuevosArchivos = archivosTemporales.filter(nuevo => !archivos.some(actual => actual.name === nuevo.name));
             let archivosCombinados = archivos.concat(nuevosArchivos);
     
-            // Verifica si el número total de imágenes supera el límite permitido
+            //? Verifico si el numero total de imagenes supera el limite permitido
             if (archivosCombinados.length > totalPermitido) {
-                window.notyf.error(`No puedes cargar más de ${totalPermitido} imágenes nuevas.`);
+                window.toastr.error(`No puedes cargar más de ${totalPermitido} imágenes nuevas.`);
                 // Limita los archivos al total permitido excluyendo los nuevos que excedan el límite
                 archivos = archivos.slice(0, totalPermitido);
                 syncInputFiles(); // Sincroniza el input con los archivos ya aceptados
@@ -214,15 +215,17 @@
         function updatePreviews() {
             const contenedorPreview = document.getElementById('contenedor-preview');
             contenedorPreview.innerHTML = ''; // Limpia el contenedor para rehacerlo con el estado actualizado
-    
+            
+            //? Recorro cada archivo seleccionado
             archivos.forEach((file, index) => {
-                const reader = new FileReader();
+                const reader = new FileReader(); //? Creo un objeto FileReader para leer el archivo
+                //? Cuando el archivo se carga, se ejecuta la función 
                 reader.onload = (event) => {
-                    const imgDiv = document.createElement('div');
+                    const imgDiv = document.createElement('div'); //? Creamos un div
                     imgDiv.className = 'relative w-full md:w-1/3 p-1';
     
-                    const img = new Image();
-                    img.src = event.target.result;
+                    const img = new Image(); //? Creamos un objeto de imagen
+                    img.src = event.target.result; //? Almacenamos en el atributo src de la imagen el resultado de la lectura del archivo
                     img.className = 'object-cover h-64 w-full rounded-lg';
                     
     
@@ -237,18 +240,18 @@
                         syncInputFiles(); // Re-sincroniza los archivos con el input después de eliminar
                     };
     
-                    imgDiv.appendChild(img);
-                    imgDiv.appendChild(botonBorrarImg);
-                    contenedorPreview.appendChild(imgDiv);
+                    imgDiv.appendChild(img); //? Añadimos la imagen al div
+                    imgDiv.appendChild(botonBorrarImg); //? Añadimos el boton al div
+                    contenedorPreview.appendChild(imgDiv); //? Añado el div al contenedor preview
                 };
                 reader.readAsDataURL(file);
             });
         }
     
         function syncInputFiles() {
-            const dataTransfer = new DataTransfer();
-            archivos.forEach(file => dataTransfer.items.add(file));
-            document.getElementById('file-upload').files = dataTransfer.files; // Sincroniza los archivos con el input
+            const dataTransfer = new DataTransfer(); //? Creo un objeto DataTransfer
+            archivos.forEach(file => dataTransfer.items.add(file)); //? Añado los archivos al objeto DataTransfer
+            document.getElementById('file-upload').files = dataTransfer.files; //? Sincroniza los archivos con el input
         }
     
         document.querySelector('form').addEventListener('submit', function(event) {
@@ -297,19 +300,19 @@
         // Configura el evento 'dragover' para preparar el área de arrastre
         areaArrastre.addEventListener('dragover', (evento) => {
             evento.preventDefault();  // Evita el comportamiento predeterminado
-            evento.currentTarget.style.borderColor = '#a866ee'; // Cambia el color del borde a morado
+            evento.currentTarget.style.borderColor = '#c23373'; // Cambia el color del borde a morado
         });
     
         // Maneja el evento 'drop' para procesar los archivos arrastrados
         areaArrastre.addEventListener('drop', (evento) => {
             evento.preventDefault();  // Evita el comportamiento predeterminado
-            evento.currentTarget.style.borderColor = '#c69cf4'; // Restablece el color del borde
+            evento.currentTarget.style.borderColor = '#c23373'; // Restablece el color del borde
             procesarArchivos(evento.dataTransfer.files); // Procesa los archivos arrastrados
         });
     
         // Restablece el color del borde cuando el archivo sale del área de arrastre
         areaArrastre.addEventListener('dragleave', (evento) => {
-            evento.currentTarget.style.borderColor = '#c69cf4'; // Restablece el color del borde
+            evento.currentTarget.style.borderColor = '#A1295F'; // Restablece el color del borde
         });
     
         // Procesa los archivos arrastrados
@@ -319,7 +322,7 @@
             const nuevosArchivos = Array.from(archivosArrastrados).filter(archivo => !archivos.some(a => a.name === archivo.name && a.size === archivo.size));
     
             if (nuevosArchivos.length + archivos.length > totalPermitido) {
-                window.notyf.error(`No puedes subir más de ${totalPermitido} imágenes nuevas.`);
+                window.toastr.error(`No puedes subir más de ${totalPermitido} imágenes nuevas.`);
                 return; // Detiene la función si se excede el límite
             }
     
