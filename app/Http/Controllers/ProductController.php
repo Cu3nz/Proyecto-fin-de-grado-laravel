@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image as OptimizarImagen;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -78,10 +79,37 @@ class ProductController extends Controller
         if ($request->hasFile('imagen')) { //? Verifico si se han enviado archivos con el nombre 'imagen' en el formulario
             foreach ($request->file('imagen') as $imagen) { //? Itero sobre cada archivo enviado con el nombre imagen , en este caso solo seran imagenes
                 $imagenes[] = $imagen; // Devuelve las imagines que se han enviado y recorrido en el foreach, esto solo para depurar y ver que se han enviado las imagenes
-                //? Creamos un nuevo registro en la tabla images del tipo Product porque hemos llamado a la relacion images(), que es la que esta en el modelo Product (Mirar modelo Product), y le pasamos los datos de la imagen (descripcion y url_imagen).
+                //? Guardo la imagen con un nombre aleatorio con store
+                $path = $imagen->store('imagen');
+
+                //? Obtengo el nombre de la imagen original
+                $originalName = basename($path);
+
+                //? Cambio la extensión del nombre original a .webp
+                $filename = pathinfo($originalName, PATHINFO_FILENAME) . '.webp';
+                $optimizedPath = 'imagen/' . $filename;
+
+                //? Leo o cojo la imagen de la carpeta "imagen"
+                $imagenTemporal = Storage::get($path);
+
+                //? Optimizar la imagen y convertirla a WEBP y redimensaionarla a 800px de ancho
+                $imagenOptimizada = OptimizarImagen::make($imagenTemporal)
+                    ->resize(1500, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg', 75);
+
+                // Guardar la imagen optimizada en el almacenamiento
+                Storage::put($optimizedPath, (string) $imagenOptimizada);
+
+                //? Elimino la imagen almacenada con store, dejando solo la imagen optimizada
+                Storage::delete($path);
+
+                // Crear un nuevo registro en la tabla images del tipo Product
                 $productoCreado->images()->create([
                     'desc_imagen' => $request->descripcion_imagenes,
-                    'url_imagen' => $imagen->store('imagen'),
+                    'url_imagen' => $optimizedPath,
                 ]);
             }
         } else {
@@ -91,9 +119,9 @@ class ProductController extends Controller
                 'url_imagen' => 'noimage.png',
             ]);
         }
-        dd($imagenes); // Imprime todas las imágenes
+        //dd($imagenes); // Imprime todas las imágenes
 
-        return redirect()->route('products.principal')->with('mensaje', 'Producto creado correctamente');
+        return redirect()->route('products.principal')->with('productCreate', 'Producto creado correctamente');
     }
 
     /**
@@ -163,17 +191,54 @@ class ProductController extends Controller
         
         if ($request->hasFile('imagen')) {
             foreach ($request->file('imagen') as $imagen) {
+                // Guardo la imagen con un nombre aleatorio con store
+                $path = $imagen->store('imagen');
+
+                // Obtengo el nombre de la imagen original
+                $originalName = basename($path);
+
+                // Cambio la extensión del nombre original a .webp
+                $filename = pathinfo($originalName, PATHINFO_FILENAME) . '.webp';
+                $optimizedPath = 'imagen/' . $filename;
+
+                // Leo o cojo la imagen de la carpeta "imagen"
+                $imagenTemporal = Storage::get($path);
+
+                // Optimizar la imagen y redimensionarla a 1500px de ancho
+                $imagenOptimizada = OptimizarImagen::make($imagenTemporal)
+                    ->resize(1500, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    })
+                    ->encode('jpg', 75); // Convertir a webp y ajustar la calidad
+
+                // Guardar la imagen optimizada en el almacenamiento
+                Storage::put($optimizedPath, (string) $imagenOptimizada);
+
+                // Verificar y eliminar la imagen almacenada con store, dejando solo la imagen optimizada
+                if (Storage::exists($path)) {
+                    Storage::delete($path);
+                }
+
+                // Crear un nuevo registro en la tabla images del tipo Product con la ruta de la imagen optimizada
                 $product->images()->create([
                     'desc_imagen' => $request->descripcion_imagenes,
-                    'url_imagen' => $imagen->store('imagen'),
+                    'url_imagen' => $optimizedPath,
                 ]);
             }
+        }
+
+        // Verificar si el producto tiene imágenes existentes y actualizar sus descripciones
+        if ($product->images()->count() == 0) {
+            $product->images()->create([
+                'desc_imagen' => $request->descripcion_imagenes,
+                'url_imagen' => 'noimage.png',
+            ]);
         } else {
-            // Solo añadir 'noimage.png' si el producto no tiene imágenes actualmente
-            if ($product->images()->count() == 0) {
-                $product->images()->create([
-                    'desc_imagen' => $request->descripcion_imagenes,
-                    'url_imagen' => 'noimage.png',
+            // Actualizar la descripción de las imágenes existentes
+            foreach ($product->images as $image) {
+                $image->update([
+                    'desc_imagen' => $request->descripcion_imagenes
                 ]);
             }
         }
@@ -191,7 +256,7 @@ class ProductController extends Controller
 
     /* dd("hola"); */
 
-        return redirect() -> route('products.principal') -> with('mensaje', 'Producto actualizado correctamente'); 
+        return redirect() -> route('products.principal') -> with('productUpdate', 'Producto actualizado correctamente'); 
 
     }
 
