@@ -2,7 +2,7 @@
   {{-- Miga de pan --}}
   <x-propio>
       {{ Breadcrumbs::render('category.index') }}
-      <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-4 px-4 py-5">
+      <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-6 px-4 py-5">
           @foreach ($categoriasPadres as $item)
               <article class="transform transition-transform duration-300 ease-in-out hover:scale-105">
                   <a href="{{ route('category.subcategorias', $item->id) }}" class="block">
