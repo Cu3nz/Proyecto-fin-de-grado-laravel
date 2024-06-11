@@ -134,6 +134,12 @@ Breadcrumbs::for('visualizar_favoritos', function (BreadcrumbTrail $trail) {
 //todo Fin Ver likes
 
 
+//todo Para los productos en stock
+
+Breadcrumbs::for('productosEnStock', function (BreadcrumbTrail $trail) {
+    $trail->parent('dashboard');
+    $trail->push('Productos en Stock', route('productosEnStock'));
+});
 
 
 
