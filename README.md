@@ -1,7 +1,5 @@
-[![License: CC BY-NC-ND 4.0](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 # Nombre de la tienda
-Imagen del logo de la tienda centrado
 
 ## Versiones de los diferentes framework y lenguajes de programación: 
 
@@ -16,7 +14,7 @@ Imagen del logo de la tienda centrado
  
  ## 📖 Descripción del Proyecto
 
-Bienvenido a **Nombre de la Tienda**, tu destino ideal para una experiencia de compra online sin igual. Nuestra plataforma no solo ofrece una amplia variedad de productos de alta calidad, sino que también garantiza una navegación intuitiva y un proceso de compra eficiente y seguro.
+Bienvenido a **Crocheteando.com**, tu destino ideal para una experiencia de compra online sin igual. Nuestra plataforma no solo ofrece una amplia variedad de productos de alta calidad, sino que también garantiza una navegación intuitiva y un proceso de compra eficiente y seguro.
 
 
 ### Funcionalidades Principales
@@ -129,3 +127,4 @@ Ahora deberias poder acceder a tu aplicacion en `http://localhost:8000`.
 > Leer atentamente
 
 **Todo el contenido de este proyecto, incluyendo, pero no limitado a, el código fuente, documentación, imágenes y otros archivos, es propiedad exclusiva del autor. Ninguna parte de este proyecto puede ser reproducida, distribuida, ni transmitida de ninguna forma, ni por ningún medio, sin el permiso previo por escrito del autor.**
+[![License: CC BY-NC-ND 4.0](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
