@@ -29,7 +29,7 @@
                             <th scope="col" class="px-6 py-3 cursor-pointer" wire:click="ordenar('nombre')">
                                 <i class="fa-solid fa-sort mr-2"></i>Nombre
                             </th>
-                            <th scope="col" class="px-6 py-3 cursor-pointer">
+                            <th scope="col" class="px-6 py-3 cursor-pointer" wire:click="ordenar('descripcion')">
                                 <i class="fa-solid fa-sort mr-2"></i>Descripción
                             </th>
                             <th scope="col" class="px-6 py-3 cursor-pointer" wire:click="ordenar('stock')">
