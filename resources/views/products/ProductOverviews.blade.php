@@ -496,7 +496,7 @@
 
               @if(count($reseñasUsuariosEnProuctos) >= 6) {{-- ? En cuanto haya 6 reseñas o mas el boton de leer mas reseñas aparece  --}}
             <div class="flex justify-center mt-5">
-                <a href="#" id="read-more-reviews" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+                <a href="#" id="read-more-reviews" class="rosa ease-in duration-200 text-white font-bold py-2 px-4 rounded-full">
                   Leer más reseñas
                 </a>
               </div>
