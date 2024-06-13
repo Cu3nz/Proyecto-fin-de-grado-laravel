@@ -20,7 +20,7 @@ class FacebookController extends Controller
 
     public function callback(){
 
-        $facebookUser = Socialite::driver('github')->user();
+        $facebookUser = Socialite::driver('facebook')->user();
 
         //todo Si existe en la base de datos recoge el email del usuario, ahora si no existe en la base de datos lo crea, por eso usamos firstOrCreate
 
