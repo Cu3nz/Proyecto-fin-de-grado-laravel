@@ -68,7 +68,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://i.imgur.com/HwlNwuR.png" alt="img logo">
+            <img src="https://i.imgur.com/nEZR9vH.png" alt="img logo">
             <h2>Formulario de Contacto</h2>
             <p><strong>Categoría:</strong> <span>{{ $categoria }}</span></p>
         </div>
