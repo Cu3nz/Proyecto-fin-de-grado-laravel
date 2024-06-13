@@ -7,8 +7,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
-                        {{-- <img src="{{ Storage::url('7.svg') }}" class="object-contain h-16 w-auto sm:w-70" alt="Logo"> --}}
+                        {{-- <x-application-mark class="block h-9 w-auto" /> --}}
+                        {{-- ! lo puedo subir hasta h-20 o 24 --}}
+                        <img src="{{ Storage::url('10.svg') }}" class="object-contain h-16 w-auto sm:w-70" alt="Logo">
                     </a>
                     
                 </div>
