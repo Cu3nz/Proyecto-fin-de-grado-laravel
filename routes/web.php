@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Socialite\FacebookController;
 use App\Http\Controllers\Socialite\GoogleController;
+use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\ChekearRoles;
 use App\Livewire\ListaVerLikes;
@@ -126,3 +127,8 @@ Route::get('/facebook-auth/callback' , [FacebookController::class , 'callback'])
 //todo Envio de contacto por gmail
 Route::get('contacto', [ContactoController::class, 'pintarFormulario'])->name('mail.pintar');
 Route::post('contacto', [ContactoController::class, 'procesarFormulario'])->name('mail.enviar');
+
+//todo Stripe
+Route::get('/checkout', [StripeController::class, 'checkout'])->name('checkout');
+Route::post('/session', [StripeController::class, 'session'])->name('session');
+Route::get('/success', [StripeController::class, 'success'])->name('success');
