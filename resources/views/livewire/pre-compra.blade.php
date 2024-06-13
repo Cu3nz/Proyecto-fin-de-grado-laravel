@@ -1,7 +1,6 @@
 
 
 
-{{-- hola 22 de mayo --}}
 <div class="py-5">
     @if (session()->has('error'))
     <div id="session-message" class="bg-red-500 text-center text-white font-bold p-2 rounded mb-4 opacity-100 transition-opacity duration-500">
@@ -242,7 +241,7 @@
 
                         </div>
                         <div>
-                            <button class="w-full rosa transition duration-200 ease-in text-white px-4 py-2 rounded" aria-label="Realizar pedido">Realizar pedido</button>
+                            <a href="{{route('checkout')}}" class="w-full inline-block text-center rosa text-white ease-in duration-150  px-4 py-2 rounded" aria-label="Realizar pedido">Realizar pedido</a>
                         </div>
                     </div>
                 </aside>
@@ -258,7 +257,7 @@
                     <p class="flex justify-between font-bold text-md mb-4"><span>Total (Impuestos incluidos):</span>
                         <span>{{ number_format($productosEnCarrito->sum(function($item) { return $item->precio_unitario * $item->cantidad * 1.21; }), 2) }}€</span>
                     </p>
-                    <button class="w-full rosa transition duration-200 ease-in text-white px-4 py-2 rounded" aria-label="Realizar pedido">Realizar pedido</button>
+                    <a href="{{route('checkout')}}" class="w-full inline-block text-center rosa text-white ease-in duration-150  px-4 py-2 rounded" aria-label="Realizar pedido">Realizar pedido</a>
                 </aside>
             </div>
 
