@@ -35,6 +35,12 @@
                     <a class="text-sm font-medium text-gray-700" href="{{ route('google.redirect') }}">{{ __('Iniciar sesión con Google') }}</a>
                 </button>
             </div>
+            <div class="mt-4 flex flex-col md:flex-row justify-center">
+                <a class="flex items-center bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm font-medium text-gray-700" href="{{ route('facebook.redirect') }}">
+                    <img class="w-5 mr-2" src="https://www.facebook.com/images/fb_icon_325x325.png">
+                    {{ __('Iniciar sesión con Facebook') }}
+                </a>             
+            </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
                 <div class="mt-4">

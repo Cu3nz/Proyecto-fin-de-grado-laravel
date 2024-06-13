@@ -47,7 +47,7 @@
                 <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-50"></div>
                 <div class="absolute inset-0 flex items-end p-6">
                   <div>
-                    <p aria-hidden="true" class="text-sm text-white">Shop the collection</p>
+                    <p aria-hidden="true" class="text-sm text-white">Accede para ver más</p>
                     <h3 class="mt-1 font-semibold text-white">
                       <a href="{{route('category.subcategorias' , $item -> id)}}">
                         <span class="absolute inset-0"></span>
